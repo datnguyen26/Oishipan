@@ -1,0 +1,74 @@
+@model IEnumerable<OishipanMVC.Models.ProductViewModel>
+
+@{
+    ViewData["Title"] = "Bảng điều khiển";
+}
+
+<div class="container-fluid">
+    <div class="row g-4 mb-4">
+        <div class="col-md-4">
+            <div class="metric-card p-4 shadow-sm">
+                <h5 class="text-secondary">Sản phẩm</h5>
+                <h2 class="fw-bold">@ViewBag.ProductCount</h2>
+                <p class="text-muted mb-0">Tổng số sản phẩm đang quản lý.</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="metric-card p-4 shadow-sm">
+                <h5 class="text-secondary">Đơn hàng</h5>
+                <h2 class="fw-bold">@ViewBag.OrderCount</h2>
+                <p class="text-muted mb-0">Đơn hàng đang chờ xử lý.</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="metric-card p-4 shadow-sm">
+                <h5 class="text-secondary">Khách hàng</h5>
+                <h2 class="fw-bold">@ViewBag.CustomerCount</h2>
+                <p class="text-muted mb-0">Khách hàng hoạt động trong tháng.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="card shadow-sm border-0 rounded-4 p-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h4 class="fw-semibold">Danh sách sản phẩm mới nhất</h4>
+                <p class="text-muted mb-0">Kiểm tra và quản lý sản phẩm từ API.</p>
+            </div>
+            <a href="/admin/products" class="btn btn-success rounded-pill">Xem toàn bộ sản phẩm</a>
+        </div>
+
+        @if (!Model.Any())
+        {
+            <div class="alert alert-secondary">Không có sản phẩm để hiển thị. Hãy đảm bảo API đang chạy hoặc thêm sản phẩm mới.</div>
+        }
+        else
+        {
+            <div class="table-responsive">
+                <table class="table align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Id</th>
+                            <th>Tên sản phẩm</th>
+                            <th>Giá</th>
+                            <th>Danh mục</th>
+                            <th>Thương hiệu</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var product in Model.Take(5))
+                        {
+                            <tr>
+                                <td>@product.ProductId</td>
+                                <td>@product.Name</td>
+                                <td>@product.Price.ToString("N0")₫</td>
+                                <td>@product.CategoryName</td>
+                                <td>@product.BrandName</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+</div>

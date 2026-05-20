@@ -1,0 +1,55 @@
+@model IEnumerable<OishipanMVC.Models.ProductViewModel>
+
+@{
+    ViewData["Title"] = "Menu bánh";
+    var sectionTitle = ViewBag.SectionTitle as string ?? "Menu bánh của Oishipan";
+}
+
+<div class="container py-5">
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4 gap-3">
+        <div>
+            <h1 class="display-5 fw-bold">@sectionTitle</h1>
+            <p class="text-muted">Tìm kiếm những chiếc bánh tươi mới, sang trọng và thơm ngon nhất cho mọi dịp.</p>
+        </div>
+        <a class="btn btn-outline-success rounded-pill px-4" href="/">Trở về trang chủ</a>
+    </div>
+
+    @if (!string.IsNullOrEmpty(ViewBag.Error))
+    {
+        <div class="alert alert-danger">@ViewBag.Error</div>
+    }
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-secondary">Hiện chưa có sản phẩm nào. Vui lòng quay lại sau.</div>
+    }
+    else
+    {
+        <div class="row g-4">
+            @foreach (var product in Model)
+            {
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="product-card h-100">
+                        <div class="product-img-wrapper position-relative">
+                            <img src="@product.ImageUrl" alt="@product.Name" class="w-100 h-100">
+                            <span class="badge-new">@product.CategoryName</span>
+                        </div>
+                        <div class="product-info d-flex flex-column h-100">
+                            <div>
+                                <h5 class="mb-2">@product.Name</h5>
+                                <p class="product-description">@(!string.IsNullOrEmpty(product.Description) && product.Description.Length > 120 ? product.Description.Substring(0, 120) + "..." : product.Description)</p>
+                            </div>
+                            <div class="mt-auto d-flex justify-content-between align-items-center py-3">
+                                <div>
+                                    <div class="text-muted small">@product.BrandName</div>
+                                    <div class="product-price fw-bold">@product.Price.ToString("N0")₫</div>
+                                </div>
+                                <a href="@Url.Action("Details", "Products", new { id = product.ProductId })" class="btn btn-success rounded-pill px-4">Xem</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>

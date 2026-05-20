@@ -1,0 +1,23 @@
+﻿{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  },
+  "AllowedHosts": "*",
+  "ConnectionStrings": {
+    "DefaultConnection": "Server=localhost;Database=Oishipan;Trusted_Connection=true;TrustServerCertificate=true;Encrypt=false;"
+  },
+  "Jwt": {
+    "SecretKey": "your_super_secret_key_min_32_characters_long_here_12345!",
+    "Issuer": "OishipanAPI",
+    "Audience": "OishipanMVC",
+    "ExpiryMinutes": 60
+  },
+  "Cloudinary": {
+    "CloudName": "your_cloud_name",
+    "ApiKey": "your_api_key",
+    "ApiSecret": "your_api_secret"
+  }
+}

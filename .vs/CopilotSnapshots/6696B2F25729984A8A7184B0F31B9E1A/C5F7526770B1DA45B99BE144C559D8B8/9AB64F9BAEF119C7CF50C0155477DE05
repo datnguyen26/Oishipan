@@ -1,0 +1,149 @@
+﻿@page
+@model OishipanMVC.Pages.IndexModel
+@{
+    ViewData["Title"] = "Oishipan - Tiệm Bánh Ngọt";
+}
+
+<!-- Hero Section / Banner -->
+<section class="hero-section position-relative overflow-hidden">
+    <div class="container-lg py-5">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h1 class="display-4 fw-bold text-success mb-3">
+                    BST <span class="text-warning">"MẪN NHÂN"</span>
+                </h1>
+                <p class="lead text-muted mb-4">
+                    Tiệc hẻ thêm vui cùng hương vị bánh Nhật - Chất lượng cao, hương vị tinh tế
+                </p>
+                <div class="d-flex gap-3">
+                    <a href="#products" class="btn btn-success btn-lg rounded-pill px-4">
+                        <i class="bi bi-bag-check"></i> Khám phá ngay
+                    </a>
+                    <a href="#contact" class="btn btn-outline-success btn-lg rounded-pill px-4">
+                        <i class="bi bi-chat-dots"></i> Liên hệ
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <img src="https://via.placeholder.com/500x400?text=Oishipan+Bakery" alt="Bánh Oishipan" class="img-fluid rounded-lg shadow">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="features-section py-5 bg-light">
+    <div class="container-lg">
+        <h2 class="text-center fw-bold mb-5">Tại sao chọn Oishipan?</h2>
+        <div class="row g-4">
+            <div class="col-md-4 text-center">
+                <div class="feature-card p-4">
+                    <i class="bi bi-star-fill text-warning fs-1 mb-3"></i>
+                    <h5 class="fw-bold">Chất lượng cao</h5>
+                    <p class="text-muted">Nguyên liệu nhập khẩu, độc quyền từ Nhật Bản</p>
+                </div>
+            </div>
+            <div class="col-md-4 text-center">
+                <div class="feature-card p-4">
+                    <i class="bi bi-truck text-success fs-1 mb-3"></i>
+                    <h5 class="fw-bold">Giao hàng nhanh</h5>
+                    <p class="text-muted">Miễn phí giao hàng cho đơn trên 200K</p>
+                </div>
+            </div>
+            <div class="col-md-4 text-center">
+                <div class="feature-card p-4">
+                    <i class="bi bi-shield-check text-info fs-1 mb-3"></i>
+                    <h5 class="fw-bold">An toàn & Uy tín</h5>
+                    <p class="text-muted">Đảm bảo an toàn thực phẩm, có chứng chỉ</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Products Section -->
+<section id="products" class="products-section py-5">
+    <div class="container-lg">
+        <h2 class="text-center fw-bold mb-5">Sản Phẩm Nổi Bật</h2>
+        <div class="row g-4">
+            @for (int i = 1; i <= 6; i++)
+            {
+                <div class="col-md-6 col-lg-4">
+                    <div class="product-card card h-100 border-0 shadow-sm hover-shadow">
+                        <img src="https://via.placeholder.com/300x300?text=Bánh+@i" class="card-img-top" alt="Bánh">
+                        <div class="card-body">
+                            <h5 class="card-title fw-bold">Bánh Mẫn Nhân Số @i</h5>
+                            <p class="card-text text-muted small">Hương vị tinh tế, chất lượng cao từ nhân bánh chọn lọc</p>
+                            <div class="d-flex justify-content-between align-items-center mt-3">
+                                <span class="h5 fw-bold text-success mb-0">85.000₫</span>
+                                <button class="btn btn-sm btn-success rounded-circle">
+                                    <i class="bi bi-cart-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="text-center mt-5">
+            <a href="#" class="btn btn-outline-success btn-lg px-5">Xem tất cả sản phẩm</a>
+        </div>
+    </div>
+</section>
+
+<!-- About Section -->
+<section id="about" class="about-section py-5 bg-light">
+    <div class="container-lg">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <img src="https://via.placeholder.com/400x400?text=Về+Oishipan" alt="Về Oishipan" class="img-fluid rounded-lg shadow">
+            </div>
+            <div class="col-lg-6">
+                <h2 class="fw-bold mb-4">Về Oishipan</h2>
+                <p class="text-muted mb-3">
+                    Oishipan là tiệm bánh chuyên phục vụ các loại bánh nhập khẩu từ Nhật Bản với chất lượng cao nhất. 
+                    Chúng tôi cam kết mang đến cho khách hàng những sản phẩm tươi ngon, an toàn và đáng tin cậy.
+                </p>
+                <p class="text-muted mb-3">
+                    Với hơn 5 năm kinh nghiệm trong ngành, Oishipan đã phục vụ hàng ngàn khách hàng thân thiết 
+                    và luôn nhận được lời khen từ cộng đồng.
+                </p>
+                <ul class="list-unstyled">
+                    <li class="mb-2"><i class="bi bi-check-circle-fill text-success"></i> Sản phẩm chất lượng cao</li>
+                    <li class="mb-2"><i class="bi bi-check-circle-fill text-success"></i> Giao hàng nhanh chóng</li>
+                    <li class="mb-2"><i class="bi bi-check-circle-fill text-success"></i> Dịch vụ khách hàng 24/7</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Contact Section -->
+<section id="contact" class="contact-section py-5">
+    <div class="container-lg">
+        <h2 class="text-center fw-bold mb-5">Liên Hệ Với Chúng Tôi</h2>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="contact-card text-center p-4 bg-light rounded-lg">
+                    <i class="bi bi-geo-alt-fill text-success fs-1 mb-3"></i>
+                    <h5 class="fw-bold">Địa chỉ</h5>
+                    <p class="text-muted">123 Đường Nguyễn Trãi, Quận 1, TP.HCM</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="contact-card text-center p-4 bg-light rounded-lg">
+                    <i class="bi bi-telephone-fill text-success fs-1 mb-3"></i>
+                    <h5 class="fw-bold">Điện thoại</h5>
+                    <p class="text-muted">0123 456 789</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="contact-card text-center p-4 bg-light rounded-lg">
+                    <i class="bi bi-envelope-fill text-success fs-1 mb-3"></i>
+                    <h5 class="fw-bold">Email</h5>
+                    <p class="text-muted">contact@oishipan.com</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,11 @@
+{
+  "ignore_dirs": [
+    "bin",
+    "obj",
+    ".git",
+    "node_modules",
+    ".vs",
+    ".vscode",
+    "dist"
+  ]
+}

@@ -1,0 +1,122 @@
+@{
+    ViewData["Title"] = "Giao diện PC";
+}
+
+<div class="container-custom py-5">
+    <div class="row g-4 align-items-center">
+        <div class="col-lg-7">
+            <span class="badge bg-success bg-opacity-10 text-success rounded-pill px-3 py-2 mb-3">Giao diện PC</span>
+            <h1 class="display-5 fw-bold mb-4">Trải nghiệm giao diện chuyên nghiệp cho màn hình máy tính</h1>
+            <p class="text-muted mb-4">Giao diện PC được tối ưu cho desktop với cấu trúc rõ ràng, menu cố định và bảng điều khiển trực quan phù hợp cho khách hàng và quản lý.</p>
+            <div class="d-flex flex-wrap gap-3">
+                <a href="@Url.Action("Index", "Products")" class="btn btn-success rounded-pill px-4 py-3">Xem menu bánh</a>
+                <a href="@Url.Action("Pc", "Home")" class="btn btn-outline-success rounded-pill px-4 py-3">Xem demo PC</a>
+            </div>
+        </div>
+        <div class="col-lg-5">
+            <div class="card shadow-sm rounded-4 border-0">
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <div>
+                            <p class="text-secondary mb-1">Tổng quan</p>
+                            <h4 class="fw-bold mb-0">Bảng điều khiển PC</h4>
+                        </div>
+                        <span class="badge bg-success rounded-pill px-3 py-2">MỚI</span>
+                    </div>
+                    <div class="row g-3">
+                        <div class="col-6">
+                            <div class="p-3 rounded-4 bg-light">
+                                <p class="text-muted mb-2">Sản phẩm</p>
+                                <h5 class="fw-bold">125</h5>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="p-3 rounded-4 bg-light">
+                                <p class="text-muted mb-2">Đơn hàng</p>
+                                <h5 class="fw-bold">48</h5>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="p-3 rounded-4 bg-light">
+                                <p class="text-muted mb-2">Khách hàng</p>
+                                <h5 class="fw-bold">1.2K</h5>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="p-3 rounded-4 bg-light">
+                                <p class="text-muted mb-2">Doanh thu</p>
+                                <h5 class="fw-bold">780K₫</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="py-5">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="h4 fw-bold">Các thành phần thiết kế cho PC</h2>
+            <span class="text-muted">Độ phân giải cao, dễ đọc</span>
+        </div>
+        <div class="row g-4">
+            <div class="col-lg-4">
+                <div class="card rounded-4 shadow-sm p-4 h-100">
+                    <h5 class="fw-semibold">Thanh điều hướng</h5>
+                    <p class="text-muted">Menu phía trên hoặc sidebar giúp người dùng PC truy cập nhanh đến mọi trang.</p>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="card rounded-4 shadow-sm p-4 h-100">
+                    <h5 class="fw-semibold">Bảng điều khiển</h5>
+                    <p class="text-muted">Các chỉ số quan trọng được hiển thị rõ ràng, giúp quản lý nhanh chóng.</p>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="card rounded-4 shadow-sm p-4 h-100">
+                    <h5 class="fw-semibold">Danh sách sản phẩm</h5>
+                    <p class="text-muted">Hiển thị sản phẩm theo lưới rộng, thông tin đầy đủ và nút thao tác ngay lập tức.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-5 bg-light rounded-4">
+        <div class="row g-4 align-items-center">
+            <div class="col-lg-6">
+                <h3 class="fw-bold">Giao diện PC phù hợp với màn hình rộng</h3>
+                <p class="text-muted">Thiết kế rõ ràng, không gian hiển thị rộng và trải nghiệm dễ thao tác trên chuột và bàn phím.</p>
+                <ul class="list-unstyled text-muted">
+                    <li class="mb-3"><i class="bi bi-check2-circle text-success me-2"></i>Khung hiển thị lớn, nội dung cô đọng.</li>
+                    <li class="mb-3"><i class="bi bi-check2-circle text-success me-2"></i>Điều hướng rõ ràng và phản hồi nhanh.</li>
+                    <li class="mb-3"><i class="bi bi-check2-circle text-success me-2"></i>Phù hợp với quản lý sản phẩm và đơn hàng trên desktop.</li>
+                </ul>
+                <a href="@Url.Action("Index", "Products")" class="btn btn-success rounded-pill px-4 py-3">Khám phá Menu PC</a>
+            </div>
+            <div class="col-lg-6">
+                <div class="card rounded-4 border-0 shadow-sm p-4">
+                    <div class="row g-3">
+                        <div class="col-6">
+                            <div class="p-3 bg-white rounded-4 border">
+                                <h6 class="fw-semibold">Mạng lưới</h6>
+                                <p class="text-muted mb-0">Hiển thị nhanh trạng thái kết nối API.</p>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="p-3 bg-white rounded-4 border">
+                                <h6 class="fw-semibold">Thông báo</h6>
+                                <p class="text-muted mb-0">Thông tin đơn hàng mới và cập nhật sản phẩm.</p>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="p-3 bg-white rounded-4 border">
+                                <h6 class="fw-semibold">Thanh công cụ</h6>
+                                <p class="text-muted mb-0">Thanh công cụ trên PC cho phép tìm kiếm, lọc và xuất báo cáo.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "dgSpecHash": "JT2lgqGxSZA=",
+  "success": true,
+  "projectFilePath": "K:\\Oishipan\\OishipanMVC\\OishipanMVC.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\GALLERIA\\.nuget\\packages\\cloudinarydotnet\\1.27.0\\cloudinarydotnet.1.27.0.nupkg.sha512",
+    "C:\\Users\\GALLERIA\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\10.0.0\\microsoft.aspnetcore.authentication.jwtbearer.10.0.0.nupkg.sha512",
+    "C:\\Users\\GALLERIA\\.nuget\\packages\\microsoft.aspnetcore.openapi\\10.0.0\\microsoft.aspnetcore.openapi.10.0.0.nupkg.sha512",
+    "C:\\Users\\GALLERIA\\.nuget\\packages\\microsoft.identitymodel.abstractions\\8.2.1\\microsoft.identitymodel.abstractions.8.2.1.nupkg.sha512",
+    "C:\\Users\\GALLERIA\\.nuget\\packages\\microsoft.identitymodel.jsonwebtokens\\8.2.1\\microsoft.identitymodel.jsonwebtokens.8.2.1.nupkg.sha512",
+    "C:\\Users\\GALLERIA\\.nuget\\packages\\microsoft.identitymodel.logging\\8.2.1\\microsoft.identitymodel.logging.8.2.1.nupkg.sha512",
+    "C:\\Users\\GALLERIA\\.nuget\\packages\\microsoft.identitymodel.protocols\\8.2.1\\microsoft.identitymodel.protocols.8.2.1.nupkg.sha512",
+    "C:\\Users\\GALLERIA\\.nuget\\packages\\microsoft.identitymodel.protocols.openidconnect\\8.2.1\\microsoft.identitymodel.protocols.openidconnect.8.2.1.nupkg.sha512",
+    "C:\\Users\\GALLERIA\\.nuget\\packages\\microsoft.identitymodel.tokens\\8.2.1\\microsoft.identitymodel.tokens.8.2.1.nupkg.sha512",
+    "C:\\Users\\GALLERIA\\.nuget\\packages\\microsoft.openapi\\2.0.0\\microsoft.openapi.2.0.0.nupkg.sha512",
+    "C:\\Users\\GALLERIA\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512",
+    "C:\\Users\\GALLERIA\\.nuget\\packages\\system.identitymodel.tokens.jwt\\8.2.1\\system.identitymodel.tokens.jwt.8.2.1.nupkg.sha512"
+  ],
+  "logs": []
+}

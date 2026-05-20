@@ -1,0 +1,315 @@
+﻿@page
+@model OishipanMVC.Pages.IndexModel
+@{
+    ViewData["Title"] = "Oishipan - Tiệm Bánh Ngọt Thủ Công Cao Cấp";
+}
+
+<!-- Hero Banner -->
+<div class="container-custom hero-container">
+    <div class="hero-banner">
+        <div class="hero-content">
+            <h2>BST "MẤN NHÂN"</h2>
+            <p>Tiệc hè thêm vui cùng hương vị bánh Nhật</p>
+            <a href="#products" class="btn-login px-4 py-2 d-inline-flex">Khám phá ngay</a>
+        </div>
+    </div>
+</div>
+
+<!-- Categories Section -->
+<section class="category-section">
+    <div class="container-custom">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h4 class="fw-bold mb-0">Danh Mục Sản Phẩm</h4>
+            <a href="#products" class="text-success text-decoration-none small fw-bold">Tất cả <i class="bi bi-chevron-right"></i></a>
+        </div>
+        <div class="row g-4">
+            <div class="col-4 col-md-2">
+                <a href="#" class="category-item">
+                    <div class="category-icon-box">
+                        <i class="bi bi-cake2 fs-3 text-success"></i>
+                    </div>
+                    <span>Bánh Kem</span>
+                </a>
+            </div>
+            <div class="col-4 col-md-2">
+                <a href="#" class="category-item">
+                    <div class="category-icon-box">
+                        <i class="bi bi-box2-heart fs-3 text-success"></i>
+                    </div>
+                    <span>Quà Tặng</span>
+                </a>
+            </div>
+            <div class="col-4 col-md-2">
+                <a href="#" class="category-item">
+                    <div class="category-icon-box">
+                        <i class="bi bi-flower1 fs-3 text-success"></i>
+                    </div>
+                    <span>Mùa Hè</span>
+                </a>
+            </div>
+            <div class="col-4 col-md-2">
+                <a href="#" class="category-item">
+                    <div class="category-icon-box">
+                        <i class="bi bi-gift fs-3 text-success"></i>
+                    </div>
+                    <span>Đặc Biệt</span>
+                </a>
+            </div>
+            <div class="col-4 col-md-2">
+                <a href="#" class="category-item">
+                    <div class="category-icon-box">
+                        <i class="bi bi-star fs-3 text-success"></i>
+                    </div>
+                    <span>Bán Chạy</span>
+                </a>
+            </div>
+            <div class="col-4 col-md-2">
+                <a href="#" class="category-item">
+                    <div class="category-icon-box">
+                        <i class="bi bi-heart fs-3 text-success"></i>
+                    </div>
+                    <span>Yêu Thích</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Promotional Banner -->
+<section class="promo-section">
+    <div class="container-custom">
+        <div class="row g-4">
+            <div class="col-lg-6">
+                <div class="promo-card promo-primary">
+                    <div class="promo-content">
+                        <h3>Bánh Mẫn Nhân</h3>
+                        <p>Hương vị tinh tế từ Nhật Bản</p>
+                        <a href="#" class="btn-promo">Mua ngay</a>
+                    </div>
+                    <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&q=80&w=600" alt="Bánh Mẫn Nhân">
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="promo-card promo-secondary">
+                    <div class="promo-content">
+                        <h3>Bánh Kem Tươi</h3>
+                        <p>Ngon mỗi ngày, giao tận nhà</p>
+                        <a href="#" class="btn-promo">Khám phá</a>
+                    </div>
+                    <img src="https://images.unsplash.com/photo-1565958011504-98d6efed2eae?auto=format&fit=crop&q=80&w=600" alt="Bánh Kem Tươi">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="features-section py-5">
+    <div class="container-custom">
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="feature-card p-4">
+                    <i class="bi bi-star-fill text-warning fs-1 mb-3"></i>
+                    <h5 class="fw-bold">Chất lượng cao</h5>
+                    <p class="text-muted">Nguyên liệu nhập khẩu, độc quyền từ Nhật Bản</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-card p-4">
+                    <i class="bi bi-truck text-success fs-1 mb-3"></i>
+                    <h5 class="fw-bold">Giao hàng nhanh</h5>
+                    <p class="text-muted">Miễn phí giao hàng cho đơn trên 200K</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-card p-4">
+                    <i class="bi bi-shield-check text-info fs-1 mb-3"></i>
+                    <h5 class="fw-bold">An toàn & Uy tín</h5>
+                    <p class="text-muted">Đảm bảo an toàn thực phẩm, có chứng chỉ</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Products Section -->
+<section id="products" class="products-section py-5">
+    <div class="container-custom">
+        <div class="d-flex justify-content-between align-items-center mb-5">
+            <div>
+                <h3 class="fw-bold mb-0">Sản Phẩm Nổi Bật</h3>
+                <p class="text-muted small mt-1">Những bánh được yêu thích nhất từ khách hàng</p>
+            </div>
+            <a href="#" class="text-success text-decoration-none fw-bold">Xem tất cả <i class="bi bi-chevron-right"></i></a>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-4">
+                <div class="product-card card h-100 border-0 shadow-sm">
+                    <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&q=80&w=400" class="card-img-top" alt="Bánh Mẫn Nhân">
+                    <div class="card-body">
+                        <h5 class="card-title fw-bold">Bánh Mẫn Nhân Đặc Biệt</h5>
+                        <p class="card-text text-muted small">Hương vị tinh tế, chất lượng cao từ nhân bánh chọn lọc</p>
+                        <div class="d-flex justify-content-between align-items-center mt-3">
+                            <span class="h5 fw-bold text-success mb-0">85.000₫</span>
+                            <button class="btn btn-sm btn-success rounded-circle">
+                                <i class="bi bi-cart-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="product-card card h-100 border-0 shadow-sm">
+                    <img src="https://images.unsplash.com/photo-1565958011504-98d6efed2eae?auto=format&fit=crop&q=80&w=400" class="card-img-top" alt="Bánh Kem">
+                    <div class="card-body">
+                        <h5 class="card-title fw-bold">Bánh Kem Tươi Hàng Ngày</h5>
+                        <p class="card-text text-muted small">Bánh kem tươi được làm mới hàng ngày, mềm và ngon</p>
+                        <div class="d-flex justify-content-between align-items-center mt-3">
+                            <span class="h5 fw-bold text-success mb-0">95.000₫</span>
+                            <button class="btn btn-sm btn-success rounded-circle">
+                                <i class="bi bi-cart-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="product-card card h-100 border-0 shadow-sm">
+                    <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&q=80&w=400" class="card-img-top" alt="Bánh Donut">
+                    <div class="card-body">
+                        <h5 class="card-title fw-bold">Bánh Donut Nhân Cream</h5>
+                        <p class="card-text text-muted small">Bánh donut mềm với nhân cream béo ngậy</p>
+                        <div class="d-flex justify-content-between align-items-center mt-3">
+                            <span class="h5 fw-bold text-success mb-0">45.000₫</span>
+                            <button class="btn btn-sm btn-success rounded-circle">
+                                <i class="bi bi-cart-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="product-card card h-100 border-0 shadow-sm">
+                    <img src="https://images.unsplash.com/photo-1565958011504-98d6efed2eae?auto=format&fit=crop&q=80&w=400" class="card-img-top" alt="Bánh Macaron">
+                    <div class="card-body">
+                        <h5 class="card-title fw-bold">Bánh Macaron Nhân Trái Cây</h5>
+                        <p class="card-text text-muted small">Bánh macaron nhân trái cây tươi mát</p>
+                        <div class="d-flex justify-content-between align-items-center mt-3">
+                            <span class="h5 fw-bold text-success mb-0">35.000₫</span>
+                            <button class="btn btn-sm btn-success rounded-circle">
+                                <i class="bi bi-cart-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="product-card card h-100 border-0 shadow-sm">
+                    <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&q=80&w=400" class="card-img-top" alt="Bánh Cheesecake">
+                    <div class="card-body">
+                        <h5 class="card-title fw-bold">Bánh Cheesecake Premium</h5>
+                        <p class="card-text text-muted small">Bánh cheesecake mềm với lớp phô mai sánh</p>
+                        <div class="d-flex justify-content-between align-items-center mt-3">
+                            <span class="h5 fw-bold text-success mb-0">120.000₫</span>
+                            <button class="btn btn-sm btn-success rounded-circle">
+                                <i class="bi bi-cart-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="product-card card h-100 border-0 shadow-sm">
+                    <img src="https://images.unsplash.com/photo-1565958011504-98d6efed2eae?auto=format&fit=crop&q=80&w=400" class="card-img-top" alt="Bánh Chocolate">
+                    <div class="card-body">
+                        <h5 class="card-title fw-bold">Bánh Chocolate Đắng Ngọt</h5>
+                        <p class="card-text text-muted small">Bánh chocolate với vị đắng ngọt hoàn hảo</p>
+                        <div class="d-flex justify-content-between align-items-center mt-3">
+                            <span class="h5 fw-bold text-success mb-0">75.000₫</span>
+                            <button class="btn btn-sm btn-success rounded-circle">
+                                <i class="bi bi-cart-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- About Section -->
+<section class="about-section py-5">
+    <div class="container-custom">
+        <div class="row align-items-center g-5">
+            <div class="col-lg-6">
+                <img src="https://images.unsplash.com/photo-1516975080664-ed2fc6a32937?auto=format&fit=crop&q=80&w=500" alt="Về Oishipan" class="img-fluid rounded-lg shadow about-img">
+            </div>
+            <div class="col-lg-6">
+                <h2 class="fw-bold mb-4">Về Oishipan</h2>
+                <p class="text-muted mb-3">
+                    Oishipan là tiệm bánh chuyên phục vụ các loại bánh nhập khẩu từ Nhật Bản với chất lượng cao nhất. 
+                    Chúng tôi cam kết mang đến cho khách hàng những sản phẩm tươi ngon, an toàn và đáng tin cậy.
+                </p>
+                <p class="text-muted mb-4">
+                    Với hơn 5 năm kinh nghiệm trong ngành, Oishipan đã phục vụ hàng ngàn khách hàng thân thiết 
+                    và luôn nhận được lời khen từ cộng đồng.
+                </p>
+                <div class="row g-3">
+                    <div class="col-sm-6">
+                        <div class="stat-box">
+                            <h4 class="fw-bold text-success">5000+</h4>
+                            <p class="text-muted small">Khách hàng hài lòng</p>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="stat-box">
+                            <h4 class="fw-bold text-success">50+</h4>
+                            <p class="text-muted small">Loại bánh đặc biệt</p>
+                        </div>
+                    </div>
+                </div>
+                <ul class="list-unstyled mt-4">
+                    <li class="mb-3"><i class="bi bi-check-circle-fill text-success"></i> Sản phẩm chất lượng cao</li>
+                    <li class="mb-3"><i class="bi bi-check-circle-fill text-success"></i> Giao hàng nhanh chóng</li>
+                    <li class="mb-3"><i class="bi bi-check-circle-fill text-success"></i> Dịch vụ khách hàng 24/7</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Contact Section -->
+<section id="contact" class="contact-section py-5">
+    <div class="container-custom">
+        <h2 class="text-center fw-bold mb-5">Liên Hệ Với Chúng Tôi</h2>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="contact-card text-center p-4">
+                    <div class="contact-icon">
+                        <i class="bi bi-geo-alt-fill text-success fs-1"></i>
+                    </div>
+                    <h5 class="fw-bold mt-3">Địa chỉ</h5>
+                    <p class="text-muted">123 Đường Nguyễn Trãi, Quận 1, TP.HCM</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="contact-card text-center p-4">
+                    <div class="contact-icon">
+                        <i class="bi bi-telephone-fill text-success fs-1"></i>
+                    </div>
+                    <h5 class="fw-bold mt-3">Điện thoại</h5>
+                    <p class="text-muted">(84+) 123 456 789</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="contact-card text-center p-4">
+                    <div class="contact-icon">
+                        <i class="bi bi-envelope-fill text-success fs-1"></i>
+                    </div>
+                    <h5 class="fw-bold mt-3">Email</h5>
+                    <p class="text-muted">contact@oishipan.com</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

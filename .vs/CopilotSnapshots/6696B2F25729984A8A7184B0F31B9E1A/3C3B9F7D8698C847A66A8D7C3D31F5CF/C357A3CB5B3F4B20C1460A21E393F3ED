@@ -1,0 +1,37 @@
+﻿<!-- Header / Navbar theo yêu cầu -->
+<nav class="navbar navbar-expand-lg sticky-top">
+    <div class="container-custom d-flex align-items-center">
+        
+        <!-- Logo bên trái -->
+        <a class="navbar-brand" href="@Url.Action("Index", "Home")">
+            <i class="bi bi-cake2 text-success me-2"></i> Oishipan
+        </a>
+
+        <!-- Toggle cho Mobile -->
+        <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        
+        <!-- Menu sát Logo -->
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item"><a class="nav-link active" href="@Url.Action("Index", "Home")">Trang chủ</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Menu bánh</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Cửa hàng</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Thành viên</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Tin tức</a></li>
+            </ul>
+            
+            <!-- Tiện ích bên phải -->
+            <div class="header-actions">
+                <a href="#" class="cart-btn">
+                    <i class="bi bi-cart3"></i>
+                </a>
+                <a href="@Url.Action("Login", "Account")" class="btn-login">
+                    <i class="bi bi-box-arrow-in-right"></i> Đăng nhập
+                </a>
+            </div>
+        </div>
+
+    </div>
+</nav>

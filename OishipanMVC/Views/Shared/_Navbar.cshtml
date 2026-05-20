@@ -1,0 +1,35 @@
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg sticky-top">
+    <div class="container-custom d-flex align-items-center justify-content-between gap-3">
+        <a class="navbar-brand" href="/">Oishipan</a>
+
+        <ul class="navbar-nav d-flex flex-row align-items-center gap-3 mb-0">
+            <li class="nav-item"><a class="nav-link active" href="@Url.Action("Index", "Home")">Trang chủ</a></li>
+            <li class="nav-item"><a class="nav-link spa-link" href="@Url.Action("Index", "Products")">Menu bánh</a></li>
+            <li class="nav-item"><a class="nav-link" href="/ve-oishipan">Về Oishipan</a></li>
+            <li class="nav-item"><a class="nav-link" href="/lien-he">Liên hệ</a></li>
+            <li class="nav-item"><a class="nav-link" href="/tin-tuc">Tin tức</a></li>
+            <li class="nav-item"><a class="nav-link" href="/chinh-sach">Chính sách</a></li>
+        </ul>
+
+        <div class="header-actions d-flex align-items-center gap-3">
+            <a href="@Url.Action("Index", "Products")" class="cart-btn position-relative">
+                <i class="bi bi-cart3"></i>
+                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.6rem;">0</span>
+            </a>
+            @if (User.Identity?.IsAuthenticated == true)
+            {
+                <span class="me-3 text-success fw-semibold">Xin chào, @User.Identity.Name</span>
+                <a href="@Url.Action("Logout", "Account")" class="btn-login">
+                    <i class="bi bi-box-arrow-right"></i> Đăng xuất
+                </a>
+            }
+            else
+            {
+                <a href="@Url.Action("Login", "Account")" class="btn-login">
+                    <i class="bi bi-box-arrow-in-right"></i> Đăng nhập
+                </a>
+            }
+        </div>
+    </div>
+</nav>

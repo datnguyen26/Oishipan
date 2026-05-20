@@ -1,0 +1,43 @@
+@model IEnumerable<OishipanMVC.Areas.Admin.Models.AdminOrderViewModel>
+
+@{
+    ViewData["Title"] = "Quản lý đơn hàng";
+}
+
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h4 class="fw-semibold">Quản lý đơn hàng</h4>
+            <p class="text-muted mb-0">Danh sách đơn hàng và trạng thái xử lý.</p>
+        </div>
+        <a href="/admin" class="btn btn-outline-secondary rounded-pill">Quay lại Dashboard</a>
+    </div>
+
+    <div class="card shadow-sm rounded-4 p-4">
+        <div class="table-responsive">
+            <table class="table align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>Mã đơn</th>
+                        <th>Khách hàng</th>
+                        <th>Giá trị</th>
+                        <th>Trạng thái</th>
+                        <th>Ngày đặt</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var order in Model)
+                    {
+                        <tr>
+                            <td>@order.OrderId</td>
+                            <td>@order.CustomerName</td>
+                            <td>@order.TotalAmount.ToString("N0")₫</td>
+                            <td><span class="badge bg-info text-dark">@order.Status</span></td>
+                            <td>@order.CreatedAt.ToString("dd/MM/yyyy HH:mm")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

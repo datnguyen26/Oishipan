@@ -1,0 +1,95 @@
+﻿<!-- Footer -->
+<footer class="bg-dark text-white mt-5 pt-5">
+    <div class="container-lg">
+        <div class="row g-4 mb-5">
+            <!-- Brand Info -->
+            <div class="col-lg-4">
+                <h4 class="mb-4 fw-bold">
+                    <i class="bi bi-basket2-fill text-success"></i> Oishipan
+                </h4>
+                <p class="text-light">Nơi mang đến những chiếc bánh ngọt ngào và đầy cảm hứng cho cuộc sống của bạn. Chúng tôi cam kết mang đến sự tươi tính và chất lượng cao nhất.</p>
+                <div class="social-icons mt-4 gap-2 d-flex">
+                    <a href="#" class="btn btn-sm btn-outline-light rounded-circle" title="Facebook">
+                        <i class="bi bi-facebook"></i>
+                    </a>
+                    <a href="#" class="btn btn-sm btn-outline-light rounded-circle" title="Instagram">
+                        <i class="bi bi-instagram"></i>
+                    </a>
+                    <a href="#" class="btn btn-sm btn-outline-light rounded-circle" title="TikTok">
+                        <i class="bi bi-tiktok"></i>
+                    </a>
+                    <a href="#" class="btn btn-sm btn-outline-light rounded-circle" title="YouTube">
+                        <i class="bi bi-youtube"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Quick Links -->
+            <div class="col-lg-2">
+                <h5 class="mb-4 fw-bold">Liên Kết</h5>
+                <ul class="list-unstyled">
+                    <li class="mb-3"><a href="/" class="text-light text-decoration-none hover-link">Trang chủ</a></li>
+                    <li class="mb-3"><a href="#products" class="text-light text-decoration-none hover-link">Sản phẩm</a></li>
+                    <li class="mb-3"><a href="#about" class="text-light text-decoration-none hover-link">Về chúng tôi</a></li>
+                    <li class="mb-3"><a href="#contact" class="text-light text-decoration-none hover-link">Liên hệ</a></li>
+                </ul>
+            </div>
+
+            <!-- Support -->
+            <div class="col-lg-2">
+                <h5 class="mb-4 fw-bold">Hỗ Trợ</h5>
+                <ul class="list-unstyled">
+                    <li class="mb-3"><a href="#" class="text-light text-decoration-none hover-link">Chính sách bảo mật</a></li>
+                    <li class="mb-3"><a href="#" class="text-light text-decoration-none hover-link">Điều khoản sử dụng</a></li>
+                    <li class="mb-3"><a href="#" class="text-light text-decoration-none hover-link">Chính sách giao hàng</a></li>
+                    <li class="mb-3"><a href="#" class="text-light text-decoration-none hover-link">Câu hỏi thường gặp</a></li>
+                </ul>
+            </div>
+
+            <!-- Newsletter -->
+            <div class="col-lg-4">
+                <h5 class="mb-4 fw-bold">Đăng Ký Nhận Tin Tức</h5>
+                <p class="text-light">Nhận ngay ưu đãi 10% cho đơn hàng đầu tiên!</p>
+                <form class="d-flex gap-2">
+                    <input type="email" class="form-control rounded-pill" placeholder="Email của bạn" required>
+                    <button type="submit" class="btn btn-success rounded-pill px-4">
+                        <i class="bi bi-send"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <hr class="bg-light">
+
+        <!-- Copyright -->
+        <div class="text-center py-4">
+            <p class="mb-0 text-light">&copy; 2024 Oishipan Bakery. Tất cả quyền được bảo lưu.</p>
+        </div>
+    </div>
+</footer>
+
+<!-- Toast Notification -->
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+    <div id="cartToast" class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">
+                <i class="bi bi-check-circle me-2"></i> Đã thêm <span id="toastCakeName"></span> vào giỏ hàng!
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+</div>
+
+<style>
+    footer {
+        margin-top: 5rem;
+    }
+
+    .hover-link {
+        transition: color 0.3s ease;
+    }
+
+    .hover-link:hover {
+        color: #ffc107 !important;
+    }
+</style>

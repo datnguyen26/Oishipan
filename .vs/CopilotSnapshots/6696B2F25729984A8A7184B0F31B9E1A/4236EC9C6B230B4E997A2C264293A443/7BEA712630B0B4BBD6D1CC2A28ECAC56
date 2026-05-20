@@ -1,0 +1,54 @@
+﻿<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row g-4 mb-5">
+            <div class="col-lg-4">
+                <h4 class="mb-4 text-primary">Oishipan</h4>
+                <p class="text-light-50">Nơi mang đến những chiếc bánh ngọt ngào và đầy cảm hứng cho cuộc sống của bạn.</p>
+                <div class="social-icons mt-4">
+                    <a href="#" title="Facebook"><i class="bi bi-facebook"></i></a>
+                    <a href="#" title="Instagram"><i class="bi bi-instagram"></i></a>
+                    <a href="#" title="TikTok"><i class="bi bi-tiktok"></i></a>
+                    <a href="#" title="YouTube"><i class="bi bi-youtube"></i></a>
+                </div>
+            </div>
+            <div class="col-lg-2">
+                <h5 class="mb-4">Liên Kết</h5>
+                <a href="#" class="footer-link">Sản Phẩm</a>
+                <a href="#" class="footer-link">Khuyến Mãi</a>
+                <a href="#" class="footer-link">Giao Hàng</a>
+                <a href="#" class="footer-link">Liên Hệ</a>
+            </div>
+            <div class="col-lg-2">
+                <h5 class="mb-4">Hỗ Trợ</h5>
+                <a href="#" class="footer-link">Chính Sách Bảo Mật</a>
+                <a href="#" class="footer-link">Điều Khoản Sử Dụng</a>
+                <a href="#" class="footer-link">Câu Hỏi Thường Gặp</a>
+            </div>
+            <div class="col-lg-4">
+                <h5 class="mb-4">Đăng Ký Nhận Tin</h5>
+                <p>Nhận ngay ưu đãi 10% cho đơn hàng đầu tiên!</p>
+                <div class="input-group">
+                    <input type="email" class="form-control rounded-start-pill" placeholder="Email của bạn">
+                    <button class="btn btn-primary rounded-end-pill px-4">Gửi</button>
+                </div>
+            </div>
+        </div>
+        <hr class="bg-light">
+        <div class="text-center pt-3">
+            <p class="mb-0">&copy; 2024 Oishipan Bakery. Tất cả quyền được bảo lưu.</p>
+        </div>
+    </div>
+</footer>
+
+<!-- Toast Notification -->
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+    <div id="cartToast" class="toast align-items-center text-white bg-primary border-0" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">
+                <i class="bi bi-check-circle me-2"></i> Đã thêm <span id="toastCakeName"></span> vào giỏ hàng!
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+</div>
