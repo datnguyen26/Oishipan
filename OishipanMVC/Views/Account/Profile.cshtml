@@ -1,0 +1,106 @@
+@{
+    ViewData["Title"] = "Hồ sơ cá nhân";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-sm border-0 rounded-4 overflow-hidden">
+                <div class="card-body p-5">
+                    <div class="mb-4">
+                        <h2 class="fw-bold">Hồ sơ cá nhân</h2>
+                        <p class="text-muted">Xem và chỉnh sửa thông tin tài khoản của bạn</p>
+                    </div>
+
+                    @if (!string.IsNullOrEmpty(ViewBag.Error))
+                    {
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <strong>Lỗi!</strong> @ViewBag.Error
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    }
+
+                    @if (!string.IsNullOrEmpty(ViewBag.Success))
+                    {
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <strong>Thành công!</strong> @ViewBag.Success
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    }
+
+                    @if (Model != null)
+                    {
+                        <form method="post" action="/cap-nhat-ho-so">
+                            <div class="mb-4">
+                                <label for="userId" class="form-label fw-semibold">ID Tài khoản</label>
+                                <input type="text" class="form-control rounded-4" id="userId" name="userId" value="@Model?.GetProperty("userId").GetInt32()" readonly>
+                            </div>
+
+                            <div class="mb-4">
+                                <label for="email" class="form-label fw-semibold">Email</label>
+                                <input type="email" class="form-control rounded-4" id="email" name="email" value="@Model?.GetProperty("email").GetString()" readonly>
+                            </div>
+
+                            <div class="mb-4">
+                                <label for="fullName" class="form-label fw-semibold">Họ và tên</label>
+                                <input type="text" class="form-control rounded-4" id="fullName" name="fullName" value="@Model?.GetProperty("fullName").GetString()" required minlength="3" maxlength="100">
+                                <small class="text-danger" id="fullNameError"></small>
+                            </div>
+
+                            <div class="mb-4">
+                                <label for="phoneNumber" class="form-label fw-semibold">Số điện thoại</label>
+                                <input type="tel" class="form-control rounded-4" id="phoneNumber" name="phoneNumber" value="@Model?.GetProperty("phoneNumber").GetString()" required pattern="0[0-9]{9}">
+                                <small class="text-danger" id="phoneError"></small>
+                            </div>
+
+                            <div class="mb-4">
+                                <label for="address" class="form-label fw-semibold">Địa chỉ</label>
+                                <textarea class="form-control rounded-4" id="address" name="address" rows="3" required maxlength="200">@Model?.GetProperty("address").GetString()</textarea>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-6">
+                                    <button type="submit" class="btn btn-success w-100 rounded-pill py-3 fw-semibold">
+                                        Cập nhật hồ sơ
+                                    </button>
+                                </div>
+                                <div class="col-6">
+                                    <a href="/dang-xuat" class="btn btn-outline-danger w-100 rounded-pill py-3 fw-semibold">
+                                        Đăng xuất
+                                    </a>
+                                </div>
+                            </div>
+                        </form>
+                    }
+                    else
+                    {
+                        <div class="alert alert-warning">
+                            Không thể tải hồ sơ. Vui lòng <a href="/dang-nhap">đăng nhập lại</a>.
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('fullName').addEventListener('blur', function() {
+        const fullNameError = document.getElementById('fullNameError');
+        if (this.value.trim().length < 3) {
+            fullNameError.textContent = 'Họ tên phải từ 3 ký tự trở lên';
+        } else {
+            fullNameError.textContent = '';
+        }
+    });
+
+    document.getElementById('phoneNumber').addEventListener('blur', function() {
+        const phoneError = document.getElementById('phoneError');
+        const phoneRegex = /^0[0-9]{9}$/;
+        if (this.value && !phoneRegex.test(this.value)) {
+            phoneError.textContent = 'Số điện thoại phải bắt đầu bằng 0 và có 10 chữ số';
+        } else {
+            phoneError.textContent = '';
+        }
+    });
+</script>

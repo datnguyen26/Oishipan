@@ -1,8 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authorization;
 using OishipanAPI.DTOs;
 using OishipanAPI.Services;
-using System.Security.Claims;
 
 namespace OishipanAPI.Controllers
 {
@@ -21,7 +19,10 @@ namespace OishipanAPI.Controllers
         public async Task<IActionResult> Login([FromBody] LoginRequest request)
         {
             if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+            {
+                var errors = ModelState.Values.SelectMany(v => v.Errors);
+                return BadRequest(new { success = false, message = "Dữ liệu không hợp lệ", errors });
+            }
 
             var response = await _authService.LoginAsync(request);
 
@@ -35,7 +36,10 @@ namespace OishipanAPI.Controllers
         public async Task<IActionResult> Register([FromBody] RegisterRequest request)
         {
             if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+            {
+                var errors = ModelState.Values.SelectMany(v => v.Errors);
+                return BadRequest(new { success = false, message = "Dữ liệu không hợp lệ", errors });
+            }
 
             var response = await _authService.RegisterAsync(request);
 
@@ -45,15 +49,9 @@ namespace OishipanAPI.Controllers
             return Ok(response);
         }
 
-        [Authorize]
-        [HttpGet("profile")]
-        public async Task<IActionResult> GetProfile()
+        [HttpGet("profile/{userId}")]
+        public async Task<IActionResult> GetProfile(int userId)
         {
-            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
-
-            if (userIdClaim == null || !int.TryParse(userIdClaim.Value, out int userId))
-                return Unauthorized();
-
             var user = await _authService.GetUserByIdAsync(userId);
 
             if (user == null)
@@ -62,15 +60,9 @@ namespace OishipanAPI.Controllers
             return Ok(user);
         }
 
-        [Authorize]
-        [HttpPut("update-profile")]
-        public async Task<IActionResult> UpdateProfile([FromBody] UserDto request)
+        [HttpPut("update-profile/{userId}")]
+        public async Task<IActionResult> UpdateProfile(int userId, [FromBody] UserDto request)
         {
-            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
-
-            if (userIdClaim == null || !int.TryParse(userIdClaim.Value, out int userId))
-                return Unauthorized();
-
             var success = await _authService.UpdateUserAsync(userId, request.FullName, request.PhoneNumber, request.Address);
 
             if (!success)

@@ -167,3 +167,4 @@ K:\Oishipan\OishipanAPI\obj\Debug\net10.0\refint\OishipanAPI.dll
 K:\Oishipan\OishipanAPI\obj\Debug\net10.0\OishipanAPI.pdb
 K:\Oishipan\OishipanAPI\obj\Debug\net10.0\OishipanAPI.genruntimeconfig.cache
 K:\Oishipan\OishipanAPI\obj\Debug\net10.0\ref\OishipanAPI.dll
+K:\Oishipan\OishipanAPI\obj\Debug\net10.0\OishipanAPI.sourcelink.json

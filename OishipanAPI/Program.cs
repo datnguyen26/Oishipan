@@ -1,10 +1,6 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
 using System.Text.Json;
 using OishipanAPI.Services;
-using OishipanAPI.Utilities;
 using CloudinaryDotNet;
 using Oishipan.Models;
 
@@ -31,32 +27,7 @@ if (string.IsNullOrWhiteSpace(connectionString))
 builder.Services.AddDbContext<OishipanContext>(options =>
     options.UseSqlServer(connectionString));
 
-// JWT Authentication configuration
-var jwtSettings = builder.Configuration.GetSection("Jwt");
-var secretKey = jwtSettings["SecretKey"] ?? throw new InvalidOperationException("JWT SecretKey is not configured");
-var issuer = jwtSettings["Issuer"] ?? throw new InvalidOperationException("JWT Issuer is not configured");
-var audience = jwtSettings["Audience"] ?? throw new InvalidOperationException("JWT Audience is not configured");
 
-if (string.IsNullOrEmpty(secretKey) || secretKey.Length < 32)
-{
-    throw new InvalidOperationException("JWT SecretKey must be at least 32 characters long");
-}
-
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(options =>
-    {
-        options.TokenValidationParameters = new TokenValidationParameters
-        {
-            ValidateIssuerSigningKey = true,
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey)),
-            ValidateIssuer = true,
-            ValidIssuer = issuer,
-            ValidateAudience = true,
-            ValidAudience = audience,
-            ValidateLifetime = true,
-            ClockSkew = TimeSpan.Zero
-        };
-    });
 
 // Cloudinary configuration
 var cloudinarySettings = builder.Configuration.GetSection("Cloudinary");
@@ -78,8 +49,7 @@ builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<ICloudinaryService, CloudinaryService>();
 builder.Services.AddScoped<IVoucherService, VoucherService>();
 
-// THÊM DÒNG NÀY VÀO ĐÂY:
-builder.Services.AddScoped<JwtTokenGenerator>();
+
 
 // CORS configuration
 builder.Services.AddCors(options =>
@@ -139,8 +109,6 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseCors("AllowAll");
-app.UseAuthentication();
-app.UseAuthorization();
 
 // Add a root endpoint
 app.MapGet("/", () => Results.Json(new { message = "Oishipan API is running!", openapi = "/openapi/v1.json" }));

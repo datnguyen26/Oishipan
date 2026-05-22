@@ -1,5 +1,4 @@
 using OishipanAPI.DTOs;
-using OishipanAPI.Utilities;
 using Microsoft.EntityFrameworkCore;
 using Oishipan.Models;
 
@@ -8,16 +7,23 @@ namespace OishipanAPI.Services
     public class AuthService : IAuthService
     {
         private readonly OishipanContext _context;
-        private readonly JwtTokenGenerator _tokenGenerator;
 
-        public AuthService(OishipanContext context, JwtTokenGenerator tokenGenerator)
+        public AuthService(OishipanContext context)
         {
             _context = context;
-            _tokenGenerator = tokenGenerator;
         }
 
         public async Task<LoginResponse> LoginAsync(LoginRequest request)
         {
+            if (string.IsNullOrWhiteSpace(request?.Email) || string.IsNullOrWhiteSpace(request?.Password))
+            {
+                return new LoginResponse
+                {
+                    Success = false,
+                    Message = "Email và mật khẩu không được để trống"
+                };
+            }
+
             var user = await _context.Accounts.FirstOrDefaultAsync(a => a.Email == request.Email);
 
             if (user == null || !user.Status || !PasswordHelper.VerifyPassword(request.Password, user.Password))
@@ -25,17 +31,14 @@ namespace OishipanAPI.Services
                 return new LoginResponse
                 {
                     Success = false,
-                    Message = "Invalid email or password"
+                    Message = "Email hoặc mật khẩu không chính xác hoặc tài khoản bị khóa"
                 };
             }
-
-            var token = _tokenGenerator.GenerateToken(user.UserId, user.Email, user.Role);
 
             return new LoginResponse
             {
                 Success = true,
-                Message = "Login successful",
-                Token = token,
+                Message = "Đăng nhập thành công",
                 User = new UserDto
                 {
                     UserId = user.UserId,
@@ -51,13 +54,24 @@ namespace OishipanAPI.Services
 
         public async Task<RegisterResponse> RegisterAsync(RegisterRequest request)
         {
+            // Validate required fields
+            if (string.IsNullOrWhiteSpace(request?.FullName) || string.IsNullOrWhiteSpace(request?.Email) 
+                || string.IsNullOrWhiteSpace(request?.PhoneNumber) || string.IsNullOrWhiteSpace(request?.Password))
+            {
+                return new RegisterResponse
+                {
+                    Success = false,
+                    Message = "Vui lòng điền đầy đủ các trường bắt buộc"
+                };
+            }
+
             // Check if email already exists
             if (await _context.Accounts.AnyAsync(a => a.Email == request.Email))
             {
                 return new RegisterResponse
                 {
                     Success = false,
-                    Message = "Email already exists"
+                    Message = "Email này đã được đăng ký"
                 };
             }
 
@@ -67,7 +81,7 @@ namespace OishipanAPI.Services
                 return new RegisterResponse
                 {
                     Success = false,
-                    Message = "Phone number already exists"
+                    Message = "Số điện thoại này đã được đăng ký"
                 };
             }
 
@@ -78,7 +92,7 @@ namespace OishipanAPI.Services
                 PhoneNumber = request.PhoneNumber,
                 Password = PasswordHelper.HashPassword(request.Password),
                 Role = "User",
-                Address = request.Address,
+                Address = request.Address ?? string.Empty,
                 Status = true
             };
 
@@ -88,13 +102,16 @@ namespace OishipanAPI.Services
             return new RegisterResponse
             {
                 Success = true,
-                Message = "Registration successful"
+                Message = "Đăng ký thành công. Vui lòng đăng nhập"
             };
         }
 
         public async Task<UserDto> GetUserByIdAsync(int userId)
         {
-            var user = await _context.Accounts.FindAsync(userId);
+            if (userId <= 0)
+                return null;
+
+            var user = await _context.Accounts.FirstOrDefaultAsync(u => u.UserId == userId && u.Status);
 
             if (user == null)
                 return null;

@@ -43,12 +43,6 @@ namespace OishipanMVC.Services
 
             _httpClient.BaseAddress = baseAddress;
             _fallbackBaseAddresses.AddRange(GetFallbackBaseAddresses(baseAddress));
-
-            var token = _httpContextAccessor.HttpContext?.Session.GetString("JwtToken");
-            if (!string.IsNullOrWhiteSpace(token))
-            {
-                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-            }
         }
 
         public async Task<T> GetAsync<T>(string endpoint)
@@ -105,12 +99,12 @@ namespace OishipanMVC.Services
 
         public void SetAuthToken(string token)
         {
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            // JWT token handling removed
         }
 
         public void ClearAuthToken()
         {
-            _httpClient.DefaultRequestHeaders.Authorization = null;
+            // JWT token handling removed
         }
 
         private async Task<HttpResponseMessage> SendAsync(Func<Task<HttpResponseMessage>> requestFunc, string endpoint)

@@ -1,14 +1,12 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authorization;
 using OishipanAPI.DTOs;
 using OishipanAPI.Services;
-using System.Security.Claims;
+using System.ComponentModel.DataAnnotations;
 
 namespace OishipanAPI.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize]
     public class OrdersController : ControllerBase
     {
         private readonly IOrderService _orderService;
@@ -43,19 +41,13 @@ namespace OishipanAPI.Controllers
             return Ok(order);
         }
 
-        [HttpGet("user/my-orders")]
-        public async Task<IActionResult> GetMyOrders()
+        [HttpGet("user/{userId}/my-orders")]
+        public async Task<IActionResult> GetMyOrders(int userId)
         {
-            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
-
-            if (userIdClaim == null || !int.TryParse(userIdClaim.Value, out int userId))
-                return Unauthorized();
-
             var orders = await _orderService.GetOrdersByUserAsync(userId);
             return Ok(orders);
         }
 
-        [Authorize(Roles = "Admin,Staff")]
         [HttpGet]
         public async Task<IActionResult> GetAllOrders()
         {
@@ -63,7 +55,6 @@ namespace OishipanAPI.Controllers
             return Ok(orders);
         }
 
-        [Authorize(Roles = "Admin,Staff")]
         [HttpPut("{id}/status")]
         public async Task<IActionResult> UpdateOrderStatus(int id, [FromBody] UpdateOrderStatusDto dto)
         {
