@@ -1,0 +1,136 @@
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Net.Http.Headers;
+using System.Net.Sockets;
+using System.Text.Json;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
+
+namespace OishipanMVC.Services
+{
+    public interface IApiClient
+    {
+        Task<T> GetAsync<T>(string endpoint);
+        Task<T> PostAsync<T>(string endpoint, object data);
+        Task<T> PutAsync<T>(string endpoint, object data);
+        Task<bool> DeleteAsync(string endpoint);
+        Task<T> PostFormAsync<T>(string endpoint, MultipartFormDataContent content);
+        void SetAuthToken(string token);
+        void ClearAuthToken();
+    }
+
+    public class ApiClient : IApiClient
+    {
+        private readonly HttpClient _httpClient;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+
+        public ApiClient(HttpClient httpClient, IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
+        {
+            _httpClient = httpClient;
+            _httpContextAccessor = httpContextAccessor;
+
+            var baseUrl = configuration["ApiSettings:BaseUrl"];
+            if (string.IsNullOrWhiteSpace(baseUrl))
+            {
+                throw new InvalidOperationException("ApiSettings:BaseUrl is not configured.");
+            }
+
+            if (!Uri.TryCreate(baseUrl, UriKind.Absolute, out var baseAddress))
+            {
+                throw new InvalidOperationException("ApiSettings:BaseUrl must be a valid absolute URI.");
+            }
+
+            _httpClient.BaseAddress = baseAddress;
+        }
+
+        public async Task<T> GetAsync<T>(string endpoint)
+        {
+            var response = await SendAsync(endpoint, () => _httpClient.GetAsync(endpoint));
+            var content = await response.Content.ReadAsStringAsync();
+            return JsonSerializer.Deserialize<T>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true })!;
+        }
+
+        public async Task<T> PostAsync<T>(string endpoint, object data)
+        {
+            var json = JsonSerializer.Serialize(data);
+            var response = await SendAsync(endpoint, async () => 
+            {
+                var content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
+                return await _httpClient.PostAsync(endpoint, content);
+            });
+
+            var responseContent = await response.Content.ReadAsStringAsync();
+            if (!response.IsSuccessStatusCode)
+            {
+                var errorMessage = !string.IsNullOrWhiteSpace(responseContent)
+                    ? responseContent
+                    : response.ReasonPhrase;
+
+                throw new Exception($"API request failed: {response.StatusCode} - {errorMessage}");
+            }
+
+            return JsonSerializer.Deserialize<T>(responseContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true })!;
+        }
+
+        public async Task<T> PutAsync<T>(string endpoint, object data)
+        {
+            var json = JsonSerializer.Serialize(data);
+            var response = await SendAsync(endpoint, async () => 
+            {
+                var content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
+                return await _httpClient.PutAsync(endpoint, content);
+            });
+
+            response.EnsureSuccessStatusCode();
+            var responseContent = await response.Content.ReadAsStringAsync();
+            return JsonSerializer.Deserialize<T>(responseContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true })!;
+        }
+
+        public async Task<bool> DeleteAsync(string endpoint)
+        {
+            var response = await SendAsync(endpoint, () => _httpClient.DeleteAsync(endpoint));
+            return response.IsSuccessStatusCode;
+        }
+
+        public async Task<T> PostFormAsync<T>(string endpoint, MultipartFormDataContent content)
+        {
+            var response = await SendAsync(endpoint, () => _httpClient.PostAsync(endpoint, content));
+            response.EnsureSuccessStatusCode();
+
+            var responseContent = await response.Content.ReadAsStringAsync();
+            return JsonSerializer.Deserialize<T>(responseContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true })!;
+        }
+
+        public void SetAuthToken(string token)
+        {
+            // JWT token handling removed
+        }
+
+        public void ClearAuthToken()
+        {
+            // JWT token handling removed
+        }
+
+        private async Task<HttpResponseMessage> SendAsync(string endpoint, Func<Task<HttpResponseMessage>> requestFunc)
+        {
+            try
+            {
+                return await requestFunc();
+            }
+            catch (HttpRequestException ex)
+            {
+                throw new Exception(GetConnectionErrorMessage(endpoint, ex), ex);
+            }
+        }
+
+        private static bool IsConnectionRefused(HttpRequestException ex)
+        {
+            return ex.InnerException is SocketException socketEx && socketEx.SocketErrorCode == SocketError.ConnectionRefused;
+        }
+
+        private static string GetConnectionErrorMessage(string endpoint, HttpRequestException ex)
+        {
+            return $"API request failed for '{endpoint}': {ex.Message}. Please verify that the API is running at the configured BaseUrl.";
+        }
+    }
+}
