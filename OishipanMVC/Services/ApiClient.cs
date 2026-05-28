@@ -23,7 +23,6 @@ namespace OishipanMVC.Services
     {
         private readonly HttpClient _httpClient;
         private readonly IHttpContextAccessor _httpContextAccessor;
-        private readonly List<Uri> _fallbackBaseAddresses = new();
 
         public ApiClient(HttpClient httpClient, IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
         {
@@ -42,12 +41,11 @@ namespace OishipanMVC.Services
             }
 
             _httpClient.BaseAddress = baseAddress;
-            _fallbackBaseAddresses.AddRange(GetFallbackBaseAddresses(baseAddress));
         }
 
         public async Task<T> GetAsync<T>(string endpoint)
         {
-            var response = await SendAsync(() => _httpClient.GetAsync(endpoint), endpoint);
+            var response = await SendAsync(endpoint, () => _httpClient.GetAsync(endpoint));
             var content = await response.Content.ReadAsStringAsync();
             return JsonSerializer.Deserialize<T>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true })!;
         }
@@ -55,16 +53,21 @@ namespace OishipanMVC.Services
         public async Task<T> PostAsync<T>(string endpoint, object data)
         {
             var json = JsonSerializer.Serialize(data);
-            var content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
-            var response = await SendAsync(() => _httpClient.PostAsync(endpoint, content), endpoint);
+            var response = await SendAsync(endpoint, async () => 
+            {
+                var content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
+                return await _httpClient.PostAsync(endpoint, content);
+            });
 
             var responseContent = await response.Content.ReadAsStringAsync();
             if (!response.IsSuccessStatusCode)
             {
                 var errorMessage = !string.IsNullOrWhiteSpace(responseContent)
                     ? responseContent
-                    : response.ReasonPhrase;
+                    : $"{response.StatusCode}: {response.ReasonPhrase}";
 
+                var baseUrl = _httpClient.BaseAddress?.ToString() ?? "unknown";
+                Console.WriteLine($"❌ API Error [{response.StatusCode}] {endpoint} @ {baseUrl}: {errorMessage}");
                 throw new Exception($"API request failed: {response.StatusCode} - {errorMessage}");
             }
 
@@ -74,8 +77,11 @@ namespace OishipanMVC.Services
         public async Task<T> PutAsync<T>(string endpoint, object data)
         {
             var json = JsonSerializer.Serialize(data);
-            var content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
-            var response = await SendAsync(() => _httpClient.PutAsync(endpoint, content), endpoint);
+            var response = await SendAsync(endpoint, async () => 
+            {
+                var content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
+                return await _httpClient.PutAsync(endpoint, content);
+            });
 
             response.EnsureSuccessStatusCode();
             var responseContent = await response.Content.ReadAsStringAsync();
@@ -84,13 +90,13 @@ namespace OishipanMVC.Services
 
         public async Task<bool> DeleteAsync(string endpoint)
         {
-            var response = await SendAsync(() => _httpClient.DeleteAsync(endpoint), endpoint);
+            var response = await SendAsync(endpoint, () => _httpClient.DeleteAsync(endpoint));
             return response.IsSuccessStatusCode;
         }
 
         public async Task<T> PostFormAsync<T>(string endpoint, MultipartFormDataContent content)
         {
-            var response = await SendAsync(() => _httpClient.PostAsync(endpoint, content), endpoint);
+            var response = await SendAsync(endpoint, () => _httpClient.PostAsync(endpoint, content));
             response.EnsureSuccessStatusCode();
 
             var responseContent = await response.Content.ReadAsStringAsync();
@@ -99,71 +105,75 @@ namespace OishipanMVC.Services
 
         public void SetAuthToken(string token)
         {
-            // JWT token handling removed
+            if (string.IsNullOrWhiteSpace(token))
+                return;
+
+            _httpContextAccessor.HttpContext?.Session?.SetString("ApiToken", token);
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
         }
 
         public void ClearAuthToken()
         {
-            // JWT token handling removed
+            _httpContextAccessor.HttpContext?.Session?.Remove("ApiToken");
+            _httpClient.DefaultRequestHeaders.Authorization = null;
         }
 
-        private async Task<HttpResponseMessage> SendAsync(Func<Task<HttpResponseMessage>> requestFunc, string endpoint)
+        private void AddAuthorizationHeader()
         {
+            var token = _httpContextAccessor.HttpContext?.Session?.GetString("ApiToken");
+            if (!string.IsNullOrWhiteSpace(token))
+            {
+                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            }
+            else
+            {
+                _httpClient.DefaultRequestHeaders.Authorization = null;
+            }
+        }
+
+        private async Task<HttpResponseMessage> SendAsync(string endpoint, Func<Task<HttpResponseMessage>> requestFunc)
+        {
+            AddAuthorizationHeader();
             try
             {
-                return await requestFunc();
+                var response = await requestFunc();
+                return response;
             }
-            catch (HttpRequestException ex) when (IsConnectionRefused(ex) && _fallbackBaseAddresses.Any())
+            catch (OperationCanceledException ex)
             {
-                foreach (var fallback in _fallbackBaseAddresses)
-                {
-                    _httpClient.BaseAddress = fallback;
-                    try
-                    {
-                        return await requestFunc();
-                    }
-                    catch (HttpRequestException retryEx) when (IsConnectionRefused(retryEx))
-                    {
-                        continue;
-                    }
-                }
-
-                throw new Exception(GetConnectionErrorMessage(endpoint, ex), ex);
+                var baseUrl = _httpClient.BaseAddress?.ToString() ?? "unknown";
+                var message = $"API request timeout for '{endpoint}'. BaseUrl: {baseUrl}. The API may not be responding. Please ensure it's running.";
+                Console.WriteLine($"❌ TIMEOUT: {message}");
+                throw new Exception(message, ex);
+            }
+            catch (HttpRequestException ex) when (IsConnectionRefused(ex))
+            {
+                var baseUrl = _httpClient.BaseAddress?.ToString() ?? "unknown";
+                var message = $"❌ Connection Refused for '{endpoint}' at {baseUrl}. " +
+                    $"Ensure the API is running with: dotnet run --project OishipanAPI";
+                Console.WriteLine(message);
+                throw new Exception(message, ex);
             }
             catch (HttpRequestException ex)
             {
-                throw new Exception(GetConnectionErrorMessage(endpoint, ex), ex);
+                var baseUrl = _httpClient.BaseAddress?.ToString() ?? "unknown";
+                var message = $"API request failed for '{endpoint}': {ex.Message}. BaseUrl: {baseUrl}";
+                Console.WriteLine($"❌ ERROR: {message}");
+                throw new Exception(message, ex);
+            }
+            catch (Exception ex)
+            {
+                var message = $"Unexpected error calling '{endpoint}': {ex.Message}";
+                Console.WriteLine($"❌ UNEXPECTED: {message}");
+                throw new Exception(message, ex);
             }
         }
 
         private static bool IsConnectionRefused(HttpRequestException ex)
         {
-            return ex.InnerException is SocketException socketEx && socketEx.SocketErrorCode == SocketError.ConnectionRefused;
-        }
-
-        private static string GetConnectionErrorMessage(string endpoint, HttpRequestException ex)
-        {
-            return $"API request failed for '{endpoint}': {ex.Message}. Please verify that the API is running at the configured BaseUrl.";
-        }
-
-        private static IEnumerable<Uri> GetFallbackBaseAddresses(Uri baseAddress)
-        {
-            if (!baseAddress.IsLoopback)
-            {
-                return Enumerable.Empty<Uri>();
-            }
-
-            var fallbackAddresses = new List<Uri>();
-            if (baseAddress.Scheme == "http" && baseAddress.Port == 5000)
-            {
-                fallbackAddresses.Add(new Uri("https://localhost:5001"));
-            }
-            else if (baseAddress.Scheme == "https" && baseAddress.Port == 5001)
-            {
-                fallbackAddresses.Add(new Uri("http://localhost:5000"));
-            }
-
-            return fallbackAddresses;
+            return ex.InnerException is SocketException socketEx && 
+                (socketEx.SocketErrorCode == SocketError.ConnectionRefused || 
+                 socketEx.Message.Contains("actively refused"));
         }
     }
 }

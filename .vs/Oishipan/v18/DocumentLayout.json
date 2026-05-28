@@ -3,32 +3,164 @@
   "WorkspaceRootPath": "K:\\Oishipan\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{129DE375-D6D3-B0B9-3723-8AB772316A37}|OishipanMVC\\OishipanMVC.csproj|k:\\oishipan\\oishipanmvc\\views\\shared\\_navbar.cshtml||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
-      "RelativeMoniker": "D:0:0:{129DE375-D6D3-B0B9-3723-8AB772316A37}|OishipanMVC\\OishipanMVC.csproj|solutionrelative:oishipanmvc\\views\\shared\\_navbar.cshtml||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+      "AbsoluteMoniker": "D:0:0:{7F3E4E45-CF15-E156-3630-F68E1EE4970B}|OishipanAPI\\OishipanAPI.csproj|k:\\oishipan\\oishipanapi\\properties\\launchsettings.json||{3B902123-F8A7-4915-9F01-361F908088D0}",
+      "RelativeMoniker": "D:0:0:{7F3E4E45-CF15-E156-3630-F68E1EE4970B}|OishipanAPI\\OishipanAPI.csproj|solutionrelative:oishipanapi\\properties\\launchsettings.json||{3B902123-F8A7-4915-9F01-361F908088D0}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{129DE375-D6D3-B0B9-3723-8AB772316A37}|OishipanMVC\\OishipanMVC.csproj|k:\\oishipan\\oishipanmvc\\wwwroot\\css\\site.css||{3B902123-F8A7-4915-9F01-361F908088D0}",
-      "RelativeMoniker": "D:0:0:{129DE375-D6D3-B0B9-3723-8AB772316A37}|OishipanMVC\\OishipanMVC.csproj|solutionrelative:oishipanmvc\\wwwroot\\css\\site.css||{3B902123-F8A7-4915-9F01-361F908088D0}"
+      "AbsoluteMoniker": "D:0:0:{7F3E4E45-CF15-E156-3630-F68E1EE4970B}|OishipanAPI\\OishipanAPI.csproj|k:\\oishipan\\oishipanapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7F3E4E45-CF15-E156-3630-F68E1EE4970B}|OishipanAPI\\OishipanAPI.csproj|solutionrelative:oishipanapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{129DE375-D6D3-B0B9-3723-8AB772316A37}|OishipanMVC\\OishipanMVC.csproj|k:\\oishipan\\oishipanmvc\\pages\\index.cshtml||{8B382828-6202-11D1-8870-0000F87579D2}",
-      "RelativeMoniker": "D:0:0:{129DE375-D6D3-B0B9-3723-8AB772316A37}|OishipanMVC\\OishipanMVC.csproj|solutionrelative:oishipanmvc\\pages\\index.cshtml||{8B382828-6202-11D1-8870-0000F87579D2}"
+      "AbsoluteMoniker": "D:0:0:{129DE375-D6D3-B0B9-3723-8AB772316A37}|OishipanMVC\\OishipanMVC.csproj|k:\\oishipan\\oishipanmvc\\appsettings.json||{3B902123-F8A7-4915-9F01-361F908088D0}",
+      "RelativeMoniker": "D:0:0:{129DE375-D6D3-B0B9-3723-8AB772316A37}|OishipanMVC\\OishipanMVC.csproj|solutionrelative:oishipanmvc\\appsettings.json||{3B902123-F8A7-4915-9F01-361F908088D0}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{7F3E4E45-CF15-E156-3630-F68E1EE4970B}|OishipanAPI\\OishipanAPI.csproj|k:\\oishipan\\oishipanapi\\appsettings.json||{3B902123-F8A7-4915-9F01-361F908088D0}",
       "RelativeMoniker": "D:0:0:{7F3E4E45-CF15-E156-3630-F68E1EE4970B}|OishipanAPI\\OishipanAPI.csproj|solutionrelative:oishipanapi\\appsettings.json||{3B902123-F8A7-4915-9F01-361F908088D0}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{7F3E4E45-CF15-E156-3630-F68E1EE4970B}|OishipanAPI\\OishipanAPI.csproj|k:\\oishipan\\oishipanapi\\oishipanapi.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{7F3E4E45-CF15-E156-3630-F68E1EE4970B}|OishipanAPI\\OishipanAPI.csproj|solutionrelative:oishipanapi\\oishipanapi.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|K:\\Oishipan\\ADMIN_CREDENTIALS.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:ADMIN_CREDENTIALS.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|K:\\Oishipan\\TEST_CASES_AUTH.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:TEST_CASES_AUTH.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|K:\\Oishipan\\ADMIN_LOGIN_GUIDE.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:ADMIN_LOGIN_GUIDE.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{129DE375-D6D3-B0B9-3723-8AB772316A37}|OishipanMVC\\OishipanMVC.csproj|k:\\oishipan\\oishipanmvc\\areas\\admin\\controllers\\productscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{129DE375-D6D3-B0B9-3723-8AB772316A37}|OishipanMVC\\OishipanMVC.csproj|solutionrelative:oishipanmvc\\areas\\admin\\controllers\\productscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7F3E4E45-CF15-E156-3630-F68E1EE4970B}|OishipanAPI\\OishipanAPI.csproj|k:\\oishipan\\oishipanapi\\controllers\\uploadcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7F3E4E45-CF15-E156-3630-F68E1EE4970B}|OishipanAPI\\OishipanAPI.csproj|solutionrelative:oishipanapi\\controllers\\uploadcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{129DE375-D6D3-B0B9-3723-8AB772316A37}|OishipanMVC\\OishipanMVC.csproj|k:\\oishipan\\oishipanmvc\\areas\\admin\\controllers\\dashboardcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{129DE375-D6D3-B0B9-3723-8AB772316A37}|OishipanMVC\\OishipanMVC.csproj|solutionrelative:oishipanmvc\\areas\\admin\\controllers\\dashboardcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|K:\\Oishipan\\README_FIXES.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:README_FIXES.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7F3E4E45-CF15-E156-3630-F68E1EE4970B}|OishipanAPI\\OishipanAPI.csproj|k:\\oishipan\\oishipanapi\\controllers\\productscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7F3E4E45-CF15-E156-3630-F68E1EE4970B}|OishipanAPI\\OishipanAPI.csproj|solutionrelative:oishipanapi\\controllers\\productscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|K:\\Oishipan\\CHANGES_SUMMARY.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:CHANGES_SUMMARY.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7F3E4E45-CF15-E156-3630-F68E1EE4970B}|OishipanAPI\\OishipanAPI.csproj|k:\\oishipan\\oishipanapi\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7F3E4E45-CF15-E156-3630-F68E1EE4970B}|OishipanAPI\\OishipanAPI.csproj|solutionrelative:oishipanapi\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7F3E4E45-CF15-E156-3630-F68E1EE4970B}|OishipanAPI\\OishipanAPI.csproj|k:\\oishipan\\oishipanapi\\controllers\\orderscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7F3E4E45-CF15-E156-3630-F68E1EE4970B}|OishipanAPI\\OishipanAPI.csproj|solutionrelative:oishipanapi\\controllers\\orderscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{129DE375-D6D3-B0B9-3723-8AB772316A37}|OishipanMVC\\OishipanMVC.csproj|k:\\oishipan\\oishipanmvc\\wwwroot\\css\\site.css||{3B902123-F8A7-4915-9F01-361F908088D0}",
+      "RelativeMoniker": "D:0:0:{129DE375-D6D3-B0B9-3723-8AB772316A37}|OishipanMVC\\OishipanMVC.csproj|solutionrelative:oishipanmvc\\wwwroot\\css\\site.css||{3B902123-F8A7-4915-9F01-361F908088D0}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{129DE375-D6D3-B0B9-3723-8AB772316A37}|OishipanMVC\\OishipanMVC.csproj|k:\\oishipan\\oishipanmvc\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{129DE375-D6D3-B0B9-3723-8AB772316A37}|OishipanMVC\\OishipanMVC.csproj|solutionrelative:oishipanmvc\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{129DE375-D6D3-B0B9-3723-8AB772316A37}|OishipanMVC\\OishipanMVC.csproj|k:\\oishipan\\oishipanmvc\\pages\\index.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{129DE375-D6D3-B0B9-3723-8AB772316A37}|OishipanMVC\\OishipanMVC.csproj|solutionrelative:oishipanmvc\\pages\\index.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|K:\\Oishipan\\OishipanMVC\\Pages\\Index.cshtml||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:OishipanMVC\\Pages\\Index.cshtml||{8B382828-6202-11D1-8870-0000F87579D2}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{129DE375-D6D3-B0B9-3723-8AB772316A37}|OishipanMVC\\OishipanMVC.csproj|k:\\oishipan\\oishipanmvc\\views\\shared\\_footer.cshtml||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
-      "RelativeMoniker": "D:0:0:{129DE375-D6D3-B0B9-3723-8AB772316A37}|OishipanMVC\\OishipanMVC.csproj|solutionrelative:oishipanmvc\\views\\shared\\_footer.cshtml||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|K:\\Oishipan\\OishipanMVC\\Pages\\Index.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:OishipanMVC\\Pages\\Index.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7F3E4E45-CF15-E156-3630-F68E1EE4970B}|OishipanAPI\\OishipanAPI.csproj|k:\\oishipan\\oishipanapi\\controllers\\voucherscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7F3E4E45-CF15-E156-3630-F68E1EE4970B}|OishipanAPI\\OishipanAPI.csproj|solutionrelative:oishipanapi\\controllers\\voucherscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{129DE375-D6D3-B0B9-3723-8AB772316A37}|OishipanMVC\\OishipanMVC.csproj|k:\\oishipan\\oishipanmvc\\views\\shared\\_navbar.cshtml||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{129DE375-D6D3-B0B9-3723-8AB772316A37}|OishipanMVC\\OishipanMVC.csproj|solutionrelative:oishipanmvc\\views\\shared\\_navbar.cshtml||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|K:\\Oishipan\\SWAGGER_GUIDE.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:SWAGGER_GUIDE.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|K:\\Oishipan\\QUICKSTART.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:QUICKSTART.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|K:\\Oishipan\\BUILD_COMPLETION_REPORT.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:BUILD_COMPLETION_REPORT.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|K:\\Oishipan\\RUN_PROJECT.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:RUN_PROJECT.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|K:\\Oishipan\\COMPLETION_SUMMARY.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:COMPLETION_SUMMARY.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|K:\\Oishipan\\README.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:README.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|K:\\Oishipan\\INDEX.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:INDEX.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|K:\\Oishipan\\FIX_SUMMARY.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:FIX_SUMMARY.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|K:\\Oishipan\\QUICK_START_TESTING.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:QUICK_START_TESTING.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|K:\\Oishipan\\DETAILED_CHANGES.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:DETAILED_CHANGES.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|K:\\Oishipan\\COMPLETION_REPORT.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:COMPLETION_REPORT.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|K:\\Oishipan\\ARCHITECTURE_DIAGRAM.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:ARCHITECTURE_DIAGRAM.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|K:\\Oishipan\\API_AUTHENTICATION_COMPLETE.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:API_AUTHENTICATION_COMPLETE.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|K:\\Oishipan\\START_HERE.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:START_HERE.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|K:\\Oishipan\\SUMMARY.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:SUMMARY.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|K:\\Oishipan\\DOCUMENTATION.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:DOCUMENTATION.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|K:\\Oishipan\\READY_TO_TEST.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:READY_TO_TEST.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{129DE375-D6D3-B0B9-3723-8AB772316A37}|OishipanMVC\\OishipanMVC.csproj|k:\\oishipan\\oishipanmvc\\services\\apiclient.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{129DE375-D6D3-B0B9-3723-8AB772316A37}|OishipanMVC\\OishipanMVC.csproj|solutionrelative:oishipanmvc\\services\\apiclient.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -38,7 +170,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 3,
+          "SelectedChildIndex": 6,
           "Children": [
             {
               "$type": "Bookmark",
@@ -46,19 +178,440 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "_Footer.cshtml",
-              "DocumentMoniker": "K:\\Oishipan\\OishipanMVC\\Views\\Shared\\_Footer.cshtml",
-              "RelativeDocumentMoniker": "OishipanMVC\\Views\\Shared\\_Footer.cshtml",
-              "ToolTip": "K:\\Oishipan\\OishipanMVC\\Views\\Shared\\_Footer.cshtml",
-              "RelativeToolTip": "OishipanMVC\\Views\\Shared\\_Footer.cshtml",
-              "ViewState": "AgIAAAEAAAAAAAAAAIBJwAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
-              "WhenOpened": "2026-04-30T08:53:20.924Z"
+              "DocumentIndex": 39,
+              "Title": "ApiClient.cs",
+              "DocumentMoniker": "K:\\Oishipan\\OishipanMVC\\Services\\ApiClient.cs",
+              "RelativeDocumentMoniker": "OishipanMVC\\Services\\ApiClient.cs",
+              "ToolTip": "K:\\Oishipan\\OishipanMVC\\Services\\ApiClient.cs",
+              "RelativeToolTip": "OishipanMVC\\Services\\ApiClient.cs",
+              "ViewState": "AgIAAEIAAAAAAAAAAABBwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-25T15:43:58.687Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "ADMIN_CREDENTIALS.md",
+              "DocumentMoniker": "K:\\Oishipan\\ADMIN_CREDENTIALS.md",
+              "RelativeDocumentMoniker": "ADMIN_CREDENTIALS.md",
+              "ToolTip": "K:\\Oishipan\\ADMIN_CREDENTIALS.md",
+              "RelativeToolTip": "ADMIN_CREDENTIALS.md",
+              "ViewState": "AgIAAIEAAAAAAAAAAADwvz4BAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
+              "WhenOpened": "2026-05-25T02:56:22.021Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 35,
+              "Title": "START_HERE.md",
+              "DocumentMoniker": "K:\\Oishipan\\START_HERE.md",
+              "RelativeDocumentMoniker": "START_HERE.md",
+              "ToolTip": "K:\\Oishipan\\START_HERE.md",
+              "RelativeToolTip": "START_HERE.md",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAGQBAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
+              "WhenOpened": "2026-05-25T02:55:59.707Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
+              "Title": "Program.cs",
+              "DocumentMoniker": "K:\\Oishipan\\OishipanAPI\\Program.cs",
+              "RelativeDocumentMoniker": "OishipanAPI\\Program.cs",
+              "ToolTip": "K:\\Oishipan\\OishipanAPI\\Program.cs",
+              "RelativeToolTip": "OishipanAPI\\Program.cs",
+              "ViewState": "AgIAAIgAAAAAAAAAAAD4vxMAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-25T02:22:38.458Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 38,
+              "Title": "READY_TO_TEST.md",
+              "DocumentMoniker": "K:\\Oishipan\\READY_TO_TEST.md",
+              "RelativeDocumentMoniker": "READY_TO_TEST.md",
+              "ToolTip": "K:\\Oishipan\\READY_TO_TEST.md",
+              "RelativeToolTip": "READY_TO_TEST.md",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAHABAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
+              "WhenOpened": "2026-05-25T02:57:46.097Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "launchSettings.json",
+              "DocumentMoniker": "K:\\Oishipan\\OishipanAPI\\Properties\\launchSettings.json",
+              "RelativeDocumentMoniker": "OishipanAPI\\Properties\\launchSettings.json",
+              "ToolTip": "K:\\Oishipan\\OishipanAPI\\Properties\\launchSettings.json",
+              "RelativeToolTip": "OishipanAPI\\Properties\\launchSettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAcAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2026-05-25T14:57:44.955Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "K:\\Oishipan\\OishipanMVC\\appsettings.json",
+              "RelativeDocumentMoniker": "OishipanMVC\\appsettings.json",
+              "ToolTip": "K:\\Oishipan\\OishipanMVC\\appsettings.json",
+              "RelativeToolTip": "OishipanMVC\\appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2026-05-25T15:30:53.825Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "K:\\Oishipan\\OishipanAPI\\appsettings.json",
+              "RelativeDocumentMoniker": "OishipanAPI\\appsettings.json",
+              "ToolTip": "K:\\Oishipan\\OishipanAPI\\appsettings.json",
+              "RelativeToolTip": "OishipanAPI\\appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABcAAAADAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2026-04-30T08:17:42.514Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "OishipanAPI.csproj",
+              "DocumentMoniker": "K:\\Oishipan\\OishipanAPI\\OishipanAPI.csproj",
+              "RelativeDocumentMoniker": "OishipanAPI\\OishipanAPI.csproj",
+              "ToolTip": "K:\\Oishipan\\OishipanAPI\\OishipanAPI.csproj",
+              "RelativeToolTip": "OishipanAPI\\OishipanAPI.csproj",
+              "ViewState": "AgIAABgAAAAAAAAAAABBwCIAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2026-05-25T02:22:47.509Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 36,
+              "Title": "SUMMARY.md",
+              "DocumentMoniker": "K:\\Oishipan\\SUMMARY.md",
+              "RelativeDocumentMoniker": "SUMMARY.md",
+              "ToolTip": "K:\\Oishipan\\SUMMARY.md",
+              "RelativeToolTip": "SUMMARY.md",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAIIBAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
+              "WhenOpened": "2026-05-25T02:56:50.134Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "TEST_CASES_AUTH.md",
+              "DocumentMoniker": "K:\\Oishipan\\TEST_CASES_AUTH.md",
+              "RelativeDocumentMoniker": "TEST_CASES_AUTH.md",
+              "ToolTip": "K:\\Oishipan\\TEST_CASES_AUTH.md",
+              "RelativeToolTip": "TEST_CASES_AUTH.md",
+              "ViewState": "AgIAABsAAAAAAAAAAAAAAAkCAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
+              "WhenOpened": "2026-05-25T02:55:30.277Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 37,
+              "Title": "DOCUMENTATION.md",
+              "DocumentMoniker": "K:\\Oishipan\\DOCUMENTATION.md",
+              "RelativeDocumentMoniker": "DOCUMENTATION.md",
+              "ToolTip": "K:\\Oishipan\\DOCUMENTATION.md",
+              "RelativeToolTip": "DOCUMENTATION.md",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAEsBAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
+              "WhenOpened": "2026-05-25T02:57:19.828Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 34,
+              "Title": "API_AUTHENTICATION_COMPLETE.md",
+              "DocumentMoniker": "K:\\Oishipan\\API_AUTHENTICATION_COMPLETE.md",
+              "RelativeDocumentMoniker": "API_AUTHENTICATION_COMPLETE.md",
+              "ToolTip": "K:\\Oishipan\\API_AUTHENTICATION_COMPLETE.md",
+              "RelativeToolTip": "API_AUTHENTICATION_COMPLETE.md",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACACAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
+              "WhenOpened": "2026-05-25T02:54:56.369Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "ADMIN_LOGIN_GUIDE.md",
+              "DocumentMoniker": "K:\\Oishipan\\ADMIN_LOGIN_GUIDE.md",
+              "RelativeDocumentMoniker": "ADMIN_LOGIN_GUIDE.md",
+              "ToolTip": "K:\\Oishipan\\ADMIN_LOGIN_GUIDE.md",
+              "RelativeToolTip": "ADMIN_LOGIN_GUIDE.md",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABYAAAAkAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
+              "WhenOpened": "2026-05-25T02:54:24.525Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "README_FIXES.md",
+              "DocumentMoniker": "K:\\Oishipan\\README_FIXES.md",
+              "RelativeDocumentMoniker": "README_FIXES.md",
+              "ToolTip": "K:\\Oishipan\\README_FIXES.md",
+              "RelativeToolTip": "README_FIXES.md",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACABAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
+              "WhenOpened": "2026-05-25T02:46:05.481Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "ProductsController.cs",
+              "DocumentMoniker": "K:\\Oishipan\\OishipanMVC\\Areas\\Admin\\Controllers\\ProductsController.cs",
+              "RelativeDocumentMoniker": "OishipanMVC\\Areas\\Admin\\Controllers\\ProductsController.cs",
+              "ToolTip": "K:\\Oishipan\\OishipanMVC\\Areas\\Admin\\Controllers\\ProductsController.cs",
+              "RelativeToolTip": "OishipanMVC\\Areas\\Admin\\Controllers\\ProductsController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-25T02:34:37.697Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "UploadController.cs",
+              "DocumentMoniker": "K:\\Oishipan\\OishipanAPI\\Controllers\\UploadController.cs",
+              "RelativeDocumentMoniker": "OishipanAPI\\Controllers\\UploadController.cs",
+              "ToolTip": "K:\\Oishipan\\OishipanAPI\\Controllers\\UploadController.cs",
+              "RelativeToolTip": "OishipanAPI\\Controllers\\UploadController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAADcAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-25T02:42:14.143Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "DashboardController.cs",
+              "DocumentMoniker": "K:\\Oishipan\\OishipanMVC\\Areas\\Admin\\Controllers\\DashboardController.cs",
+              "RelativeDocumentMoniker": "OishipanMVC\\Areas\\Admin\\Controllers\\DashboardController.cs",
+              "ToolTip": "K:\\Oishipan\\OishipanMVC\\Areas\\Admin\\Controllers\\DashboardController.cs",
+              "RelativeToolTip": "OishipanMVC\\Areas\\Admin\\Controllers\\DashboardController.cs",
+              "ViewState": "AgIAABIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-25T02:33:18.424Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "ProductsController.cs",
+              "DocumentMoniker": "K:\\Oishipan\\OishipanAPI\\Controllers\\ProductsController.cs",
+              "RelativeDocumentMoniker": "OishipanAPI\\Controllers\\ProductsController.cs",
+              "ToolTip": "K:\\Oishipan\\OishipanAPI\\Controllers\\ProductsController.cs",
+              "RelativeToolTip": "OishipanAPI\\Controllers\\ProductsController.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAABAAAAA3AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-25T02:23:26.275Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 30,
+              "Title": "QUICK_START_TESTING.md",
+              "DocumentMoniker": "K:\\Oishipan\\QUICK_START_TESTING.md",
+              "RelativeDocumentMoniker": "QUICK_START_TESTING.md",
+              "ToolTip": "K:\\Oishipan\\QUICK_START_TESTING.md",
+              "RelativeToolTip": "QUICK_START_TESTING.md",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAPAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
+              "WhenOpened": "2026-05-25T02:43:54.381Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 31,
+              "Title": "DETAILED_CHANGES.md",
+              "DocumentMoniker": "K:\\Oishipan\\DETAILED_CHANGES.md",
+              "RelativeDocumentMoniker": "DETAILED_CHANGES.md",
+              "ToolTip": "K:\\Oishipan\\DETAILED_CHANGES.md",
+              "RelativeToolTip": "DETAILED_CHANGES.md",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACoBAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
+              "WhenOpened": "2026-05-25T02:44:13.865Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 32,
+              "Title": "COMPLETION_REPORT.md",
+              "DocumentMoniker": "K:\\Oishipan\\COMPLETION_REPORT.md",
+              "RelativeDocumentMoniker": "COMPLETION_REPORT.md",
+              "ToolTip": "K:\\Oishipan\\COMPLETION_REPORT.md",
+              "RelativeToolTip": "COMPLETION_REPORT.md",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAIUBAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
+              "WhenOpened": "2026-05-25T02:44:44.673Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 29,
+              "Title": "FIX_SUMMARY.md",
+              "DocumentMoniker": "K:\\Oishipan\\FIX_SUMMARY.md",
+              "RelativeDocumentMoniker": "FIX_SUMMARY.md",
+              "ToolTip": "K:\\Oishipan\\FIX_SUMMARY.md",
+              "RelativeToolTip": "FIX_SUMMARY.md",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAOoAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
+              "WhenOpened": "2026-05-25T02:43:36.74Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 33,
+              "Title": "ARCHITECTURE_DIAGRAM.md",
+              "DocumentMoniker": "K:\\Oishipan\\ARCHITECTURE_DIAGRAM.md",
+              "RelativeDocumentMoniker": "ARCHITECTURE_DIAGRAM.md",
+              "ToolTip": "K:\\Oishipan\\ARCHITECTURE_DIAGRAM.md",
+              "RelativeToolTip": "ARCHITECTURE_DIAGRAM.md",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAE8BAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
+              "WhenOpened": "2026-05-25T02:45:16.959Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 23,
+              "Title": "QUICKSTART.md",
+              "DocumentMoniker": "K:\\Oishipan\\QUICKSTART.md",
+              "RelativeDocumentMoniker": "QUICKSTART.md",
+              "ToolTip": "K:\\Oishipan\\QUICKSTART.md",
+              "RelativeToolTip": "QUICKSTART.md",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
+              "WhenOpened": "2026-05-25T02:28:43.771Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "CHANGES_SUMMARY.md",
+              "DocumentMoniker": "K:\\Oishipan\\CHANGES_SUMMARY.md",
+              "RelativeDocumentMoniker": "CHANGES_SUMMARY.md",
+              "ToolTip": "K:\\Oishipan\\CHANGES_SUMMARY.md",
+              "RelativeToolTip": "CHANGES_SUMMARY.md",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAALMAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
+              "WhenOpened": "2026-05-25T02:28:26.809Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 24,
+              "Title": "BUILD_COMPLETION_REPORT.md",
+              "DocumentMoniker": "K:\\Oishipan\\BUILD_COMPLETION_REPORT.md",
+              "RelativeDocumentMoniker": "BUILD_COMPLETION_REPORT.md",
+              "ToolTip": "K:\\Oishipan\\BUILD_COMPLETION_REPORT.md",
+              "RelativeToolTip": "BUILD_COMPLETION_REPORT.md",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAEBAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
+              "WhenOpened": "2026-05-25T02:29:17.825Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 25,
+              "Title": "RUN_PROJECT.md",
+              "DocumentMoniker": "K:\\Oishipan\\RUN_PROJECT.md",
+              "RelativeDocumentMoniker": "RUN_PROJECT.md",
+              "ToolTip": "K:\\Oishipan\\RUN_PROJECT.md",
+              "RelativeToolTip": "RUN_PROJECT.md",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAC0BAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
+              "WhenOpened": "2026-05-25T02:29:37.837Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 27,
+              "Title": "README.md",
+              "DocumentMoniker": "K:\\Oishipan\\README.md",
+              "RelativeDocumentMoniker": "README.md",
+              "ToolTip": "K:\\Oishipan\\README.md",
+              "RelativeToolTip": "README.md",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
+              "WhenOpened": "2026-05-25T02:30:23.323Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 28,
+              "Title": "INDEX.md",
+              "DocumentMoniker": "K:\\Oishipan\\INDEX.md",
+              "RelativeDocumentMoniker": "INDEX.md",
+              "ToolTip": "K:\\Oishipan\\INDEX.md",
+              "RelativeToolTip": "INDEX.md",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAEEAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
+              "WhenOpened": "2026-05-25T02:30:30.336Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 26,
+              "Title": "COMPLETION_SUMMARY.md",
+              "DocumentMoniker": "K:\\Oishipan\\COMPLETION_SUMMARY.md",
+              "RelativeDocumentMoniker": "COMPLETION_SUMMARY.md",
+              "ToolTip": "K:\\Oishipan\\COMPLETION_SUMMARY.md",
+              "RelativeToolTip": "COMPLETION_SUMMARY.md",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAEgBAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
+              "WhenOpened": "2026-05-25T02:29:59.551Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 22,
+              "Title": "SWAGGER_GUIDE.md",
+              "DocumentMoniker": "K:\\Oishipan\\SWAGGER_GUIDE.md",
+              "RelativeDocumentMoniker": "SWAGGER_GUIDE.md",
+              "ToolTip": "K:\\Oishipan\\SWAGGER_GUIDE.md",
+              "RelativeToolTip": "SWAGGER_GUIDE.md",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAIsAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
+              "WhenOpened": "2026-05-25T02:28:08.863Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "AuthController.cs",
+              "DocumentMoniker": "K:\\Oishipan\\OishipanAPI\\Controllers\\AuthController.cs",
+              "RelativeDocumentMoniker": "OishipanAPI\\Controllers\\AuthController.cs",
+              "ToolTip": "K:\\Oishipan\\OishipanAPI\\Controllers\\AuthController.cs",
+              "RelativeToolTip": "OishipanAPI\\Controllers\\AuthController.cs",
+              "ViewState": "AgIAAGcAAAAAAAAAAAAowHUAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-25T02:27:44.526Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 21,
+              "Title": "_Navbar.cshtml",
+              "DocumentMoniker": "K:\\Oishipan\\OishipanMVC\\Views\\Shared\\_Navbar.cshtml",
+              "RelativeDocumentMoniker": "OishipanMVC\\Views\\Shared\\_Navbar.cshtml",
+              "ToolTip": "K:\\Oishipan\\OishipanMVC\\Views\\Shared\\_Navbar.cshtml",
+              "RelativeToolTip": "OishipanMVC\\Views\\Shared\\_Navbar.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAADYAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2026-05-25T02:27:17.257Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "OrdersController.cs",
+              "DocumentMoniker": "K:\\Oishipan\\OishipanAPI\\Controllers\\OrdersController.cs",
+              "RelativeDocumentMoniker": "OishipanAPI\\Controllers\\OrdersController.cs",
+              "ToolTip": "K:\\Oishipan\\OishipanAPI\\Controllers\\OrdersController.cs",
+              "RelativeToolTip": "OishipanAPI\\Controllers\\OrdersController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-25T02:23:43.213Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
+              "Title": "VouchersController.cs",
+              "DocumentMoniker": "K:\\Oishipan\\OishipanAPI\\Controllers\\VouchersController.cs",
+              "RelativeDocumentMoniker": "OishipanAPI\\Controllers\\VouchersController.cs",
+              "ToolTip": "K:\\Oishipan\\OishipanAPI\\Controllers\\VouchersController.cs",
+              "RelativeToolTip": "OishipanAPI\\Controllers\\VouchersController.cs",
+              "ViewState": "AgIAAAgAAAAAAAAAAIBJwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-25T02:23:53.502Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
               "Title": "site.css",
               "DocumentMoniker": "K:\\Oishipan\\OishipanMVC\\wwwroot\\css\\site.css",
               "RelativeDocumentMoniker": "OishipanMVC\\wwwroot\\css\\site.css",
@@ -70,20 +623,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "_Navbar.cshtml",
-              "DocumentMoniker": "K:\\Oishipan\\OishipanMVC\\Views\\Shared\\_Navbar.cshtml",
-              "RelativeDocumentMoniker": "OishipanMVC\\Views\\Shared\\_Navbar.cshtml",
-              "ToolTip": "K:\\Oishipan\\OishipanMVC\\Views\\Shared\\_Navbar.cshtml",
-              "RelativeToolTip": "OishipanMVC\\Views\\Shared\\_Navbar.cshtml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
-              "WhenOpened": "2026-04-30T08:52:17.792Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 18,
               "Title": "Index.cshtml",
               "DocumentMoniker": "K:\\Oishipan\\OishipanMVC\\Pages\\Index.cshtml",
               "RelativeDocumentMoniker": "OishipanMVC\\Pages\\Index.cshtml",
@@ -95,31 +635,19 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 17,
               "Title": "Program.cs",
               "DocumentMoniker": "K:\\Oishipan\\OishipanMVC\\Program.cs",
               "RelativeDocumentMoniker": "OishipanMVC\\Program.cs",
               "ToolTip": "K:\\Oishipan\\OishipanMVC\\Program.cs",
               "RelativeToolTip": "OishipanMVC\\Program.cs",
-              "ViewState": "AgIAAD8AAAAAAAAAAIBJwAAAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAACQAAAAAAAAAAIBJwFwAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-04-30T08:21:10.393Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "appsettings.json",
-              "DocumentMoniker": "K:\\Oishipan\\OishipanAPI\\appsettings.json",
-              "RelativeDocumentMoniker": "OishipanAPI\\appsettings.json",
-              "ToolTip": "K:\\Oishipan\\OishipanAPI\\appsettings.json",
-              "RelativeToolTip": "OishipanAPI\\appsettings.json",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAEAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2026-04-30T08:17:42.514Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 19,
               "Title": "Index.cshtml.cs",
               "DocumentMoniker": "K:\\Oishipan\\OishipanMVC\\Pages\\Index.cshtml.cs",
               "RelativeDocumentMoniker": "OishipanMVC\\Pages\\Index.cshtml.cs",

@@ -1,16 +1,19 @@
 using OishipanAPI.DTOs;
 using Microsoft.EntityFrameworkCore;
 using Oishipan.Models;
+using OishipanAPI.Utilities;
 
 namespace OishipanAPI.Services
 {
     public class AuthService : IAuthService
     {
         private readonly OishipanContext _context;
+        private readonly JwtTokenGenerator _jwtGenerator;
 
-        public AuthService(OishipanContext context)
+        public AuthService(OishipanContext context, JwtTokenGenerator jwtGenerator)
         {
             _context = context;
+            _jwtGenerator = jwtGenerator;
         }
 
         public async Task<LoginResponse> LoginAsync(LoginRequest request)
@@ -49,6 +52,8 @@ namespace OishipanAPI.Services
                     Address = user.Address,
                     Status = user.Status
                 }
+                ,
+                Token = _jwtGenerator.GenerateToken(user.UserId, user.Email, user.Role)
             };
         }
 

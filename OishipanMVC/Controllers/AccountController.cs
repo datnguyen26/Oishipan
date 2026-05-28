@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
@@ -79,6 +80,19 @@ namespace OishipanMVC.Controllers
                         CookieAuthenticationDefaults.AuthenticationScheme,
                         new ClaimsPrincipal(claimsIdentity),
                         authProperties);
+
+                    var token = result.GetProperty("token").GetString();
+                    if (!string.IsNullOrWhiteSpace(token))
+                    {
+                        HttpContext.Session.SetString("ApiToken", token);
+                    }
+
+                    var role = user.GetProperty("role").GetString() ?? string.Empty;
+                    if (role.Equals("Admin", StringComparison.OrdinalIgnoreCase) ||
+                        role.Equals("Staff", StringComparison.OrdinalIgnoreCase))
+                    {
+                        return RedirectToAction("Index", "Dashboard", new { area = "Admin" });
+                    }
 
                     return RedirectToAction("Index", "Home");
                 }
@@ -175,6 +189,7 @@ namespace OishipanMVC.Controllers
         [HttpGet("dang-xuat")]
         public async Task<IActionResult> Logout()
         {
+            HttpContext.Session.Remove("ApiToken");
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 
             return RedirectToAction("Index", "Home");

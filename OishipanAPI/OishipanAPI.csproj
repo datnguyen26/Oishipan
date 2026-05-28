@@ -7,6 +7,8 @@
     <LangVersion>latest</LangVersion>
     <DotnetWatchExcludeFiles>**\*.db,**\*.db-shm,**\*.db-wal,**\*.log</DotnetWatchExcludeFiles>
     <DotnetWatchExcludeFolders>bin;obj;.git;.vs;.vscode;.idea;node_modules</DotnetWatchExcludeFolders>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);1591</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
@@ -16,7 +18,12 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.0" />
+    <!-- Remove explicit Microsoft.AspNetCore.OpenApi to avoid forcing Microsoft.OpenApi 2.x which can
+         conflict with Swashbuckle 6.x. Keep a Microsoft.OpenApi 1.x that is compatible with
+         Swashbuckle 6.9.0. If you want to target the newer Microsoft.OpenApi 2.x, upgrade
+         Swashbuckle to a 7.x version instead. -->
+    <PackageReference Include="Microsoft.OpenApi" Version="1.6.14" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.9.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.0" />
     <PackageReference Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="8.2.1" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.2.1" />

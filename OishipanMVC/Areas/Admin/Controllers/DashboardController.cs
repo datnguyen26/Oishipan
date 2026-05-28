@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using OishipanMVC.Models;
 using OishipanMVC.Services;
 
@@ -6,6 +7,7 @@ namespace OishipanMVC.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Route("admin")]
+    [Authorize(Roles = "Admin,Staff")]
     public class DashboardController : Controller
     {
         private readonly IApiClient _apiClient;

@@ -63,10 +63,6 @@
               "target": "Package",
               "version": "[10.0.0, )"
             },
-            "Microsoft.AspNetCore.OpenApi": {
-              "target": "Package",
-              "version": "[10.0.0, )"
-            },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
               "version": "[10.0.0, )"
@@ -84,6 +80,14 @@
             "Microsoft.IdentityModel.Protocols.OpenIdConnect": {
               "target": "Package",
               "version": "[8.2.1, )"
+            },
+            "Microsoft.OpenApi": {
+              "target": "Package",
+              "version": "[1.6.14, )"
+            },
+            "Swashbuckle.AspNetCore": {
+              "target": "Package",
+              "version": "[6.9.0, )"
             },
             "System.IdentityModel.Tokens.Jwt": {
               "target": "Package",

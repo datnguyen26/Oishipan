@@ -30,6 +30,14 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         options.ExpireTimeSpan = TimeSpan.FromHours(1);
     });
 
+// Add Authorization with role-based policies
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AdminOnly", policy => policy.RequireRole("Admin"));
+    options.AddPolicy("AdminOrStaff", policy => policy.RequireRole("Admin", "Staff"));
+    options.AddPolicy("UserOnly", policy => policy.RequireRole("User"));
+});
+
 // Add Sessions
 builder.Services.AddSession(options =>
 {

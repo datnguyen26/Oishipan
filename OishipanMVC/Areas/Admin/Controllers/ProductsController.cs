@@ -1,18 +1,23 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using OishipanMVC.Models;
 using OishipanMVC.Services;
+using System.Text.Json;
 
 namespace OishipanMVC.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Route("admin/products")]
+    [Authorize(Roles = "Admin,Staff")]
     public class ProductsController : Controller
     {
         private readonly IApiClient _apiClient;
+        private readonly IHttpClientFactory _httpClientFactory;
 
-        public ProductsController(IApiClient apiClient)
+        public ProductsController(IApiClient apiClient, IHttpClientFactory httpClientFactory)
         {
             _apiClient = apiClient;
+            _httpClientFactory = httpClientFactory;
         }
 
         [HttpGet("")]
@@ -27,6 +32,183 @@ namespace OishipanMVC.Areas.Admin.Controllers
             {
                 ViewBag.Error = "Không thể tải sản phẩm: " + ex.Message;
                 return View(new List<ProductViewModel>());
+            }
+        }
+
+        [HttpGet("create")]
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost("create")]
+        public async Task<IActionResult> Create(IFormFile imageFile, string name, decimal price, int categoryId, int brandId, string description)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(name) || price <= 0 || imageFile == null)
+                {
+                    ViewBag.Error = "Vui lòng điền đầy đủ các trường bắt buộc";
+                    return View();
+                }
+
+                // Upload ảnh lên Cloudinary qua API
+                string imageUrl = null;
+                using (var client = _httpClientFactory.CreateClient())
+                {
+                    var formContent = new MultipartFormDataContent();
+                    formContent.Add(new StreamContent(imageFile.OpenReadStream()), "file", imageFile.FileName);
+
+                    using (var uploadRequest = new HttpRequestMessage(HttpMethod.Post, "http://localhost:5000/api/upload"))
+                    {
+                        uploadRequest.Content = formContent;
+                        var uploadResult = await client.SendAsync(uploadRequest);
+
+                        if (uploadResult.IsSuccessStatusCode)
+                        {
+                            var content = await uploadResult.Content.ReadAsStringAsync();
+                            var json = JsonDocument.Parse(content);
+                            imageUrl = json.RootElement.GetProperty("url").GetString();
+                        }
+                        else
+                        {
+                            var errorContent = await uploadResult.Content.ReadAsStringAsync();
+                            ViewBag.Error = $"Không thể tải lên ảnh: {errorContent}";
+                            return View();
+                        }
+                    }
+                }
+
+                if (string.IsNullOrEmpty(imageUrl))
+                {
+                    ViewBag.Error = "Không thể tải lên ảnh";
+                    return View();
+                }
+
+                var createRequest = new
+                {
+                    name,
+                    price,
+                    categoryId,
+                    brandId,
+                    description,
+                    image = imageUrl
+                };
+
+                var result = await _apiClient.PostAsync<ProductViewModel>("/api/products", createRequest);
+
+                if (result != null)
+                {
+                    return RedirectToAction("Index");
+                }
+
+                ViewBag.Error = "Không thể tạo sản phẩm";
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Error = "Lỗi: " + ex.Message;
+            }
+
+            return View();
+        }
+
+        [HttpGet("edit/{id}")]
+        public async Task<IActionResult> Edit(int id)
+        {
+            try
+            {
+                var product = await _apiClient.GetAsync<ProductViewModel>($"/api/products/{id}");
+                if (product == null)
+                    return NotFound();
+
+                return View(product);
+            }
+            catch
+            {
+                return NotFound();
+            }
+        }
+
+        [HttpPost("edit/{id}")]
+        public async Task<IActionResult> Edit(int id, IFormFile? imageFile, string name, decimal price, int categoryId, int brandId, string description)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(name) || price <= 0)
+                {
+                    ViewBag.Error = "Vui lòng điền đầy đủ các trường bắt buộc";
+                    return View();
+                }
+
+                string imageUrl = null;
+                if (imageFile != null && imageFile.Length > 0)
+                {
+                    using (var client = _httpClientFactory.CreateClient())
+                    {
+                        var formContent = new MultipartFormDataContent();
+                        formContent.Add(new StreamContent(imageFile.OpenReadStream()), "file", imageFile.FileName);
+
+                        using (var uploadRequest = new HttpRequestMessage(HttpMethod.Post, "http://localhost:5000/api/upload"))
+                        {
+                            uploadRequest.Content = formContent;
+                            var uploadResult = await client.SendAsync(uploadRequest);
+
+                            if (uploadResult.IsSuccessStatusCode)
+                            {
+                                var content = await uploadResult.Content.ReadAsStringAsync();
+                                var json = JsonDocument.Parse(content);
+                                imageUrl = json.RootElement.GetProperty("url").GetString();
+                            }
+                            else
+                            {
+                                var errorContent = await uploadResult.Content.ReadAsStringAsync();
+                                ViewBag.Error = $"Không thể tải lên ảnh: {errorContent}";
+                                return View();
+                            }
+                        }
+                    }
+                }
+
+                var updateRequest = new
+                {
+                    productId = id,
+                    name,
+                    price,
+                    categoryId,
+                    brandId,
+                    description,
+                    image = imageUrl ?? ""
+                };
+
+                var result = await _apiClient.PutAsync<ProductViewModel>($"/api/products/{id}", updateRequest);
+
+                if (result != null)
+                {
+                    return RedirectToAction("Index");
+                }
+
+                ViewBag.Error = "Không thể cập nhật sản phẩm";
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Error = "Lỗi: " + ex.Message;
+            }
+
+            return View();
+        }
+
+        [HttpPost("delete/{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            try
+            {
+                await _apiClient.DeleteAsync($"/api/products/{id}");
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Error = "Lỗi: " + ex.Message;
+                return RedirectToAction("Index");
             }
         }
     }

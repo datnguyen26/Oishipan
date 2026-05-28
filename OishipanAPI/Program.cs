@@ -3,6 +3,13 @@ using System.Text.Json;
 using OishipanAPI.Services;
 using CloudinaryDotNet;
 using Oishipan.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using Microsoft.OpenApi.Models;
+using System.IO;
+using System.Reflection;
+using OishipanAPI.Utilities;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,7 +20,45 @@ builder.Services.AddControllers()
         options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
     });
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddOpenApi();
+builder.Services.AddSwaggerGen(options =>
+{
+    // Basic API info
+    options.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "Oishipan API",
+        Version = "v1",
+        Description = "Oishipan API - Swagger documentation"
+    });
+
+    // JWT Bearer token support in Swagger
+    var bearerScheme = new OpenApiSecurityScheme
+    {
+        Name = "Authorization",
+        Type = SecuritySchemeType.Http,
+        Scheme = "bearer",
+        BearerFormat = "JWT",
+        In = ParameterLocation.Header,
+        Description = "Enter 'Bearer {token}'"
+    };
+
+    options.AddSecurityDefinition("Bearer", bearerScheme);
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        [bearerScheme] = new string[] { }
+    });
+
+    // Include XML comments if available
+    try
+    {
+        var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+        var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+        if (File.Exists(xmlPath)) options.IncludeXmlComments(xmlPath);
+    }
+    catch
+    {
+        // ignore missing xml
+    }
+});
 
 // Database configuration
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") 
@@ -49,6 +94,40 @@ builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<ICloudinaryService, CloudinaryService>();
 builder.Services.AddScoped<IVoucherService, VoucherService>();
 
+// Configure JWT authentication
+var jwtSettings = builder.Configuration.GetSection("Jwt");
+var secretKey = jwtSettings["SecretKey"];
+if (string.IsNullOrWhiteSpace(secretKey))
+{
+    throw new InvalidOperationException("JWT SecretKey is not configured in appsettings.json");
+}
+var keyBytes = Encoding.UTF8.GetBytes(secretKey);
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+    .AddJwtBearer(options =>
+    {
+        options.RequireHttpsMetadata = false;
+        options.SaveToken = true;
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidIssuer = jwtSettings["Issuer"],
+            ValidateAudience = true,
+            ValidAudience = jwtSettings["Audience"],
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(keyBytes),
+            ValidateLifetime = true,
+            ClockSkew = TimeSpan.Zero
+        };
+    });
+
+// Register JWT token generator
+builder.Services.AddSingleton<JwtTokenGenerator>();
+
 
 
 // CORS configuration
@@ -68,28 +147,78 @@ using (var scope = app.Services.CreateScope())
     var context = scope.ServiceProvider.GetRequiredService<OishipanContext>();
     try
     {
-        context.Database.Migrate();
+        // Check if database can connect
+        if (context.Database.CanConnect())
+        {
+            Console.WriteLine("✓ Database connection successful");
+
+            // Get pending migrations
+            var pendingMigrations = context.Database.GetPendingMigrations().ToList();
+
+            if (pendingMigrations.Count > 0)
+            {
+                Console.WriteLine($"Applying {pendingMigrations.Count} pending migration(s)...");
+                context.Database.Migrate();
+                Console.WriteLine("✓ Migrations applied successfully");
+            }
+            else
+            {
+                Console.WriteLine("✓ No pending migrations");
+            }
+        }
+        else
+        {
+            Console.WriteLine("Database connection failed, attempting to create...");
+            context.Database.EnsureCreated();
+            Console.WriteLine("✓ Database created");
+        }
+    }
+    catch (InvalidOperationException ex) when (ex.Message.Contains("already an object named"))
+    {
+        // Migration conflict: table already exists, skip migration
+        Console.WriteLine($"⚠ Migration skipped: {ex.Message}");
     }
     catch (Exception ex)
     {
-        Console.WriteLine($"Database migration failed, falling back to EnsureCreated(): {ex.Message}");
-        context.Database.EnsureCreated();
+        Console.WriteLine($"✗ Database error: {ex.Message}");
+        try
+        {
+            context.Database.EnsureCreated();
+            Console.WriteLine("✓ Database created via EnsureCreated");
+        }
+        catch (Exception ex2)
+        {
+            Console.WriteLine($"✗ Failed to create database: {ex2.Message}");
+            throw;
+        }
     }
 
-    if (!context.Accounts.Any(a => a.Role == "Admin"))
+    // Seed admin account if doesn't exist
+    try
     {
-        context.Accounts.Add(new Oishipan.Models.Account
+        if (!context.Accounts.Any(a => a.Role == "Admin"))
         {
-            FullName = "Oishipan Admin",
-            Email = "admin@oishipan.com",
-            PhoneNumber = "0123456789",
-            Password = PasswordHelper.HashPassword("Admin@123"),
-            Role = "Admin",
-            Address = "Văn phòng Oishipan",
-            Status = true
-        });
-
-        context.SaveChanges();
+            context.Accounts.Add(new Oishipan.Models.Account
+            {
+                FullName = "Oishipan Admin",
+                Email = "admin@oishipan.com",
+                PhoneNumber = "0123456789",
+                Password = PasswordHelper.HashPassword("Admin@123"),
+                Role = "Admin",
+                Address = "Văn phòng Oishipan",
+                Status = true
+            });
+            context.SaveChanges();
+            Console.WriteLine("✓ Admin account created");
+        }
+        else
+        {
+            Console.WriteLine("✓ Admin account already exists");
+        }
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"✗ Error seeding admin: {ex.Message}");
     }
 }
 
@@ -97,10 +226,18 @@ using (var scope = app.Services.CreateScope())
 app.UseMiddleware<OishipanAPI.Middlewares.ExceptionMiddleware>();
 
 // Configure the HTTP request pipeline
-if (app.Environment.IsDevelopment())
+// Enable Swagger JSON in all environments
+app.UseSwagger();
+
+// Enable Swagger UI in all environments (can be restricted to Development for production security)
+app.UseSwaggerUI(c =>
 {
-    app.MapOpenApi();
-}
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Oishipan API v1.0");
+    c.RoutePrefix = "swagger";
+    c.DocumentTitle = "Oishipan API Documentation";
+    c.DefaultModelsExpandDepth(2);
+    c.DisplayOperationId();
+});
 
 // Disable HTTPS redirection in development
 if (!app.Environment.IsDevelopment())
@@ -110,8 +247,11 @@ if (!app.Environment.IsDevelopment())
 
 app.UseCors("AllowAll");
 
+app.UseAuthentication();
+app.UseAuthorization();
+
 // Add a root endpoint
-app.MapGet("/", () => Results.Json(new { message = "Oishipan API is running!", openapi = "/openapi/v1.json" }));
+app.MapGet("/", () => Results.Json(new { message = "Oishipan API is running!", docs = "/swagger" }));
 
 // Health check endpoint
 app.MapGet("/health", () => Results.Ok(new { status = "healthy" }));
