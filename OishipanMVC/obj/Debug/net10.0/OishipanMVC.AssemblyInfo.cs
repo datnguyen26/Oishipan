@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("OishipanMVC")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+85c3fd68f5317e20d22169e1e9c54f06e0abd70a")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4865655307a5aaf73752da08b17c7b68745b29d8")]
 [assembly: System.Reflection.AssemblyProductAttribute("OishipanMVC")]
 [assembly: System.Reflection.AssemblyTitleAttribute("OishipanMVC")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

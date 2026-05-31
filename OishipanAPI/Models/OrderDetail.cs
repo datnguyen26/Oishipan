@@ -20,8 +20,5 @@ namespace Oishipan.Models
         public decimal Price { get; set; }
 
         public int Quantity { get; set; }
-
-        [StringLength(500)]
-        public string? Note { get; set; }
     }
 }

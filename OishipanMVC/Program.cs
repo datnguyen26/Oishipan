@@ -7,11 +7,17 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddHttpContextAccessor();
 
+// Session requires a distributed cache implementation
+builder.Services.AddDistributedMemoryCache();
+
 // Add HttpClient for API calls
-var apiBaseAddress = builder.Configuration["ApiSettings:BaseUrl"];
-if (string.IsNullOrWhiteSpace(apiBaseAddress))
+var apiBaseAddress = builder.Configuration["ApiSettings:BaseUrl"]
+    ?? Environment.GetEnvironmentVariable("OISHIPAN_API_BASE_URL")
+    ?? "http://localhost:8080";
+
+if (!Uri.TryCreate(apiBaseAddress, UriKind.Absolute, out _))
 {
-    throw new InvalidOperationException("API base address is not configured");
+    throw new InvalidOperationException("API base address is not a valid absolute URI.");
 }
 
 builder.Services.AddHttpClient<IApiClient, ApiClient>(client =>
@@ -64,9 +70,9 @@ if (!app.Environment.IsDevelopment())
 app.UseStaticFiles();
 app.UseRouting();
 
+app.UseSession();
 app.UseAuthentication();
 app.UseAuthorization();
-app.UseSession();
 
 app.MapControllerRoute(
     name: "areas",

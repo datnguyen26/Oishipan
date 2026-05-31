@@ -2,11 +2,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using OishipanAPI.DTOs;
 using OishipanAPI.Services;
+using System.Security.Claims;
 
 namespace OishipanAPI.Controllers
 {
     /// <summary>
-    /// API cho quản lý người dùng (Admin only)
+    /// API cho quản lý người dùng (Admin/Staff)
     /// </summary>
     [ApiController]
     [Route("api/[controller]")]
@@ -15,10 +16,43 @@ namespace OishipanAPI.Controllers
     public class UsersController : ControllerBase
     {
         private readonly IUserService _userService;
+        private readonly ILogger<UsersController> _logger;
 
-        public UsersController(IUserService userService)
+        public UsersController(IUserService userService, ILogger<UsersController> logger)
         {
             _userService = userService;
+            _logger = logger;
+        }
+
+        /// <summary>
+        /// Tìm kiếm người dùng theo tên hoặc email
+        /// </summary>
+        /// <param name="searchTerm">Từ khóa tìm kiếm</param>
+        /// <returns>Danh sách người dùng khớp</returns>
+        /// <response code="200">Thành công</response>
+        /// <response code="400">Từ khóa tìm kiếm không hợp lệ</response>
+        /// <response code="401">Không được phép</response>
+        [HttpGet("search")]
+        [ProducesResponseType(typeof(List<UserDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public async Task<IActionResult> SearchUsers([FromQuery] string searchTerm)
+        {
+            if (string.IsNullOrWhiteSpace(searchTerm) || searchTerm.Length < 2)
+            {
+                return BadRequest(new { success = false, message = "Từ khóa tìm kiếm phải có ít nhất 2 ký tự" });
+            }
+
+            try
+            {
+                var users = await _userService.SearchUsersAsync(searchTerm.Trim());
+                return Ok(users);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Lỗi tìm kiếm người dùng với từ khóa: {SearchTerm}", searchTerm);
+                return StatusCode(500, new { success = false, message = "Lỗi khi tìm kiếm người dùng" });
+            }
         }
 
         /// <summary>
@@ -28,6 +62,7 @@ namespace OishipanAPI.Controllers
         /// <param name="status">Lọc theo trạng thái (true=active, false=inactive)</param>
         /// <param name="page">Trang hiện tại (mặc định 1)</param>
         /// <param name="pageSize">Số bản ghi mỗi trang (mặc định 20)</param>
+        /// <param name="search">Tìm kiếm theo tên/email/số điện thoại</param>
         /// <returns>Danh sách người dùng</returns>
         /// <response code="200">Thành công</response>
         /// <response code="401">Không được phép (chỉ Admin/Staff)</response>
@@ -43,12 +78,16 @@ namespace OishipanAPI.Controllers
         {
             try
             {
+                if (page < 1) page = 1;
+                if (pageSize < 1 || pageSize > 100) pageSize = 20;
+
                 var result = await _userService.GetAllUsersAsync(role, status, search, page, pageSize);
                 return Ok(result);
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { success = false, message = "Lỗi khi tải danh sách người dùng", error = ex.Message });
+                _logger.LogError(ex, "Lỗi tải danh sách người dùng");
+                return StatusCode(500, new { success = false, message = "Lỗi khi tải danh sách người dùng" });
             }
         }
 
@@ -68,6 +107,9 @@ namespace OishipanAPI.Controllers
         {
             try
             {
+                if (id <= 0)
+                    return BadRequest(new { success = false, message = "ID người dùng không hợp lệ" });
+
                 var user = await _userService.GetUserByIdAsync(id);
                 if (user == null)
                     return NotFound(new { success = false, message = "Người dùng không tồn tại" });
@@ -76,48 +118,8 @@ namespace OishipanAPI.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { success = false, message = "Lỗi khi tải thông tin người dùng", error = ex.Message });
-            }
-        }
-
-        /// <summary>
-        /// Cập nhật thông tin người dùng
-        /// </summary>
-        /// <param name="id">ID của người dùng</param>
-        /// <param name="request">Thông tin cập nhật</param>
-        /// <returns>Thông tin người dùng đã cập nhật</returns>
-        /// <response code="200">Cập nhật thành công</response>
-        /// <response code="404">Không tìm thấy người dùng</response>
-        /// <response code="400">Dữ liệu không hợp lệ</response>
-        /// <response code="401">Không được phép</response>
-        [HttpPut("{id}")]
-        [ProducesResponseType(typeof(UserDto), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> UpdateUser(int id, [FromBody] UpdateUserRequest request)
-        {
-            if (!ModelState.IsValid)
-            {
-                var errors = ModelState.Values.SelectMany(v => v.Errors);
-                return BadRequest(new { success = false, message = "Dữ liệu không hợp lệ", errors });
-            }
-
-            try
-            {
-                var user = await _userService.UpdateUserAsync(id, request);
-                if (user == null)
-                    return NotFound(new { success = false, message = "Người dùng không tồn tại" });
-
-                return Ok(new { success = true, message = "Cập nhật người dùng thành công", user });
-            }
-            catch (InvalidOperationException ex)
-            {
-                return BadRequest(new { success = false, message = ex.Message });
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, new { success = false, message = "Lỗi khi cập nhật người dùng", error = ex.Message });
+                _logger.LogError(ex, "Lỗi tải thông tin người dùng ID: {UserId}", id);
+                return StatusCode(500, new { success = false, message = "Lỗi khi tải thông tin người dùng" });
             }
         }
 
@@ -128,7 +130,7 @@ namespace OishipanAPI.Controllers
         /// <returns>Thông tin người dùng đã tạo</returns>
         /// <response code="201">Tạo thành công</response>
         /// <response code="400">Dữ liệu không hợp lệ hoặc email đã tồn tại</response>
-        /// <response code="401">Không được phép</response>
+        /// <response code="401">Không được phép (chỉ Admin)</response>
         [HttpPost]
         [ProducesResponseType(typeof(UserDto), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -138,7 +140,7 @@ namespace OishipanAPI.Controllers
         {
             if (!ModelState.IsValid)
             {
-                var errors = ModelState.Values.SelectMany(v => v.Errors);
+                var errors = ModelState.Values.SelectMany(v => v.Errors.Select(e => e.ErrorMessage));
                 return BadRequest(new { success = false, message = "Dữ liệu không hợp lệ", errors });
             }
 
@@ -153,41 +155,117 @@ namespace OishipanAPI.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { success = false, message = "Lỗi khi tạo người dùng", error = ex.Message });
+                _logger.LogError(ex, "Lỗi tạo người dùng mới");
+                return StatusCode(500, new { success = false, message = "Lỗi khi tạo người dùng" });
             }
         }
 
         /// <summary>
-        /// Xóa người dùng (chỉ Admin)
+        /// Cập nhật thông tin người dùng
         /// </summary>
         /// <param name="id">ID của người dùng</param>
-        /// <returns>Thông báo kết quả</returns>
-        /// <response code="200">Xóa thành công</response>
+        /// <param name="request">Thông tin cập nhật</param>
+        /// <returns>Thông tin người dùng đã cập nhật</returns>
+        /// <response code="200">Cập nhật thành công</response>
         /// <response code="404">Không tìm thấy người dùng</response>
-        /// <response code="401">Không được phép</response>
-        [HttpDelete("{id}")]
-        [ProducesResponseType(typeof(object), StatusCodes.Status200OK)]
+        /// <response code="400">Dữ liệu không hợp lệ</response>
+        /// <response code="401">Không được phép hoặc quyền không đủ</response>
+        /// <response code="403">Staff không thể thay đổi role</response>
+        [HttpPut("{id}")]
+        [ProducesResponseType(typeof(UserDto), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> DeleteUser(int id)
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        public async Task<IActionResult> UpdateUser(int id, [FromBody] UpdateUserRequest request)
         {
+            if (!ModelState.IsValid)
+            {
+                var errors = ModelState.Values.SelectMany(v => v.Errors.Select(e => e.ErrorMessage));
+                return BadRequest(new { success = false, message = "Dữ liệu không hợp lệ", errors });
+            }
+
             try
             {
-                var result = await _userService.DeleteUserAsync(id);
-                if (!result)
+                if (id <= 0)
+                    return BadRequest(new { success = false, message = "ID người dùng không hợp lệ" });
+
+                // Check authorization for role changes - only Admin can change roles
+                var userRole = User.FindFirst(ClaimTypes.Role)?.Value;
+                if (userRole == "Staff")
+                {
+                    var currentUser = await _userService.GetUserByIdAsync(id);
+                    if (currentUser != null && currentUser.Role != request.Role)
+                    {
+                        return Forbid("Staff không có quyền thay đổi vai trò người dùng");
+                    }
+                }
+
+                var user = await _userService.UpdateUserAsync(id, request);
+                if (user == null)
                     return NotFound(new { success = false, message = "Người dùng không tồn tại" });
 
-                return Ok(new { success = true, message = "Xóa người dùng thành công" });
+                return Ok(new { success = true, message = "Cập nhật người dùng thành công", user });
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(new { success = false, message = ex.Message });
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { success = false, message = "Lỗi khi xóa người dùng", error = ex.Message });
+                _logger.LogError(ex, "Lỗi cập nhật người dùng ID: {UserId}", id);
+                return StatusCode(500, new { success = false, message = "Lỗi khi cập nhật người dùng" });
             }
         }
 
         /// <summary>
-        /// Khóa/Mở khóa người dùng
+        /// Thay đổi mật khẩu người dùng (chỉ Admin)
+        /// </summary>
+        /// <param name="id">ID của người dùng</param>
+        /// <param name="request">Mật khẩu mới</param>
+        /// <returns>Thông báo kết quả</returns>
+        /// <response code="200">Đổi mật khẩu thành công</response>
+        /// <response code="404">Không tìm thấy người dùng</response>
+        /// <response code="400">Dữ liệu không hợp lệ</response>
+        /// <response code="401">Không được phép</response>
+        [HttpPost("{id}/change-password")]
+        [ProducesResponseType(typeof(object), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> ChangePassword(int id, [FromBody] ChangePasswordRequest request)
+        {
+            if (!ModelState.IsValid)
+            {
+                var errors = ModelState.Values.SelectMany(v => v.Errors.Select(e => e.ErrorMessage));
+                return BadRequest(new { success = false, message = "Dữ liệu không hợp lệ", errors });
+            }
+
+            try
+            {
+                if (id <= 0)
+                    return BadRequest(new { success = false, message = "ID người dùng không hợp lệ" });
+
+                var result = await _userService.ChangePasswordAsync(id, request.NewPassword);
+                if (!result)
+                    return NotFound(new { success = false, message = "Người dùng không tồn tại" });
+
+                return Ok(new { success = true, message = "Thay đổi mật khẩu thành công" });
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(new { success = false, message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Lỗi thay đổi mật khẩu cho người dùng ID: {UserId}", id);
+                return StatusCode(500, new { success = false, message = "Lỗi khi thay đổi mật khẩu" });
+            }
+        }
+
+        /// <summary>
+        /// Khóa/Mở khóa người dùng (chỉ Admin)
         /// </summary>
         /// <param name="id">ID của người dùng</param>
         /// <returns>Trạng thái mới của người dùng</returns>
@@ -203,39 +281,52 @@ namespace OishipanAPI.Controllers
         {
             try
             {
-                var result = await _userService.ToggleUserStatusAsync(id);
-                if (!result)
+                if (id <= 0)
+                    return BadRequest(new { success = false, message = "ID người dùng không hợp lệ" });
+
+                var user = await _userService.ToggleUserStatusAsync(id);
+                if (user == null)
                     return NotFound(new { success = false, message = "Người dùng không tồn tại" });
 
-                var user = await _userService.GetUserByIdAsync(id);
                 return Ok(new { success = true, message = $"Người dùng đã được {(user.Status ? "kích hoạt" : "khóa")}", user });
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { success = false, message = "Lỗi khi cập nhật trạng thái", error = ex.Message });
+                _logger.LogError(ex, "Lỗi cập nhật trạng thái người dùng ID: {UserId}", id);
+                return StatusCode(500, new { success = false, message = "Lỗi khi cập nhật trạng thái" });
             }
         }
 
         /// <summary>
-        /// Tìm kiếm người dùng theo tên hoặc email
+        /// Xóa người dùng (chỉ Admin)
         /// </summary>
-        /// <param name="searchTerm">Từ khóa tìm kiếm</param>
-        /// <returns>Danh sách người dùng khớp</returns>
-        /// <response code="200">Thành công</response>
+        /// <param name="id">ID của người dùng</param>
+        /// <returns>Thông báo kết quả</returns>
+        /// <response code="204">Xóa thành công</response>
+        /// <response code="404">Không tìm thấy người dùng</response>
         /// <response code="401">Không được phép</response>
-        [HttpGet("search")]
-        [ProducesResponseType(typeof(List<UserDto>), StatusCodes.Status200OK)]
+        [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> SearchUsers([FromQuery] string searchTerm)
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> DeleteUser(int id)
         {
             try
             {
-                var users = await _userService.SearchUsersAsync(searchTerm);
-                return Ok(users);
+                if (id <= 0)
+                    return BadRequest(new { success = false, message = "ID người dùng không hợp lệ" });
+
+                var result = await _userService.DeleteUserAsync(id);
+                if (!result)
+                    return NotFound(new { success = false, message = "Người dùng không tồn tại" });
+
+                return NoContent();
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { success = false, message = "Lỗi khi tìm kiếm người dùng", error = ex.Message });
+                _logger.LogError(ex, "Lỗi xóa người dùng ID: {UserId}", id);
+                return StatusCode(500, new { success = false, message = "Lỗi khi xóa người dùng" });
             }
         }
     }

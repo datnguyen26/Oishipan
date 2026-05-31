@@ -79,4 +79,11 @@ namespace OishipanAPI.DTOs
         public int Total { get; set; }
         public List<UserDto> Users { get; set; } = new();
     }
+
+    public class ChangePasswordRequest
+    {
+        [Required(ErrorMessage = "Mật khẩu mới không được để trống")]
+        [StringLength(100, MinimumLength = 6, ErrorMessage = "Mật khẩu phải từ 6 ký tự trở lên")]
+        public string NewPassword { get; set; }
+    }
 }

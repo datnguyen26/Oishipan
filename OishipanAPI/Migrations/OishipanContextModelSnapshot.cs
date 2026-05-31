@@ -52,13 +52,14 @@ namespace OishipanAPI.Migrations
                         .HasMaxLength(15)
                         .HasColumnType("nvarchar(15)");
 
-                    b.Property<string>("Role")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
-
                     b.Property<bool>("Status")
                         .HasColumnType("bit");
+
+                    b.Property<string>("UserRole")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)")
+                        .HasColumnName("Role");
 
                     b.HasKey("UserId");
 
@@ -84,9 +85,10 @@ namespace OishipanAPI.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<string>("Website")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                    b.Property<string>("Description")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)")
+                        .HasColumnName("Website");
 
                     b.HasKey("BrandId");
 
@@ -155,10 +157,6 @@ namespace OishipanAPI.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrderDetailId"));
-
-                    b.Property<string>("Note")
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
 
                     b.Property<int>("OrderId")
                         .HasColumnType("int");
@@ -242,6 +240,9 @@ namespace OishipanAPI.Migrations
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
+
+                    b.Property<string>("VariantsJson")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ProductId");
 

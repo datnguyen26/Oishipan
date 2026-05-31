@@ -1,7 +1,7 @@
 // Site-wide JavaScript functionality
 
 // API Base URL
-const API_BASE_URL = window.apiBaseUrl || 'http://localhost:5000/api';
+const API_BASE_URL = window.apiBaseUrl || 'http://localhost:8080/api';
 
 // Get JWT Token from session storage
 function getAuthToken() {

@@ -168,8 +168,9 @@
             </summary>
             <param name="id">ID sản phẩm</param>
             <returns>Thông báo xóa thành công</returns>
-            <response code="200">Xóa thành công</response>
+            <response code="204">Xóa thành công</response>
             <response code="404">Sản phẩm không tồn tại</response>
+            <response code="401">Không được phép</response>
         </member>
         <member name="M:OishipanAPI.Controllers.ProductsController.UploadProductImage(System.Int32,Microsoft.AspNetCore.Http.IFormFile)">
             <summary>
@@ -181,6 +182,7 @@
             <response code="200">Tải lên thành công</response>
             <response code="400">File không hợp lệ</response>
             <response code="404">Sản phẩm không tồn tại</response>
+            <response code="401">Không được phép</response>
         </member>
         <member name="T:OishipanAPI.Controllers.UploadController">
             <summary>
@@ -195,6 +197,99 @@
             <returns>URL của ảnh vừa tải lên</returns>
             <response code="200">Tải lên thành công</response>
             <response code="400">File không hợp lệ</response>
+        </member>
+        <member name="T:OishipanAPI.Controllers.UsersController">
+            <summary>
+            API cho quản lý người dùng (Admin/Staff)
+            </summary>
+        </member>
+        <member name="M:OishipanAPI.Controllers.UsersController.SearchUsers(System.String)">
+            <summary>
+            Tìm kiếm người dùng theo tên hoặc email
+            </summary>
+            <param name="searchTerm">Từ khóa tìm kiếm</param>
+            <returns>Danh sách người dùng khớp</returns>
+            <response code="200">Thành công</response>
+            <response code="400">Từ khóa tìm kiếm không hợp lệ</response>
+            <response code="401">Không được phép</response>
+        </member>
+        <member name="M:OishipanAPI.Controllers.UsersController.GetAllUsers(System.String,System.Nullable{System.Boolean},System.String,System.Int32,System.Int32)">
+            <summary>
+            Lấy danh sách tất cả người dùng (có phân trang, lọc, tìm kiếm)
+            </summary>
+            <param name="role">Lọc theo role (Admin, Staff, User)</param>
+            <param name="status">Lọc theo trạng thái (true=active, false=inactive)</param>
+            <param name="page">Trang hiện tại (mặc định 1)</param>
+            <param name="pageSize">Số bản ghi mỗi trang (mặc định 20)</param>
+            <param name="search">Tìm kiếm theo tên/email/số điện thoại</param>
+            <returns>Danh sách người dùng</returns>
+            <response code="200">Thành công</response>
+            <response code="401">Không được phép (chỉ Admin/Staff)</response>
+        </member>
+        <member name="M:OishipanAPI.Controllers.UsersController.GetUserById(System.Int32)">
+            <summary>
+            Lấy thông tin chi tiết một người dùng
+            </summary>
+            <param name="id">ID của người dùng</param>
+            <returns>Thông tin người dùng</returns>
+            <response code="200">Thành công</response>
+            <response code="404">Không tìm thấy người dùng</response>
+            <response code="401">Không được phép</response>
+        </member>
+        <member name="M:OishipanAPI.Controllers.UsersController.CreateUser(OishipanAPI.DTOs.CreateUserRequest)">
+            <summary>
+            Tạo người dùng mới (chỉ Admin)
+            </summary>
+            <param name="request">Thông tin người dùng mới</param>
+            <returns>Thông tin người dùng đã tạo</returns>
+            <response code="201">Tạo thành công</response>
+            <response code="400">Dữ liệu không hợp lệ hoặc email đã tồn tại</response>
+            <response code="401">Không được phép (chỉ Admin)</response>
+        </member>
+        <member name="M:OishipanAPI.Controllers.UsersController.UpdateUser(System.Int32,OishipanAPI.DTOs.UpdateUserRequest)">
+            <summary>
+            Cập nhật thông tin người dùng
+            </summary>
+            <param name="id">ID của người dùng</param>
+            <param name="request">Thông tin cập nhật</param>
+            <returns>Thông tin người dùng đã cập nhật</returns>
+            <response code="200">Cập nhật thành công</response>
+            <response code="404">Không tìm thấy người dùng</response>
+            <response code="400">Dữ liệu không hợp lệ</response>
+            <response code="401">Không được phép hoặc quyền không đủ</response>
+            <response code="403">Staff không thể thay đổi role</response>
+        </member>
+        <member name="M:OishipanAPI.Controllers.UsersController.ChangePassword(System.Int32,OishipanAPI.DTOs.ChangePasswordRequest)">
+            <summary>
+            Thay đổi mật khẩu người dùng (chỉ Admin)
+            </summary>
+            <param name="id">ID của người dùng</param>
+            <param name="request">Mật khẩu mới</param>
+            <returns>Thông báo kết quả</returns>
+            <response code="200">Đổi mật khẩu thành công</response>
+            <response code="404">Không tìm thấy người dùng</response>
+            <response code="400">Dữ liệu không hợp lệ</response>
+            <response code="401">Không được phép</response>
+        </member>
+        <member name="M:OishipanAPI.Controllers.UsersController.ToggleUserStatus(System.Int32)">
+            <summary>
+            Khóa/Mở khóa người dùng (chỉ Admin)
+            </summary>
+            <param name="id">ID của người dùng</param>
+            <returns>Trạng thái mới của người dùng</returns>
+            <response code="200">Thành công</response>
+            <response code="404">Không tìm thấy người dùng</response>
+            <response code="401">Không được phép</response>
+        </member>
+        <member name="M:OishipanAPI.Controllers.UsersController.DeleteUser(System.Int32)">
+            <summary>
+            Xóa người dùng (chỉ Admin)
+            </summary>
+            <param name="id">ID của người dùng</param>
+            <returns>Thông báo kết quả</returns>
+            <response code="204">Xóa thành công</response>
+            <response code="404">Không tìm thấy người dùng</response>
+            <response code="401">Không được phép</response>
         </member>
         <member name="T:OishipanAPI.Controllers.VouchersController">
             <summary>
@@ -269,6 +364,35 @@
         </member>
         <member name="M:OishipanAPI.Migrations.AddNoteToOrderDetail.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <inheritdoc />
+        </member>
+        <member name="T:OishipanAPI.Migrations.AddProductVariants">
+            <inheritdoc />
+        </member>
+        <member name="M:OishipanAPI.Migrations.AddProductVariants.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:OishipanAPI.Migrations.AddProductVariants.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:OishipanAPI.Migrations.AddProductVariants.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:OishipanAPI.Migrations.UpdateAccountRoleEnum">
+            <inheritdoc />
+        </member>
+        <member name="M:OishipanAPI.Migrations.UpdateAccountRoleEnum.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:OishipanAPI.Migrations.UpdateAccountRoleEnum.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:OishipanAPI.Migrations.UpdateAccountRoleEnum.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:Oishipan.Models.Role">
+            <summary>
+            Enum định nghĩa các vai trò người dùng trong hệ thống
+            </summary>
         </member>
         <member name="T:Program">
             <summary>

@@ -6,20 +6,45 @@ window.AdminApi = (() => {
   };
 
   async function request(path, options = {}) {
+    const headers = {
+      ...defaultHeaders,
+      ...(options.headers || {})
+    };
+
+    // Add JWT token to Authorization header if available
+    const token = window.adminApiToken;
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`;
+    }
+
     const response = await fetch(`${BASE}/${path}`, {
       credentials: 'include',
       ...options,
-      headers: {
-        ...defaultHeaders,
-        ...(options.headers || {})
-      }
+      headers
     });
 
     const text = await response.text();
-    const data = text ? JSON.parse(text) : null;
+    let data = null;
+    
+    try {
+      data = text ? JSON.parse(text) : null;
+    } catch (parseError) {
+      console.error(`Failed to parse JSON from ${path}:`, text);
+      data = { 
+        error: 'Invalid JSON response',
+        rawResponse: text 
+      };
+    }
 
     if (!response.ok) {
-      throw { status: response.status, data };
+      const errorInfo = {
+        status: response.status,
+        statusText: response.statusText,
+        path: path,
+        data: data
+      };
+      console.error(`API Error [${response.status}] ${path}:`, errorInfo);
+      throw errorInfo;
     }
 
     return data;
@@ -35,7 +60,11 @@ window.AdminApi = (() => {
     updateProduct: (id, payload) => request(`products/${id}`, { method: 'PUT', body: JSON.stringify(payload) }),
     deleteProduct: (id) => request(`products/${id}`, { method: 'DELETE' }),
     createCategory: (payload) => request('categories', { method: 'POST', body: JSON.stringify(payload) }),
+    updateCategory: (id, payload) => request(`categories/${id}`, { method: 'PUT', body: JSON.stringify(payload) }),
+    deleteCategory: (id) => request(`categories/${id}`, { method: 'DELETE' }),
     createBrand: (payload) => request('brands', { method: 'POST', body: JSON.stringify(payload) }),
+    updateBrand: (id, payload) => request(`brands/${id}`, { method: 'PUT', body: JSON.stringify(payload) }),
+    deleteBrand: (id) => request(`brands/${id}`, { method: 'DELETE' }),
     updateOrderStatus: (id, payload) => request(`orders/${id}/status`, { method: 'PUT', body: JSON.stringify(payload) }),
     cancelOrder: (id) => request(`orders/${id}/cancel`, { method: 'DELETE' }),
     getUsersList: (query = '') => request(`users${query ? '?' + query : ''}`),
@@ -44,9 +73,17 @@ window.AdminApi = (() => {
     uploadProductImage: async (id, file) => {
       const formData = new FormData();
       formData.append('file', file);
+      
+      const headers = {};
+      const token = window.adminApiToken;
+      if (token) {
+        headers['Authorization'] = `Bearer ${token}`;
+      }
+      
       const response = await fetch(`${BASE}/products/${id}/upload-image`, {
         method: 'POST',
         credentials: 'include',
+        headers,
         body: formData
       });
 

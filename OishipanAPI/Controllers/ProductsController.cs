@@ -99,14 +99,27 @@ namespace OishipanAPI.Controllers
         public async Task<IActionResult> CreateProduct([FromBody] CreateProductDto dto)
         {
             if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+        {
+            var errors = ModelState.Values.SelectMany(v => v.Errors.Select(e => e.ErrorMessage));
+            return BadRequest(new { success = false, message = "Dữ liệu không hợp lệ", errors });
+        }
 
+        if (dto == null)
+            return BadRequest(new { success = false, message = "Dữ liệu sản phẩm không được để trống" });
+
+        try
+        {
             var product = await _productService.CreateProductAsync(dto);
 
             if (product == null)
-                return BadRequest(new { message = "Failed to create product" });
+                return BadRequest(new { success = false, message = "Không thể tạo sản phẩm. Vui lòng kiểm tra lại danh mục và thương hiệu." });
 
-            return CreatedAtAction(nameof(GetProductById), new { id = product.ProductId }, product);
+            return CreatedAtAction(nameof(GetProductById), new { id = product.ProductId }, new { success = true, message = "Tạo sản phẩm thành công", product });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { success = false, message = "Lỗi khi tạo sản phẩm: " + ex.InnerException?.Message ?? ex.Message });
+        }
         }
 
         /// <summary>
@@ -126,15 +139,28 @@ namespace OishipanAPI.Controllers
         public async Task<IActionResult> UpdateProduct(int id, [FromBody] UpdateProductDto dto)
         {
             if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+            {
+                var errors = ModelState.Values.SelectMany(v => v.Errors.Select(e => e.ErrorMessage));
+                return BadRequest(new { success = false, message = "Dữ liệu không hợp lệ", errors });
+            }
 
-            dto.ProductId = id;
-            var product = await _productService.UpdateProductAsync(dto);
+            if (id <= 0)
+                return BadRequest(new { success = false, message = "ID sản phẩm không hợp lệ" });
 
-            if (product == null)
-                return NotFound(new { message = "Product not found" });
+            try
+            {
+                dto.ProductId = id;
+                var product = await _productService.UpdateProductAsync(dto);
 
-            return Ok(product);
+                if (product == null)
+                    return NotFound(new { success = false, message = "Sản phẩm không tồn tại" });
+
+                return Ok(new { success = true, message = "Cập nhật sản phẩm thành công", product });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { success = false, message = "Lỗi khi cập nhật sản phẩm: " + ex.InnerException?.Message ?? ex.Message });
+            }
         }
 
         /// <summary>
@@ -142,20 +168,32 @@ namespace OishipanAPI.Controllers
         /// </summary>
         /// <param name="id">ID sản phẩm</param>
         /// <returns>Thông báo xóa thành công</returns>
-        /// <response code="200">Xóa thành công</response>
+        /// <response code="204">Xóa thành công</response>
         /// <response code="404">Sản phẩm không tồn tại</response>
+        /// <response code="401">Không được phép</response>
         [Authorize(Roles = "Admin,Staff")]
         [HttpDelete("{id}")]
-        [ProducesResponseType(typeof(object), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(typeof(object), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> DeleteProduct(int id)
         {
-            var success = await _productService.DeleteProductAsync(id);
+            if (id <= 0)
+                return BadRequest(new { success = false, message = "ID sản phẩm không hợp lệ" });
 
-            if (!success)
-                return NotFound(new { message = "Product not found" });
+            try
+            {
+                var success = await _productService.DeleteProductAsync(id);
 
-            return Ok(new { message = "Product deleted successfully" });
+                if (!success)
+                    return NotFound(new { success = false, message = "Sản phẩm không tồn tại" });
+
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { success = false, message = "Lỗi khi xóa sản phẩm: " + ex.InnerException?.Message ?? ex.Message });
+            }
         }
 
         /// <summary>
@@ -167,27 +205,42 @@ namespace OishipanAPI.Controllers
         /// <response code="200">Tải lên thành công</response>
         /// <response code="400">File không hợp lệ</response>
         /// <response code="404">Sản phẩm không tồn tại</response>
+        /// <response code="401">Không được phép</response>
         [Authorize(Roles = "Admin,Staff")]
         [HttpPost("{id}/upload-image")]
         [ProducesResponseType(typeof(object), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(object), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(object), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> UploadProductImage(int id, IFormFile file)
         {
+            if (id <= 0)
+                return BadRequest(new { success = false, message = "ID sản phẩm không hợp lệ" });
+
             if (file == null || file.Length == 0)
-                return BadRequest(new { message = "No file provided" });
+                return BadRequest(new { success = false, message = "Vui lòng chọn file ảnh" });
 
-            var imageUrl = await _cloudinaryService.UploadImageAsync(file, "oishipan/products");
+            if (file.Length > 5 * 1024 * 1024) // 5MB
+                return BadRequest(new { success = false, message = "Kích thước file không được vượt quá 5MB" });
 
-            if (imageUrl == null)
-                return BadRequest(new { message = "Failed to upload image" });
+            try
+            {
+                var imageUrl = await _cloudinaryService.UploadImageAsync(file, "oishipan/products");
 
-            var success = await _productService.UpdateProductImageAsync(id, imageUrl);
+                if (imageUrl == null)
+                    return BadRequest(new { success = false, message = "Không thể tải lên ảnh. Vui lòng kiểm tra định dạng file." });
 
-            if (!success)
-                return NotFound(new { message = "Product not found" });
+                var success = await _productService.UpdateProductImageAsync(id, imageUrl);
 
-            return Ok(new { message = "Image uploaded successfully", url = imageUrl });
+                if (!success)
+                    return NotFound(new { success = false, message = "Sản phẩm không tồn tại" });
+
+                return Ok(new { success = true, message = "Tải lên ảnh thành công", url = imageUrl });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { success = false, message = "Lỗi khi tải lên ảnh: " + ex.InnerException?.Message ?? ex.Message });
+            }
         }
     }
 }

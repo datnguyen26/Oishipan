@@ -29,11 +29,9 @@ namespace OishipanMVC.Services
             _httpClient = httpClient;
             _httpContextAccessor = httpContextAccessor;
 
-            var baseUrl = configuration["ApiSettings:BaseUrl"];
-            if (string.IsNullOrWhiteSpace(baseUrl))
-            {
-                throw new InvalidOperationException("ApiSettings:BaseUrl is not configured.");
-            }
+            var baseUrl = configuration["ApiSettings:BaseUrl"]
+                ?? Environment.GetEnvironmentVariable("OISHIPAN_API_BASE_URL")
+                ?? "http://localhost:8080";
 
             if (!Uri.TryCreate(baseUrl, UriKind.Absolute, out var baseAddress))
             {
@@ -47,7 +45,39 @@ namespace OishipanMVC.Services
         {
             var response = await SendAsync(endpoint, () => _httpClient.GetAsync(endpoint));
             var content = await response.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<T>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true })!;
+
+            if (!response.IsSuccessStatusCode)
+            {
+                var errorMessage = !string.IsNullOrWhiteSpace(content)
+                    ? content
+                    : $"{response.StatusCode}: {response.ReasonPhrase}";
+
+                var baseUrl = _httpClient.BaseAddress?.ToString() ?? "unknown";
+                Console.WriteLine($"❌ API Error [{response.StatusCode}] {endpoint} @ {baseUrl}: {errorMessage}");
+                throw new Exception($"API request failed: {response.StatusCode} - {errorMessage}");
+            }
+
+            if (string.IsNullOrWhiteSpace(content) || response.StatusCode == System.Net.HttpStatusCode.NoContent)
+            {
+                if (typeof(T).IsGenericType && typeof(T).GetGenericTypeDefinition() == typeof(List<>))
+                {
+                    return (T)Activator.CreateInstance(typeof(T))!;
+                }
+
+                return default!;
+            }
+
+            try
+            {
+                return JsonSerializer.Deserialize<T>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true })!;
+            }
+            catch (JsonException ex)
+            {
+                var baseUrl = _httpClient.BaseAddress?.ToString() ?? "unknown";
+                var message = $"Failed to deserialize JSON from '{endpoint}' (Status: {response.StatusCode}). Content: {content}. BaseUrl: {baseUrl}";
+                Console.WriteLine($"❌ JSON PARSE: {message}");
+                throw new Exception(message, ex);
+            }
         }
 
         public async Task<T> PostAsync<T>(string endpoint, object data)
@@ -97,10 +127,40 @@ namespace OishipanMVC.Services
         public async Task<T> PostFormAsync<T>(string endpoint, MultipartFormDataContent content)
         {
             var response = await SendAsync(endpoint, () => _httpClient.PostAsync(endpoint, content));
-            response.EnsureSuccessStatusCode();
 
             var responseContent = await response.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<T>(responseContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true })!;
+            if (!response.IsSuccessStatusCode)
+            {
+                var errorMessage = !string.IsNullOrWhiteSpace(responseContent)
+                    ? responseContent
+                    : $"{response.StatusCode}: {response.ReasonPhrase}";
+
+                var baseUrl = _httpClient.BaseAddress?.ToString() ?? "unknown";
+                Console.WriteLine($"❌ API Error [{response.StatusCode}] {endpoint} @ {baseUrl}: {errorMessage}");
+                throw new Exception($"API request failed: {response.StatusCode} - {errorMessage}");
+            }
+
+            if (string.IsNullOrWhiteSpace(responseContent) || response.StatusCode == System.Net.HttpStatusCode.NoContent)
+            {
+                if (typeof(T).IsGenericType && typeof(T).GetGenericTypeDefinition() == typeof(List<>))
+                {
+                    return (T)Activator.CreateInstance(typeof(T))!;
+                }
+
+                return default!;
+            }
+
+            try
+            {
+                return JsonSerializer.Deserialize<T>(responseContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true })!;
+            }
+            catch (JsonException ex)
+            {
+                var baseUrl = _httpClient.BaseAddress?.ToString() ?? "unknown";
+                var message = $"Failed to deserialize JSON from '{endpoint}' (Status: {response.StatusCode}). Content: {responseContent}. BaseUrl: {baseUrl}";
+                Console.WriteLine($"❌ JSON PARSE: {message}");
+                throw new Exception(message, ex);
+            }
         }
 
         public void SetAuthToken(string token)
@@ -109,7 +169,6 @@ namespace OishipanMVC.Services
                 return;
 
             _httpContextAccessor.HttpContext?.Session?.SetString("ApiToken", token);
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
         }
 
         public void ClearAuthToken()

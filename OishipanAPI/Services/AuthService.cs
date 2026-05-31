@@ -27,15 +27,50 @@ namespace OishipanAPI.Services
                 };
             }
 
-            var user = await _context.Accounts.FirstOrDefaultAsync(a => a.Email == request.Email);
+            var normalizedEmail = request.Email.Trim().ToLowerInvariant();
+            var user = await _context.Accounts.FirstOrDefaultAsync(a => a.Email.ToLower() == normalizedEmail);
 
-            if (user == null || !user.Status || !PasswordHelper.VerifyPassword(request.Password, user.Password))
+            if (user == null || !user.Status)
             {
                 return new LoginResponse
                 {
                     Success = false,
                     Message = "Email hoặc mật khẩu không chính xác hoặc tài khoản bị khóa"
                 };
+            }
+
+            var verified = PasswordHelper.VerifyPassword(request.Password, user.Password);
+
+            if (!verified)
+            {
+                try
+                {
+                    var prefix = user.Password != null && user.Password.Length >= 4 ? user.Password.Substring(0, 4) : user.Password;
+                    Console.WriteLine($"[Auth] Password verification failed for '{user.Email}'. HashPrefix={prefix}, HashLength={(user.Password?.Length ?? 0)}");
+                }
+                catch { }
+
+                return new LoginResponse
+                {
+                    Success = false,
+                    Message = "Email hoặc mật khẩu không chính xác hoặc tài khoản bị khóa"
+                };
+            }
+
+            // If password verified but stored hash is a legacy variant ($2y$/$2x$), re-hash with the current standard and save
+            try
+            {
+                if (!string.IsNullOrEmpty(user.Password) && (user.Password.StartsWith("$2y$") || user.Password.StartsWith("$2x$")))
+                {
+                    user.Password = PasswordHelper.HashPassword(request.Password);
+                    _context.Accounts.Update(user);
+                    await _context.SaveChangesAsync();
+                    Console.WriteLine($"[Auth] Re-hashed password for '{user.Email}' with current bcrypt variant.");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[Auth] Failed to re-hash password for '{user.Email}': {ex.Message}");
             }
 
             return new LoginResponse
@@ -48,12 +83,12 @@ namespace OishipanAPI.Services
                     FullName = user.FullName,
                     Email = user.Email,
                     PhoneNumber = user.PhoneNumber,
-                    Role = user.Role,
+                    Role = user.UserRole.ToString(),
                     Address = user.Address,
                     Status = user.Status
                 }
                 ,
-                Token = _jwtGenerator.GenerateToken(user.UserId, user.Email, user.Role)
+                Token = _jwtGenerator.GenerateToken(user.UserId, user.Email, user.UserRole.ToString())
             };
         }
 
@@ -96,7 +131,7 @@ namespace OishipanAPI.Services
                 Email = request.Email,
                 PhoneNumber = request.PhoneNumber,
                 Password = PasswordHelper.HashPassword(request.Password),
-                Role = "User",
+                UserRole = Role.User,
                 Address = request.Address ?? string.Empty,
                 Status = true
             };
@@ -127,7 +162,7 @@ namespace OishipanAPI.Services
                 FullName = user.FullName,
                 Email = user.Email,
                 PhoneNumber = user.PhoneNumber,
-                Role = user.Role,
+                Role = user.UserRole.ToString(),
                 Address = user.Address,
                 Status = user.Status
             };

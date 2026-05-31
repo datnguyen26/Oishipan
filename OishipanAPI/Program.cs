@@ -61,8 +61,9 @@ builder.Services.AddSwaggerGen(options =>
 });
 
 // Database configuration
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") 
-    ?? throw new InvalidOperationException("DefaultConnection is not configured in appsettings.json");
+var connectionString = Environment.GetEnvironmentVariable("OISHIPAN_DB_CONNECTION")
+    ?? builder.Configuration.GetConnectionString("DefaultConnection")
+    ?? "Server=.;Database=Oishipan;Trusted_Connection=true;TrustServerCertificate=true;";
 
 if (string.IsNullOrWhiteSpace(connectionString))
 {
@@ -93,6 +94,7 @@ builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<ICloudinaryService, CloudinaryService>();
 builder.Services.AddScoped<IVoucherService, VoucherService>();
+builder.Services.AddScoped<IUserService, UserService>();
 
 // Configure JWT authentication
 var jwtSettings = builder.Configuration.GetSection("Jwt");
@@ -134,10 +136,16 @@ builder.Services.AddSingleton<JwtTokenGenerator>();
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll",
-        builder => builder
-            .AllowAnyOrigin()
+        policy => policy
+            .WithOrigins(
+                "http://localhost:5200",
+                "https://localhost:5201",
+                "http://localhost:5202",
+                "http://localhost:8080"
+            )
             .AllowAnyMethod()
-            .AllowAnyHeader());
+            .AllowAnyHeader()
+            .AllowCredentials());
 });
 
 var app = builder.Build();
@@ -151,6 +159,13 @@ using (var scope = app.Services.CreateScope())
         if (context.Database.CanConnect())
         {
             Console.WriteLine("✓ Database connection successful");
+
+            if (DatabaseMigrationHelper.HasLegacySchema(context) && !DatabaseMigrationHelper.MigrationHistoryTableExists(context))
+            {
+                Console.WriteLine("✓ Legacy schema detected, initializing EF migration history");
+                DatabaseMigrationHelper.EnsureLegacySchemaCompatibility(context);
+                DatabaseMigrationHelper.EnsureMigrationHistory(context, context.Database.GetMigrations());
+            }
 
             // Get pending migrations
             var pendingMigrations = context.Database.GetPendingMigrations().ToList();
@@ -193,32 +208,81 @@ using (var scope = app.Services.CreateScope())
         }
     }
 
-    // Seed admin account if doesn't exist
+    // Seed admin account if doesn't exist or if existing admin is inactive
     try
     {
-        if (!context.Accounts.Any(a => a.Role == "Admin"))
+        const string defaultAdminEmail = "admin@oishipan.com";
+        var activeAdminExists = context.Accounts.Any(a => a.UserRole == Role.Admin && a.Status);
+        var existingAdminAccount = context.Accounts.FirstOrDefault(a => a.Email == defaultAdminEmail);
+
+        if (!activeAdminExists)
         {
-            context.Accounts.Add(new Oishipan.Models.Account
+            if (existingAdminAccount == null)
             {
-                FullName = "Oishipan Admin",
-                Email = "admin@oishipan.com",
-                PhoneNumber = "0123456789",
-                Password = PasswordHelper.HashPassword("Admin@123"),
-                Role = "Admin",
-                Address = "Văn phòng Oishipan",
-                Status = true
-            });
-            context.SaveChanges();
-            Console.WriteLine("✓ Admin account created");
+                context.Accounts.Add(new Oishipan.Models.Account
+                {
+                    FullName = "Oishipan Admin",
+                    Email = defaultAdminEmail,
+                    PhoneNumber = "0123456789",
+                    Password = PasswordHelper.HashPassword("Admin@123"),
+                    UserRole = Role.Admin,
+                    Address = "Văn phòng Oishipan",
+                    Status = true
+                });
+
+                context.SaveChanges();
+                Console.WriteLine("✓ Admin account created");
+            }
+            else
+            {
+                existingAdminAccount.UserRole = Role.Admin;
+                existingAdminAccount.Status = true;
+                if (string.IsNullOrWhiteSpace(existingAdminAccount.FullName))
+                    existingAdminAccount.FullName = "Oishipan Admin";
+                if (string.IsNullOrWhiteSpace(existingAdminAccount.PhoneNumber))
+                    existingAdminAccount.PhoneNumber = "0123456789";
+                if (string.IsNullOrWhiteSpace(existingAdminAccount.Address))
+                    existingAdminAccount.Address = "Văn phòng Oishipan";
+
+                context.Accounts.Update(existingAdminAccount);
+                context.SaveChanges();
+                Console.WriteLine("✓ Existing admin account restored and activated");
+            }
         }
         else
         {
-            Console.WriteLine("✓ Admin account already exists");
+            Console.WriteLine("✓ Active admin account already exists");
         }
     }
     catch (Exception ex)
     {
         Console.WriteLine($"✗ Error seeding admin: {ex.Message}");
+    }
+
+    // Fix plain text passwords (convert to bcrypt if needed)
+    try
+    {
+        var accountsWithPlainPasswords = context.Accounts
+            .Where(a => a.Password != null && !a.Password.StartsWith("$2"))
+            .ToList();
+
+        if (accountsWithPlainPasswords.Count > 0)
+        {
+            Console.WriteLine($"⚠ Found {accountsWithPlainPasswords.Count} account(s) with plain text password. Converting to bcrypt...");
+            foreach (var account in accountsWithPlainPasswords)
+            {
+                var plainPassword = account.Password;
+                account.Password = PasswordHelper.HashPassword(plainPassword);
+                context.Accounts.Update(account);
+                Console.WriteLine($"✓ Password hashed for {account.Email}");
+            }
+            context.SaveChanges();
+            Console.WriteLine("✓ All plain text passwords converted to bcrypt");
+        }
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"✗ Error fixing passwords: {ex.Message}");
     }
 }
 

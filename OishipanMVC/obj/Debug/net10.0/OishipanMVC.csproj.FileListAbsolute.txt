@@ -40,7 +40,6 @@ K:\Oishipan\OishipanMVC\obj\Debug\net10.0\compressed\t2811z8ohn-{0}-yk62t58nru-y
 K:\Oishipan\OishipanMVC\obj\Debug\net10.0\compressed\c06r3wlcer-{0}-rhz94f9dbq-rhz94f9dbq.gz
 K:\Oishipan\OishipanMVC\obj\Debug\net10.0\compressed\tkz7z5lwsx-{0}-je5sanrf0g-je5sanrf0g.gz
 K:\Oishipan\OishipanMVC\obj\Debug\net10.0\compressed\c4iosqu48b-{0}-vz5l5ubrw0-vz5l5ubrw0.gz
-K:\Oishipan\OishipanMVC\obj\Debug\net10.0\compressed\4pca8oxhyn-{0}-g10mn1x88x-g10mn1x88x.gz
 K:\Oishipan\OishipanMVC\obj\Debug\net10.0\staticwebassets.build.json
 K:\Oishipan\OishipanMVC\obj\Debug\net10.0\staticwebassets.build.json.cache
 K:\Oishipan\OishipanMVC\obj\Debug\net10.0\staticwebassets.development.json
@@ -52,3 +51,10 @@ K:\Oishipan\OishipanMVC\obj\Debug\net10.0\refint\OishipanMVC.dll
 K:\Oishipan\OishipanMVC\obj\Debug\net10.0\OishipanMVC.pdb
 K:\Oishipan\OishipanMVC\obj\Debug\net10.0\OishipanMVC.genruntimeconfig.cache
 K:\Oishipan\OishipanMVC\obj\Debug\net10.0\ref\OishipanMVC.dll
+K:\Oishipan\OishipanMVC\obj\Debug\net10.0\compressed\0mnimie69s-{0}-ijgz00v23g-ijgz00v23g.gz
+K:\Oishipan\OishipanMVC\obj\Debug\net10.0\compressed\i4eij6edat-{0}-9ldznqdikx-9ldznqdikx.gz
+K:\Oishipan\OishipanMVC\obj\Debug\net10.0\compressed\k2sw312mhd-{0}-x0k9wfcdcw-x0k9wfcdcw.gz
+K:\Oishipan\OishipanMVC\obj\Debug\net10.0\compressed\gi8rbdwrax-{0}-s9vvtg1p46-s9vvtg1p46.gz
+K:\Oishipan\OishipanMVC\obj\Debug\net10.0\compressed\4pca8oxhyn-{0}-zw0llyfo0n-zw0llyfo0n.gz
+K:\Oishipan\OishipanMVC\obj\Debug\net10.0\compressed\x1jz97n0px-{0}-8wi9dbzqo6-8wi9dbzqo6.gz
+K:\Oishipan\OishipanMVC\obj\Debug\net10.0\compressed\0gc59igs6j-{0}-h5wsimhk3w-h5wsimhk3w.gz

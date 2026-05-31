@@ -85,6 +85,7 @@ namespace OishipanMVC.Controllers
                     if (!string.IsNullOrWhiteSpace(token))
                     {
                         HttpContext.Session.SetString("ApiToken", token);
+                        _apiClient.SetAuthToken(token);
                     }
 
                     var role = user.GetProperty("role").GetString() ?? string.Empty;

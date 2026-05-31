@@ -110,16 +110,26 @@ namespace OishipanAPI.Services
             return true;
         }
 
-        public async Task<bool> ToggleUserStatusAsync(int userId)
+        public async Task<UserDto> ToggleUserStatusAsync(int userId)
         {
             var user = await _context.Accounts.FirstOrDefaultAsync(u => u.UserId == userId);
             if (user == null)
-                return false;
+                return null;
 
             user.Status = !user.Status;
             _context.Accounts.Update(user);
             await _context.SaveChangesAsync();
-            return true;
+
+            return new UserDto
+            {
+                UserId = user.UserId,
+                FullName = user.FullName,
+                Email = user.Email,
+                PhoneNumber = user.PhoneNumber,
+                Role = user.UserRole.ToString(),
+                Address = user.Address,
+                Status = user.Status
+            };
         }
 
         public async Task<List<UserDto>> SearchUsersAsync(string searchTerm)
@@ -175,6 +185,21 @@ namespace OishipanAPI.Services
                 Address = user.Address,
                 Status = user.Status
             };
+        }
+
+        public async Task<bool> ChangePasswordAsync(int userId, string newPassword)
+        {
+            if (string.IsNullOrWhiteSpace(newPassword) || newPassword.Length < 6)
+                throw new InvalidOperationException("Mật khẩu phải có ít nhất 6 ký tự");
+
+            var user = await _context.Accounts.FirstOrDefaultAsync(u => u.UserId == userId);
+            if (user == null)
+                return false;
+
+            user.Password = PasswordHelper.HashPassword(newPassword);
+            _context.Accounts.Update(user);
+            await _context.SaveChangesAsync();
+            return true;
         }
     }
 }

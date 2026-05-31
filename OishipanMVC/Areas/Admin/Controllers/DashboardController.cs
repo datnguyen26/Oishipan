@@ -1,7 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using OishipanMVC.Areas.Admin.Models;
 using OishipanMVC.Models;
 using OishipanMVC.Services;
+using System.Linq;
 
 namespace OishipanMVC.Areas.Admin.Controllers
 {
@@ -21,18 +23,33 @@ namespace OishipanMVC.Areas.Admin.Controllers
         public async Task<IActionResult> Index()
         {
             var products = new List<ProductViewModel>();
+            var orders = new List<AdminOrderDto>();
+            var errors = new List<string>();
+
             try
             {
                 products = await _apiClient.GetAsync<List<ProductViewModel>>("/api/products");
             }
             catch
             {
-                // Nếu API không phản hồi, vẫn hiển thị giao diện quản lý với dữ liệu mẫu.
+                errors.Add("Không thể tải sản phẩm từ cơ sở dữ liệu.");
             }
 
+            try
+            {
+                orders = await _apiClient.GetAsync<List<AdminOrderDto>>("/api/orders");
+            }
+            catch
+            {
+                errors.Add("Không thể tải đơn hàng từ cơ sở dữ liệu.");
+            }
+
+            ViewBag.Error = errors.Any() ? string.Join(" ", errors) : null;
             ViewBag.ProductCount = products.Count;
-            ViewBag.OrderCount = 14;
-            ViewBag.CustomerCount = 22;
+            ViewBag.OrderCount = orders.Count;
+            ViewBag.CustomerCount = orders.Select(o => o.UserId).Distinct().Count();
+            ViewBag.TotalRevenue = orders.Sum(o => o.TotalAmount);
+            ViewBag.RecentOrders = orders.OrderByDescending(o => o.OrderDate).Take(5).ToList();
 
             return View(products);
         }

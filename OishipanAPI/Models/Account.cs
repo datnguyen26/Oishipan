@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Oishipan.Models
 {
@@ -23,8 +24,8 @@ namespace Oishipan.Models
         public string Password { get; set; } = null!;
 
         [Required]
-        [StringLength(20)]
-        public string Role { get; set; } = "User";
+        [Column("Role")]
+        public Role UserRole { get; set; } = Role.User;
 
         public string? Address { get; set; }
 

@@ -62,5 +62,75 @@ namespace OishipanAPI.Controllers
 
             return CreatedAtAction(nameof(GetAllBrands), new { id = brand.BrandId }, result);
         }
+
+        [HttpGet("{id}")]
+        [ProducesResponseType(typeof(BrandDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(object), StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetBrandById(int id)
+        {
+            var brand = await _context.Brands
+                .Where(b => b.BrandId == id)
+                .Select(b => new BrandDto
+                {
+                    BrandId = b.BrandId,
+                    BrandName = b.BrandName,
+                    Description = b.Description ?? string.Empty
+                })
+                .FirstOrDefaultAsync();
+
+            if (brand == null)
+                return NotFound(new { message = "Brand not found" });
+
+            return Ok(brand);
+        }
+
+        [Authorize(Roles = "Admin,Staff")]
+        [HttpPut("{id}")]
+        [ProducesResponseType(typeof(BrandDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(object), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(object), StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> UpdateBrand(int id, [FromBody] CreateBrandDto dto)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var brand = await _context.Brands.FindAsync(id);
+            if (brand == null)
+                return NotFound(new { message = "Brand not found" });
+
+            brand.BrandName = dto.BrandName ?? brand.BrandName;
+            brand.Description = dto.Description;
+
+            await _context.SaveChangesAsync();
+
+            var result = new BrandDto
+            {
+                BrandId = brand.BrandId,
+                BrandName = brand.BrandName,
+                Description = brand.Description ?? string.Empty
+            };
+
+            return Ok(result);
+        }
+
+        [Authorize(Roles = "Admin,Staff")]
+        [HttpDelete("{id}")]
+        [ProducesResponseType(typeof(object), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(object), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(object), StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> DeleteBrand(int id)
+        {
+            var brand = await _context.Brands.Include(b => b.Products).FirstOrDefaultAsync(b => b.BrandId == id);
+            if (brand == null)
+                return NotFound(new { message = "Brand not found" });
+
+            if (brand.Products.Any())
+                return BadRequest(new { message = "Cannot delete brand that has products." });
+
+            _context.Brands.Remove(brand);
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = "Brand deleted successfully" });
+        }
     }
 }

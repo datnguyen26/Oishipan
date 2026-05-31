@@ -28,6 +28,7 @@ namespace OishipanAPI.Services
                     CategoryId = p.CategoryId,
                     BrandId = p.BrandId,
                     Description = p.Description,
+                    VariantsJson = p.VariantsJson,
                     Category = new CategoryDto
                     {
                         CategoryId = p.Category.CategoryId,
@@ -38,7 +39,7 @@ namespace OishipanAPI.Services
                     {
                         BrandId = p.Brand.BrandId,
                         BrandName = p.Brand.BrandName,
-                        Website = p.Brand.Website
+                        Description = p.Brand.Description
                     }
                 })
                 .ToListAsync();
@@ -64,6 +65,7 @@ namespace OishipanAPI.Services
                 CategoryId = product.CategoryId,
                 BrandId = product.BrandId,
                 Description = product.Description,
+                    VariantsJson = product.VariantsJson,
                 Category = new CategoryDto
                 {
                     CategoryId = product.Category.CategoryId,
@@ -74,7 +76,7 @@ namespace OishipanAPI.Services
                 {
                     BrandId = product.Brand.BrandId,
                     BrandName = product.Brand.BrandName,
-                    Website = product.Brand.Website
+                    Description = product.Brand.Description
                 }
             };
         }
@@ -95,6 +97,7 @@ namespace OishipanAPI.Services
                     CategoryId = p.CategoryId,
                     BrandId = p.BrandId,
                     Description = p.Description,
+                    VariantsJson = p.VariantsJson,
                     Category = new CategoryDto
                     {
                         CategoryId = p.Category.CategoryId,
@@ -105,7 +108,7 @@ namespace OishipanAPI.Services
                     {
                         BrandId = p.Brand.BrandId,
                         BrandName = p.Brand.BrandName,
-                        Website = p.Brand.Website
+                        Description = p.Brand.Description
                     }
                 })
                 .ToListAsync();
@@ -127,6 +130,7 @@ namespace OishipanAPI.Services
                     CategoryId = p.CategoryId,
                     BrandId = p.BrandId,
                     Description = p.Description,
+                    VariantsJson = p.VariantsJson,
                     Category = new CategoryDto
                     {
                         CategoryId = p.Category.CategoryId,
@@ -137,7 +141,7 @@ namespace OishipanAPI.Services
                     {
                         BrandId = p.Brand.BrandId,
                         BrandName = p.Brand.BrandName,
-                        Website = p.Brand.Website
+                        Description = p.Brand.Description
                     }
                 })
                 .ToListAsync();
@@ -145,18 +149,36 @@ namespace OishipanAPI.Services
 
         public async Task<ProductDto> CreateProductAsync(CreateProductDto dto)
         {
+            if (dto == null || string.IsNullOrWhiteSpace(dto.Name) || dto.Price <= 0 || dto.Quantity <= 0 || dto.CategoryId <= 0 || dto.BrandId <= 0)
+                return null;
+
+            var categoryExists = await _context.Categories.AnyAsync(c => c.CategoryId == dto.CategoryId);
+            var brandExists = await _context.Brands.AnyAsync(b => b.BrandId == dto.BrandId);
+
+            if (!categoryExists || !brandExists)
+                return null;
+
             var product = new Product
             {
-                Name = dto.Name,
+                Name = dto.Name.Trim(),
                 Price = dto.Price,
                 Quantity = dto.Quantity,
                 CategoryId = dto.CategoryId,
                 BrandId = dto.BrandId,
-                Description = dto.Description
+                Description = dto.Description,
+                VariantsJson = dto.VariantsJson
             };
 
             _context.Products.Add(product);
-            await _context.SaveChangesAsync();
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateException)
+            {
+                return null;
+            }
 
             return await GetProductByIdAsync(product.ProductId);
         }
@@ -174,6 +196,7 @@ namespace OishipanAPI.Services
             product.CategoryId = dto.CategoryId > 0 ? dto.CategoryId : product.CategoryId;
             product.BrandId = dto.BrandId > 0 ? dto.BrandId : product.BrandId;
             product.Description = dto.Description ?? product.Description;
+            product.VariantsJson = dto.VariantsJson ?? product.VariantsJson;
 
             await _context.SaveChangesAsync();
 

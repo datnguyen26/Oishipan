@@ -46,4 +46,16 @@ namespace OishipanAPI.Services
         Task<bool> DeleteVoucherAsync(int voucherId);
         Task<bool> IsVoucherValidAsync(string code);
     }
+
+    public interface IUserService
+    {
+        Task<UserListResponse> GetAllUsersAsync(string role = null, bool? status = null, string searchTerm = null, int page = 1, int pageSize = 20);
+        Task<UserDto> GetUserByIdAsync(int userId);
+        Task<UserDto> UpdateUserAsync(int userId, UpdateUserRequest request);
+        Task<bool> DeleteUserAsync(int userId);
+        Task<UserDto> ToggleUserStatusAsync(int userId);
+        Task<List<UserDto>> SearchUsersAsync(string searchTerm);
+        Task<UserDto> CreateUserAsync(CreateUserRequest request);
+        Task<bool> ChangePasswordAsync(int userId, string newPassword);
+    }
 }

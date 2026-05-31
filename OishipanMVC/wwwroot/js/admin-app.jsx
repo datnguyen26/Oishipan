@@ -32,65 +32,65 @@ const safeParseJson = (value) => {
 };
 
 const normalizeProduct = (product) => {
-  const variants = safeParseJson(product.VariantsJson || product.variants || '[]');
+  const variants = safeParseJson(product.variantsJson || product.VariantsJson || product.variants || '[]');
   return {
-    id: product.ProductId || product.id,
-    name: product.Name || product.name || 'Sản phẩm chưa tên',
-    categoryId: product.CategoryId || product.categoryId || 0,
-    category: product.Category?.CategoryName || product.category || '',
-    brandId: product.BrandId || product.brandId || 0,
-    brand: product.Brand?.BrandName || product.brand || '',
-    price: Number(product.Price ?? product.price ?? 0),
-    stock: Number(product.Quantity ?? product.stock ?? 0),
-    image: product.Image || product.image || IMAGE_PLACEHOLDER.banhMiThit,
-    status: Number(product.Quantity ?? product.stock ?? 0) > 0 ? 'Còn hàng' : 'Hết hàng',
-    description: product.Description || product.description || '',
+    id: product.productId || product.ProductId || product.id,
+    name: product.name || product.Name || 'Sản phẩm chưa tên',
+    categoryId: product.categoryId || product.CategoryId || 0,
+    category: product.category?.categoryName || product.category?.CategoryName || product.category || '',
+    brandId: product.brandId || product.BrandId || 0,
+    brand: product.brand?.brandName || product.brand?.BrandName || product.brand || '',
+    price: Number(product.price ?? product.Price ?? 0),
+    stock: Number(product.quantity ?? product.Quantity ?? product.stock ?? 0),
+    image: product.image || product.Image || IMAGE_PLACEHOLDER.banhMiThit,
+    status: Number(product.quantity ?? product.Quantity ?? product.stock ?? 0) > 0 ? 'Còn hàng' : 'Hết hàng',
+    description: product.description || product.Description || '',
     variants
   };
 };
 
 const normalizeCategory = (category) => ({
-  id: category.CategoryId || category.id,
-  name: category.CategoryName || category.name || 'Danh mục',
-  description: category.Description || category.description || '',
-  slug: (category.CategoryName || category.name || '').toString().toLowerCase().replace(/\s+/g, '-'),
+  id: category.categoryId || category.CategoryId || category.id,
+  name: category.categoryName || category.CategoryName || category.name || 'Danh mục',
+  description: category.description || category.Description || '',
+  slug: (category.categoryName || category.CategoryName || category.name || '').toString().toLowerCase().replace(/\s+/g, '-'),
   count: 0
 });
 
 const normalizeBrand = (brand) => ({
-  id: brand.BrandId || brand.id,
-  name: brand.BrandName || brand.name || 'Thương hiệu',
+  id: brand.brandId || brand.BrandId || brand.id,
+  name: brand.brandName || brand.BrandName || brand.name || 'Thương hiệu',
   origin: brand.origin || 'Việt Nam',
-  description: brand.Description || brand.description || '',
-  logo: brand.Logo || brand.logo || IMAGE_PLACEHOLDER.defaultLogo
+  description: brand.description || brand.Description || '',
+  logo: brand.logo || brand.Logo || IMAGE_PLACEHOLDER.defaultLogo
 });
 
 const normalizeUser = (user) => ({
-  id: user.UserId || user.id,
-  name: user.FullName || user.name || 'Người dùng',
-  email: user.Email || user.email || 'unknown@oishipan.vn',
-  role: (user.Role || user.role || 'user').toLowerCase(),
-  status: user.Status === false ? 'Tạm khóa' : 'Hoạt động',
-  avatar: user.Avatar || user.avatar || `https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=150&q=80`,
-  phone: user.PhoneNumber || user.phone || '',
-  address: user.Address || user.address || ''
+  id: user.userId || user.UserId || user.id,
+  name: user.fullName || user.FullName || user.name || 'Người dùng',
+  email: user.email || user.Email || 'unknown@oishipan.vn',
+  role: (user.role || user.Role || 'user').toLowerCase(),
+  status: user.status === false ? 'Tạm khóa' : 'Hoạt động',
+  avatar: user.avatar || user.Avatar || `https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=150&q=80`,
+  phone: user.phoneNumber || user.PhoneNumber || user.phone || '',
+  address: user.address || user.Address || ''
 });
 
 const normalizeOrder = (order) => {
-  const items = (order.OrderDetails || order.items || []).map((item) => ({
-    name: (item.Product?.Name || item.name || `Sản phẩm #${item.ProductId ?? item.productId}`),
-    qty: item.Quantity || item.qty || 0,
-    price: Number(item.Price || item.price || 0)
+  const items = (order.orderDetails || order.OrderDetails || order.items || []).map((item) => ({
+    name: (item.product?.name || item.Product?.Name || item.name || `Sản phẩm #${item.productId ?? item.ProductId}`),
+    qty: item.quantity || item.Quantity || item.qty || 0,
+    price: Number(item.price || item.Price || 0)
   }));
 
   return {
-    id: order.OrderId || order.id,
-    customer: order.Customer || order.customer || `Khách hàng #${order.UserId || order.userId || '---'}`,
-    phone: order.Phone || order.phone || 'Chưa có',
-    date: order.OrderDate ? new Date(order.OrderDate).toLocaleDateString('vi-VN') : (order.date || ''),
+    id: order.orderId || order.OrderId || order.id,
+    customer: order.customer || order.Customer || `Khách hàng #${order.userId || order.UserId || '---'}`,
+    phone: order.phone || order.Phone || 'Chưa có',
+    date: order.orderDate ? new Date(order.orderDate).toLocaleDateString('vi-VN') : (order.OrderDate ? new Date(order.OrderDate).toLocaleDateString('vi-VN') : (order.date || '')),
     items,
-    total: Number(order.TotalAmount || order.total || 0),
-    status: normalizeOrderStatus(order.Status || order.status)
+    total: Number(order.totalAmount || order.TotalAmount || order.total || 0),
+    status: normalizeOrderStatus(order.status || order.Status)
   };
 };
 
@@ -150,24 +150,51 @@ function App() {
       setIsLoading(true);
       setErrorMessage('');
 
+      console.log('Loading admin data from API...');
       const [rawProducts, rawCategories, rawBrands, rawOrders] = await Promise.all([
-        window.AdminApi.getProducts(),
-        window.AdminApi.getCategories(),
-        window.AdminApi.getBrands(),
-        window.AdminApi.getOrders()
+        window.AdminApi.getProducts().catch(e => {
+          console.error('getProducts failed:', e);
+          throw e;
+        }),
+        window.AdminApi.getCategories().catch(e => {
+          console.error('getCategories failed:', e);
+          throw e;
+        }),
+        window.AdminApi.getBrands().catch(e => {
+          console.error('getBrands failed:', e);
+          throw e;
+        }),
+        window.AdminApi.getOrders().catch(e => {
+          console.error('getOrders failed:', e);
+          throw e;
+        })
       ]);
 
       let rawUsers = [];
       try {
         rawUsers = await window.AdminApi.getUsersList();
       } catch (uErr) {
+        console.warn('getUsersList failed:', uErr);
         rawUsers = [];
         if (uErr?.status === 401) showToast('Không có quyền truy cập danh sách người dùng (401).', 'warning');
       }
 
       const categoryList = rawCategories.map(normalizeCategory);
       const brandList = rawBrands.map(normalizeBrand);
-      const userList = rawUsers.Users ? rawUsers.Users.map(normalizeUser) : rawUsers.map(normalizeUser);
+      
+      // Handle users response - could be array or object with Users property
+      let userArray = [];
+      if (Array.isArray(rawUsers)) {
+        userArray = rawUsers;
+      } else if (rawUsers?.Users && Array.isArray(rawUsers.Users)) {
+        userArray = rawUsers.Users;
+      } else if (rawUsers?.users && Array.isArray(rawUsers.users)) {
+        userArray = rawUsers.users;
+      } else if (rawUsers?.data && Array.isArray(rawUsers.data)) {
+        userArray = rawUsers.data;
+      }
+      const userList = userArray.map(normalizeUser);
+      
       const productList = rawProducts.map((product) => {
         const item = normalizeProduct(product);
         item.category = categoryList.find((c) => c.id === item.categoryId)?.name || item.category;
@@ -186,9 +213,12 @@ function App() {
       setUsers(userList);
       setProducts(productList);
       setOrders(orderList);
+      console.log('Data loaded successfully:', { products: productList.length, categories: categoryList.length, brands: brandList.length, orders: orderList.length });
     } catch (error) {
-      const message = error?.data?.message || error?.data?.errors || error?.message || 'Không thể tải dữ liệu admin từ API.';
-      setErrorMessage(typeof message === 'string' ? message : JSON.stringify(message));
+      console.error('Load data error:', error);
+      const message = error?.data?.message || error?.data?.errors || error?.message || error?.statusText || 'Không thể tải dữ liệu admin từ API.';
+      const detailedMessage = typeof message === 'string' ? message : JSON.stringify(message);
+      setErrorMessage(`${error?.status || 'Error'}: ${detailedMessage}`);
       showToast('Lỗi khi tải dữ liệu từ API.', 'danger');
     } finally {
       setIsLoading(false);
@@ -228,9 +258,13 @@ function App() {
         setProducts((prev) => prev.filter((p) => p.id !== id));
         showToast('Đã xóa sản phẩm thành công!', 'success');
       } else if (type === 'category') {
-        showToast('Xóa danh mục hiện tại chưa được hỗ trợ bởi API admin.', 'warning');
+        await window.AdminApi.deleteCategory(id);
+        setCategories((prev) => prev.filter((c) => c.id !== id));
+        showToast('Đã xóa danh mục thành công!', 'success');
       } else if (type === 'brand') {
-        showToast('Xóa thương hiệu hiện tại chưa được hỗ trợ bởi API admin.', 'warning');
+        await window.AdminApi.deleteBrand(id);
+        setBrands((prev) => prev.filter((b) => b.id !== id));
+        showToast('Đã xóa thương hiệu thành công!', 'success');
       } else if (type === 'user') {
         const userToDelete = users.find((u) => u.id === id);
         if (userToDelete && userToDelete.role === 'admin') {

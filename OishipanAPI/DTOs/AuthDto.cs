@@ -48,24 +48,4 @@ namespace OishipanAPI.DTOs
         public bool Success { get; set; }
         public string Message { get; set; }
     }
-
-    public class UserDto
-    {
-        public int UserId { get; set; }
-
-        [StringLength(100)]
-        public string FullName { get; set; }
-
-        [EmailAddress]
-        public string Email { get; set; }
-
-        [Phone]
-        public string PhoneNumber { get; set; }
-
-        public string Role { get; set; }
-
-        public string Address { get; set; }
-
-        public bool Status { get; set; }
-    }
 }
