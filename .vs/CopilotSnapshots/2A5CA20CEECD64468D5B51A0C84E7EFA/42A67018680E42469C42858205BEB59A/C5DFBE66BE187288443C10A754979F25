@@ -1,0 +1,197 @@
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+using OishipanMVC.Services;
+using OishipanAPI.DTOs;
+using System.Text.Json;
+
+namespace OishipanMVC.Areas.Admin.Controllers
+{
+    [Area("Admin")]
+    [Route("admin/users")]
+    [Authorize(Roles = "Admin,Staff")]
+    public class UsersController : Controller
+    {
+        private readonly IApiClient _apiClient;
+
+        public UsersController(IApiClient apiClient)
+        {
+            _apiClient = apiClient;
+        }
+
+        [HttpGet("")]
+        public async Task<IActionResult> Index(string role = null, bool? status = null, int page = 1, string search = null)
+        {
+            try
+            {
+                string query = $"/api/users?page={page}&pageSize=20";
+                if (!string.IsNullOrEmpty(role))
+                    query += $"&role={role}";
+                if (status.HasValue)
+                    query += $"&status={status.Value}";
+
+                UserListResponse result = null;
+
+                if (!string.IsNullOrEmpty(search))
+                {
+                    var users = await _apiClient.GetAsync<List<UserDto>>($"/api/users/search?searchTerm={Uri.EscapeDataString(search)}");
+                    result = new UserListResponse 
+                    { 
+                        Users = users ?? new List<UserDto>(), 
+                        Total = users?.Count ?? 0 
+                    };
+                }
+                else
+                {
+                    result = await _apiClient.GetAsync<UserListResponse>(query);
+                }
+
+                ViewBag.CurrentRole = role;
+                ViewBag.CurrentStatus = status;
+                ViewBag.SearchTerm = search;
+                ViewBag.CurrentPage = page;
+                ViewBag.TotalPages = (int)Math.Ceiling((result?.Total ?? 0) / 20.0);
+
+                return View(result?.Users ?? new List<UserDto>());
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Error = "Không thể tải danh sách người dùng: " + ex.Message;
+                return View(new List<UserDto>());
+            }
+        }
+
+        [HttpGet("create")]
+        [Authorize(Roles = "Admin")]
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost("create")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Create(CreateUserRequest request)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return View(request);
+                }
+
+                var response = await _apiClient.PostAsync<CreateUserRequest, dynamic>("/api/users", request);
+                
+                if (response != null && response.ToString().Contains("success"))
+                {
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    ViewBag.Error = "Không thể tạo người dùng. Kiểm tra dữ liệu nhập vào.";
+                    return View(request);
+                }
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Error = $"Lỗi khi tạo người dùng: {ex.Message}";
+                return View(request);
+            }
+        }
+
+        [HttpGet("edit/{id}")]
+        public async Task<IActionResult> Edit(int id)
+        {
+            try
+            {
+                var user = await _apiClient.GetAsync<UserDto>($"/api/users/{id}");
+                if (user == null)
+                {
+                    return NotFound();
+                }
+
+                var updateRequest = new UpdateUserRequest
+                {
+                    FullName = user.FullName,
+                    Email = user.Email,
+                    PhoneNumber = user.PhoneNumber,
+                    Address = user.Address,
+                    Role = user.Role,
+                    Status = user.Status
+                };
+
+                ViewBag.UserId = id;
+                return View(updateRequest);
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Error = "Không thể tải thông tin người dùng: " + ex.Message;
+                return RedirectToAction("Index");
+            }
+        }
+
+        [HttpPost("edit/{id}")]
+        public async Task<IActionResult> Edit(int id, UpdateUserRequest request)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    ViewBag.UserId = id;
+                    return View(request);
+                }
+
+                var response = await _apiClient.PutAsync<UpdateUserRequest, dynamic>($"/api/users/{id}", request);
+                
+                if (response != null && response.ToString().Contains("success"))
+                {
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    ViewBag.Error = "Không thể cập nhật người dùng.";
+                    ViewBag.UserId = id;
+                    return View(request);
+                }
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Error = $"Lỗi khi cập nhật người dùng: {ex.Message}";
+                ViewBag.UserId = id;
+                return View(request);
+            }
+        }
+
+        [HttpPost("delete/{id}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            try
+            {
+                var response = await _apiClient.DeleteAsync<dynamic>($"/api/users/{id}");
+                
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Error = $"Lỗi khi xóa người dùng: {ex.Message}";
+                return RedirectToAction("Index");
+            }
+        }
+
+        [HttpPost("toggle-status/{id}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> ToggleStatus(int id)
+        {
+            try
+            {
+                var response = await _apiClient.PostAsync<object, dynamic>($"/api/users/{id}/toggle-status", new { });
+                
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Error = $"Lỗi khi cập nhật trạng thái: {ex.Message}";
+                return RedirectToAction("Index");
+            }
+        }
+    }
+}

@@ -1,0 +1,52 @@
+@model IEnumerable<OishipanMVC.Models.CategoryViewModel>
+
+@{
+    ViewData["Title"] = "Quản lý danh mục";
+}
+
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h4 class="fw-semibold">Danh mục sản phẩm</h4>
+            <p class="text-muted mb-0">Xem tất cả danh mục và thêm danh mục mới cho cửa hàng.</p>
+        </div>
+        <a href="/admin/categories/create" class="btn btn-success rounded-pill px-4">Thêm danh mục mới</a>
+    </div>
+
+    @if (!string.IsNullOrEmpty(ViewBag.Error))
+    {
+        <div class="alert alert-danger">@ViewBag.Error</div>
+    }
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-secondary">Chưa có danh mục nào. Hãy tạo danh mục trước khi thêm sản phẩm.</div>
+    }
+    else
+    {
+        <div class="row g-4 admin-list-grid">
+            @foreach (var category in Model)
+            {
+                var initials = !string.IsNullOrWhiteSpace(category.CategoryName) ? category.CategoryName.Substring(0, 1).ToUpper() : "C";
+                <div class="col-12 col-md-6 col-xl-4">
+                    <div class="card admin-list-card shadow-sm">
+                        <div class="d-flex align-items-center gap-3 mb-3">
+                            <div class="admin-list-avatar admin-list-avatar-alt">@initials</div>
+                            <div>
+                                <h5 class="mb-1">@category.CategoryName</h5>
+                                <p class="text-muted small mb-0">Mã: @category.CategoryId</p>
+                            </div>
+                        </div>
+                        <p class="text-muted mb-0">@(!string.IsNullOrWhiteSpace(category.Description) ? category.Description : "Chưa có mô tả danh mục.")</p>
+                        <div class="d-flex justify-content-end mt-3">
+                            <a href="/admin/categories/edit/@category.CategoryId" class="btn btn-sm btn-outline-light me-2">Sửa</a>
+                            <form method="post" action="/admin/categories/delete/@category.CategoryId" onsubmit="return confirm('Bạn có chắc chắn muốn xóa danh mục này?');">
+                                <button type="submit" class="btn btn-sm btn-danger">Xóa</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>

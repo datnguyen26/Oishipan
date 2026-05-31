@@ -1,0 +1,66 @@
+@model OishipanMVC.Models.UserViewModel
+
+@{
+    ViewData["Title"] = "Thêm người dùng mới";
+}
+
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h4 class="fw-semibold">Thêm người dùng mới</h4>
+            <p class="text-muted mb-0">Tạo tài khoản cho người dùng mới trong hệ thống.</p>
+        </div>
+        <a href="/admin/users" class="btn btn-outline-light rounded-pill">Quay lại danh sách</a>
+    </div>
+
+    @if (!string.IsNullOrEmpty(ViewBag.Error))
+    {
+        <div class="alert alert-danger">@ViewBag.Error</div>
+    }
+
+    <div class="card admin-panel-card shadow-sm rounded-4 p-4">
+        <form method="post" action="/admin/users/create">
+            <div class="row g-4">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label class="form-label">Họ tên</label>
+                        <input type="text" name="fullName" class="form-control form-control-dark" placeholder="Nhập họ tên" required />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Email</label>
+                        <input type="email" name="email" class="form-control form-control-dark" placeholder="Nhập email" required />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Số điện thoại</label>
+                        <input type="tel" name="phoneNumber" class="form-control form-control-dark" placeholder="Nhập số điện thoại" />
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label class="form-label">Mật khẩu</label>
+                        <input type="password" name="password" class="form-control form-control-dark" placeholder="Nhập mật khẩu (tối thiểu 6 ký tự)" required />
+                        <small class="text-muted">Mật khẩu phải có ít nhất 6 ký tự</small>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Địa chỉ</label>
+                        <input type="text" name="address" class="form-control form-control-dark" placeholder="Nhập địa chỉ" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Vai trò</label>
+                        <select name="role" class="form-select form-control-dark">
+                            <option value="User">Người dùng</option>
+                            <option value="Staff">Nhân viên</option>
+                            <option value="Admin">Quản trị viên</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-4">
+                <button type="submit" class="btn btn-success rounded-pill px-4">Tạo người dùng</button>
+                <a href="/admin/users" class="btn btn-outline-light rounded-pill px-4 ms-2">Hủy</a>
+            </div>
+        </form>
+    </div>
+</div>

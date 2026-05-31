@@ -1,0 +1,149 @@
+@model OishipanMVC.Models.ProductViewModel
+
+@{
+    ViewData["Title"] = "Thêm sản phẩm mới";
+}
+
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h4 class="fw-semibold">Thêm sản phẩm mới</h4>
+            <p class="text-muted mb-0">Điền đầy đủ thông tin sản phẩm và upload ảnh để hiển thị trên cửa hàng.</p>
+        </div>
+        <a href="/admin/products" class="btn btn-outline-light rounded-pill">Quay lại danh sách</a>
+    </div>
+
+    @if (!string.IsNullOrEmpty(ViewBag.Error))
+    {
+        <div class="alert alert-danger">@ViewBag.Error</div>
+    }
+
+    <div class="card admin-panel-card shadow-sm rounded-4 p-4">
+        <form method="post" enctype="multipart/form-data">
+            <div class="row g-4">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label class="form-label">Tên sản phẩm</label>
+                        <input type="text" name="name" class="form-control form-control-dark" value="@Model?.Name" required />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Giá</label>
+                        <input type="number" name="price" class="form-control form-control-dark" step="0.01" min="0" value="@Model?.Price" required />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Số lượng</label>
+                        <input type="number" name="quantity" class="form-control form-control-dark" min="1" value="@Model?.Quantity" required />
+                    </div>
+                    @{
+                        var categories = ViewBag.Categories as List<OishipanMVC.Models.CategoryViewModel> ?? new List<OishipanMVC.Models.CategoryViewModel>();
+                        var brands = ViewBag.Brands as List<OishipanMVC.Models.BrandViewModel> ?? new List<OishipanMVC.Models.BrandViewModel>();
+                    }
+                    <div class="mb-3">
+                        <label class="form-label">Danh mục</label>
+                        <select name="categoryId" class="form-select form-control-dark" required>
+                            <option value="">Chọn danh mục</option>
+                            @foreach (var category in categories)
+                            {
+                                <option value="@category.CategoryId" selected="@(Model?.CategoryId == category.CategoryId ? "selected" : null)">@category.CategoryName</option>
+                            }
+                        </select>
+                        <small class="text-muted">Chọn danh mục đã tạo trong hệ thống.</small>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Thương hiệu</label>
+                        <select name="brandId" class="form-select form-control-dark" required>
+                            <option value="">Chọn thương hiệu</option>
+                            @foreach (var brand in brands)
+                            {
+                                <option value="@brand.BrandId" selected="@(Model?.BrandId == brand.BrandId ? "selected" : null)">@brand.BrandName</option>
+                            }
+                        </select>
+                        <small class="text-muted">Chọn thương hiệu đã tạo trong hệ thống.</small>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label class="form-label">Mô tả</label>
+                        <textarea name="description" class="form-control form-control-dark" rows="8">@Model?.Description</textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Ảnh sản phẩm</label>
+                        <input type="file" name="imageFile" class="form-control form-control-dark" accept="image/*" required />
+                        <small class="text-muted">Ảnh sẽ được upload đến Cloudinary và gắn vào sản phẩm.</small>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Biến thể sản phẩm</label>
+                        <div id="variantsList" class="mb-2"></div>
+                        <button type="button" id="addVariant" class="btn btn-sm btn-outline-light">Thêm biến thể</button>
+                        <input type="hidden" name="variantsJson" id="variantsJson" value='@Model?.VariantsJson' />
+                        <small class="text-muted d-block">Thêm các biến thể (ví dụ: size, màu) dưới dạng danh sách.</small>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-4">
+                <button type="submit" class="btn btn-success rounded-pill px-4">Tạo sản phẩm</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        (function () {
+            const variantsList = document.getElementById('variantsList');
+            const addBtn = document.getElementById('addVariant');
+            const hidden = document.getElementById('variantsJson');
+
+            function render(items) {
+                variantsList.innerHTML = '';
+                items.forEach((v, i) => {
+                    const row = document.createElement('div');
+                    row.className = 'd-flex gap-2 mb-2';
+                    row.innerHTML = `<input class="form-control form-control-dark" placeholder="Tên biến thể (ví dụ: Size M, Đỏ)" value="${(v.name||'')}" data-index="${i}" />` +
+                        `<input class="form-control form-control-dark" placeholder="Số lượng" style="width:120px;" value="${(v.quantity||'0')}" data-index-q="${i}" />` +
+                        `<button type="button" class="btn btn-sm btn-danger" data-remove="${i}">Xóa</button>`;
+                    variantsList.appendChild(row);
+                });
+
+                // attach events
+                variantsList.querySelectorAll('[data-remove]').forEach(b => b.addEventListener('click', function () {
+                    const idx = Number(this.getAttribute('data-remove'));
+                    items.splice(idx, 1);
+                    sync();
+                }));
+
+                variantsList.querySelectorAll('input[data-index]').forEach(inp => inp.addEventListener('input', function () {
+                    const idx = Number(this.getAttribute('data-index'));
+                    items[idx].name = this.value;
+                    sync();
+                }));
+
+                variantsList.querySelectorAll('input[data-index-q]').forEach(inp => inp.addEventListener('input', function () {
+                    const idx = Number(this.getAttribute('data-index-q'));
+                    items[idx].quantity = Number(this.value) || 0;
+                    sync();
+                }));
+            }
+
+            function sync() {
+                hidden.value = JSON.stringify(window.__variants);
+                render(window.__variants);
+            }
+
+            window.__variants = [];
+            try {
+                const initial = hidden.value && hidden.value.length ? JSON.parse(hidden.value) : [];
+                if (Array.isArray(initial)) window.__variants = initial;
+            } catch (e) { window.__variants = []; }
+
+            render(window.__variants);
+
+            addBtn.addEventListener('click', function () {
+                window.__variants.push({ name: '', quantity: 0 });
+                sync();
+            });
+        })();
+    </script>
+}

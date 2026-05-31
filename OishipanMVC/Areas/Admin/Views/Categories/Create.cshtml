@@ -1,0 +1,32 @@
+@{
+    ViewData["Title"] = "Thêm danh mục mới";
+}
+
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h4 class="fw-semibold">Thêm danh mục mới</h4>
+            <p class="text-muted mb-0">Tạo danh mục mới để dùng cho sản phẩm.</p>
+        </div>
+        <a href="/admin/categories" class="btn btn-outline-light rounded-pill">Quay lại danh sách</a>
+    </div>
+
+    @if (!string.IsNullOrEmpty(ViewBag.Error))
+    {
+        <div class="alert alert-danger">@ViewBag.Error</div>
+    }
+
+    <div class="card admin-panel-card shadow-sm rounded-4 p-4">
+        <form method="post">
+            <div class="mb-3">
+                <label class="form-label">Tên danh mục</label>
+                <input type="text" name="categoryName" class="form-control form-control-dark" required />
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Mô tả</label>
+                <textarea name="description" class="form-control form-control-dark" rows="4"></textarea>
+            </div>
+            <button type="submit" class="btn btn-success rounded-pill px-4">Tạo danh mục</button>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,83 @@
+﻿@model OishipanMVC.Models.ProductViewModel
+
+@{
+    ViewData["Title"] = "Thêm sản phẩm mới";
+}
+
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h4 class="fw-semibold">Thêm sản phẩm mới</h4>
+            <p class="text-muted mb-0">Điền đầy đủ thông tin sản phẩm và upload ảnh để hiển thị trên cửa hàng.</p>
+        </div>
+        <a href="/admin/products" class="btn btn-outline-light rounded-pill">Quay lại danh sách</a>
+    </div>
+
+    @if (!string.IsNullOrEmpty(ViewBag.Error))
+    {
+        <div class="alert alert-danger">@ViewBag.Error</div>
+    }
+
+    <div class="card admin-panel-card shadow-sm rounded-4 p-4">
+        <form method="post" enctype="multipart/form-data">
+            <div class="row g-4">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label class="form-label">Tên sản phẩm</label>
+                        <input type="text" name="name" class="form-control form-control-dark" value="@Model?.Name" required />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Giá</label>
+                        <input type="number" name="price" class="form-control form-control-dark" step="0.01" min="0" value="@Model?.Price" required />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Số lượng</label>
+                        <input type="number" name="quantity" class="form-control form-control-dark" min="1" value="@Model?.Quantity" required />
+                    </div>
+                    @{
+                        var categories = ViewBag.Categories as List<OishipanMVC.Models.CategoryViewModel> ?? new List<OishipanMVC.Models.CategoryViewModel>();
+                        var brands = ViewBag.Brands as List<OishipanMVC.Models.BrandViewModel> ?? new List<OishipanMVC.Models.BrandViewModel>();
+                    }
+                    <div class="mb-3">
+                        <label class="form-label">Danh mục</label>
+                        <select name="categoryId" class="form-select form-control-dark" required>
+                            <option value="">Chọn danh mục</option>
+                            @foreach (var category in categories)
+                            {
+                                <option value="@category.CategoryId">@category.CategoryName</option>
+                            }
+                        </select>
+                        <small class="text-muted">Chọn danh mục đã tạo trong hệ thống.</small>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Thương hiệu</label>
+                        <select name="brandId" class="form-select form-control-dark" required>
+                            <option value="">Chọn thương hiệu</option>
+                            @foreach (var brand in brands)
+                            {
+                                <option value="@brand.BrandId">@brand.BrandName</option>
+                            }
+                        </select>
+                        <small class="text-muted">Chọn thương hiệu đã tạo trong hệ thống.</small>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label class="form-label">Mô tả</label>
+                        <textarea name="description" class="form-control form-control-dark" rows="8">@Model?.Description</textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Ảnh sản phẩm</label>
+                        <input type="file" name="imageFile" class="form-control form-control-dark" accept="image/*" required />
+                        <small class="text-muted">Ảnh sẽ được upload đến Cloudinary và gắn vào sản phẩm.</small>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-4">
+                <button type="submit" class="btn btn-success rounded-pill px-4">Tạo sản phẩm</button>
+            </div>
+        </form>
+    </div>
+</div>
