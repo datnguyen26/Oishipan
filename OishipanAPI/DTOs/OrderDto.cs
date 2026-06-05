@@ -48,19 +48,4 @@ namespace OishipanAPI.DTOs
         public string Vnp_ResponseCode { get; set; }
         public DateTime PaymentDate { get; set; }
     }
-
-    public class VoucherDto
-    {
-        public int VoucherId { get; set; }
-        public string Code { get; set; }
-        public decimal DiscountValue { get; set; }
-        public DateTime ExpiryDate { get; set; }
-    }
-
-    public class CreateVoucherDto
-    {
-        public string Code { get; set; }
-        public decimal DiscountValue { get; set; }
-        public DateTime ExpiryDate { get; set; }
-    }
 }

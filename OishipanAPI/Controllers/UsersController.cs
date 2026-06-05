@@ -329,5 +329,31 @@ namespace OishipanAPI.Controllers
                 return StatusCode(500, new { success = false, message = "Lỗi khi xóa người dùng" });
             }
         }
+
+        /// <summary>
+        /// Tải lên ảnh đại diện người dùng (chỉ Admin)
+        /// </summary>
+        /// <param name="id">ID của người dùng</param>
+        /// <param name="file">File ảnh</param>
+        /// <returns>Thông báo kết quả</returns>
+        /// <response code="200">Tải lên thành công</response>
+        /// <response code="400">File không hợp lệ</response>
+        /// <response code="404">Không tìm thấy người dùng</response>
+        [HttpPost("{id}/upload-image")]
+        [ProducesResponseType(typeof(object), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(object), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(object), StatusCodes.Status404NotFound)]
+        [Authorize(Roles = "Admin,Staff")]
+        public async Task<IActionResult> UploadUserImage(int id, IFormFile file)
+        {
+            if (file == null || file.Length == 0)
+                return BadRequest(new { message = "File không hợp lệ" });
+
+            var user = await _userService.GetUserByIdAsync(id);
+            if (user == null)
+                return NotFound(new { message = "Người dùng không tồn tại" });
+
+            return Ok(new { message = "User image upload feature - to be implemented with Cloudinary" });
+        }
     }
 }

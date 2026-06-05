@@ -97,11 +97,41 @@ namespace OishipanMVC.Services
                     : $"{response.StatusCode}: {response.ReasonPhrase}";
 
                 var baseUrl = _httpClient.BaseAddress?.ToString() ?? "unknown";
-                Console.WriteLine($"❌ API Error [{response.StatusCode}] {endpoint} @ {baseUrl}: {errorMessage}");
+                var token = _httpContextAccessor.HttpContext?.Session?.GetString("ApiToken");
+                var hasToken = !string.IsNullOrWhiteSpace(token);
+                
+                Console.WriteLine($"❌ API Error [{response.StatusCode}] {endpoint} @ {baseUrl} [Auth: {(hasToken ? "Yes" : "No")}]: {errorMessage}");
+                
+                // Handle specific error codes
+                if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                {
+                    throw new UnauthorizedAccessException($"Unauthorized: {errorMessage}");
+                }
+                
                 throw new Exception($"API request failed: {response.StatusCode} - {errorMessage}");
             }
 
-            return JsonSerializer.Deserialize<T>(responseContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true })!;
+            if (string.IsNullOrWhiteSpace(responseContent) || response.StatusCode == System.Net.HttpStatusCode.NoContent)
+            {
+                if (typeof(T).IsGenericType && typeof(T).GetGenericTypeDefinition() == typeof(List<>))
+                {
+                    return (T)Activator.CreateInstance(typeof(T))!;
+                }
+
+                return default!;
+            }
+
+            try
+            {
+                return JsonSerializer.Deserialize<T>(responseContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true })!;
+            }
+            catch (JsonException ex)
+            {
+                var baseUrl = _httpClient.BaseAddress?.ToString() ?? "unknown";
+                var message = $"Failed to deserialize JSON from '{endpoint}' (Status: {response.StatusCode}). Content: {responseContent}. BaseUrl: {baseUrl}";
+                Console.WriteLine($"❌ JSON PARSE: {message}");
+                throw new Exception(message, ex);
+            }
         }
 
         public async Task<T> PutAsync<T>(string endpoint, object data)
@@ -113,14 +143,51 @@ namespace OishipanMVC.Services
                 return await _httpClient.PutAsync(endpoint, content);
             });
 
-            response.EnsureSuccessStatusCode();
             var responseContent = await response.Content.ReadAsStringAsync();
+            
+            if (!response.IsSuccessStatusCode)
+            {
+                var errorMessage = !string.IsNullOrWhiteSpace(responseContent)
+                    ? responseContent
+                    : $"{response.StatusCode}: {response.ReasonPhrase}";
+
+                var baseUrl = _httpClient.BaseAddress?.ToString() ?? "unknown";
+                var token = _httpContextAccessor.HttpContext?.Session?.GetString("ApiToken");
+                var hasToken = !string.IsNullOrWhiteSpace(token);
+                
+                Console.WriteLine($"❌ API Error [{response.StatusCode}] {endpoint} @ {baseUrl} [Auth: {(hasToken ? "Yes" : "No")}]: {errorMessage}");
+                
+                if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                {
+                    throw new UnauthorizedAccessException($"Unauthorized: {errorMessage}");
+                }
+                
+                throw new Exception($"API request failed: {response.StatusCode} - {errorMessage}");
+            }
+
+            if (string.IsNullOrWhiteSpace(responseContent) || response.StatusCode == System.Net.HttpStatusCode.NoContent)
+            {
+                if (typeof(T).IsGenericType && typeof(T).GetGenericTypeDefinition() == typeof(List<>))
+                {
+                    return (T)Activator.CreateInstance(typeof(T))!;
+                }
+
+                return default!;
+            }
+
             return JsonSerializer.Deserialize<T>(responseContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true })!;
         }
 
         public async Task<bool> DeleteAsync(string endpoint)
         {
             var response = await SendAsync(endpoint, () => _httpClient.DeleteAsync(endpoint));
+            
+            if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+            {
+                var errorContent = await response.Content.ReadAsStringAsync();
+                throw new UnauthorizedAccessException($"Unauthorized: {errorContent}");
+            }
+            
             return response.IsSuccessStatusCode;
         }
 
@@ -136,7 +203,16 @@ namespace OishipanMVC.Services
                     : $"{response.StatusCode}: {response.ReasonPhrase}";
 
                 var baseUrl = _httpClient.BaseAddress?.ToString() ?? "unknown";
-                Console.WriteLine($"❌ API Error [{response.StatusCode}] {endpoint} @ {baseUrl}: {errorMessage}");
+                var token = _httpContextAccessor.HttpContext?.Session?.GetString("ApiToken");
+                var hasToken = !string.IsNullOrWhiteSpace(token);
+                
+                Console.WriteLine($"❌ API Error [{response.StatusCode}] {endpoint} @ {baseUrl} [Auth: {(hasToken ? "Yes" : "No")}]: {errorMessage}");
+                
+                if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                {
+                    throw new UnauthorizedAccessException($"Unauthorized: {errorMessage}");
+                }
+                
                 throw new Exception($"API request failed: {response.StatusCode} - {errorMessage}");
             }
 

@@ -132,5 +132,22 @@ namespace OishipanAPI.Controllers
 
             return Ok(new { message = "Category deleted successfully" });
         }
+
+        [Authorize(Roles = "Admin,Staff")]
+        [HttpPost("{id}/upload-image")]
+        [ProducesResponseType(typeof(object), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(object), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(object), StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> UploadCategoryImage(int id, IFormFile file)
+        {
+            if (file == null || file.Length == 0)
+                return BadRequest(new { message = "File không hợp lệ" });
+
+            var category = await _context.Categories.FindAsync(id);
+            if (category == null)
+                return NotFound(new { message = "Category not found" });
+
+            return Ok(new { message = "Category image upload feature - to be implemented with Cloudinary" });
+        }
     }
 }

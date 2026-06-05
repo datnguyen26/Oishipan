@@ -220,7 +220,7 @@ namespace OishipanMVC.Controllers
 
         [Authorize]
         [HttpPost("cap-nhat-ho-so")]
-        public async Task<IActionResult> UpdateProfile(string fullName, string phoneNumber, string address)
+        public async Task<IActionResult> UpdateProfile(string fullName, string phoneNumber, string address, IFormFile profileImage)
         {
             try
             {
@@ -253,7 +253,34 @@ namespace OishipanMVC.Controllers
                 var updateRequest = new { fullName, phoneNumber, address };
                 var result = await _apiClient.PutAsync<JsonElement>($"/api/auth/update-profile/{userId}", updateRequest);
 
+                // Upload profile image if provided
+                if (profileImage != null && profileImage.Length > 0)
+                {
+                    try
+                    {
+                        using (var form = new MultipartFormDataContent())
+                        {
+                            var fileContent = new StreamContent(profileImage.OpenReadStream());
+                            fileContent.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse(profileImage.ContentType);
+                            form.Add(fileContent, "file", profileImage.FileName);
+
+                            var imageUploadResult = await _apiClient.PostFormAsync<JsonElement>($"/api/auth/upload-profile-image/{userId}", form);
+                        }
+                    }
+                    catch (Exception imgEx)
+                    {
+                        // Log image upload error but still succeed profile update
+                        ViewBag.Warning = "Cập nhật hồ sơ thành công nhưng tải ảnh thất bại: " + imgEx.Message;
+                        return await Profile();
+                    }
+                }
+
                 ViewBag.Success = "Cập nhật hồ sơ thành công";
+                return await Profile();
+            }
+            catch (UnauthorizedAccessException)
+            {
+                ViewBag.Error = "Bạn không có quyền cập nhật hồ sơ này";
                 return await Profile();
             }
             catch (Exception ex)

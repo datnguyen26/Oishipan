@@ -47,6 +47,16 @@
             <response code="200">Cập nhật thành công</response>
             <response code="404">Người dùng không tồn tại</response>
         </member>
+        <member name="M:OishipanAPI.Controllers.AuthController.UploadProfileImage(System.Int32,Microsoft.AspNetCore.Http.IFormFile)">
+            <summary>
+            Tải lên ảnh hồ sơ người dùng
+            </summary>
+            <param name="userId">ID của người dùng</param>
+            <returns>URL của ảnh</returns>
+            <response code="200">Tải lên thành công</response>
+            <response code="400">File không hợp lệ</response>
+            <response code="404">Người dùng không tồn tại</response>
+        </member>
         <member name="T:OishipanAPI.Controllers.OrdersController">
             <summary>
             API cho quản lý đơn hàng
@@ -291,6 +301,17 @@
             <response code="404">Không tìm thấy người dùng</response>
             <response code="401">Không được phép</response>
         </member>
+        <member name="M:OishipanAPI.Controllers.UsersController.UploadUserImage(System.Int32,Microsoft.AspNetCore.Http.IFormFile)">
+            <summary>
+            Tải lên ảnh đại diện người dùng (chỉ Admin)
+            </summary>
+            <param name="id">ID của người dùng</param>
+            <param name="file">File ảnh</param>
+            <returns>Thông báo kết quả</returns>
+            <response code="200">Tải lên thành công</response>
+            <response code="400">File không hợp lệ</response>
+            <response code="404">Không tìm thấy người dùng</response>
+        </member>
         <member name="T:OishipanAPI.Controllers.VouchersController">
             <summary>
             API cho quản lý mã khuyến mại (voucher)
@@ -298,48 +319,53 @@
         </member>
         <member name="M:OishipanAPI.Controllers.VouchersController.GetVoucherByCode(System.String)">
             <summary>
-            Lấy voucher theo mã
+            Lấy voucher theo mã (Public)
             </summary>
-            <param name="code">Mã voucher</param>
-            <returns>Thông tin voucher</returns>
-            <response code="200">Lấy thông tin thành công</response>
-            <response code="404">Voucher không tồn tại</response>
         </member>
         <member name="M:OishipanAPI.Controllers.VouchersController.ValidateVoucher(System.String)">
             <summary>
-            Kiểm tra tính hợp lệ của voucher
+            Kiểm tra tính hợp lệ của voucher (Public)
             </summary>
-            <param name="code">Mã voucher</param>
-            <returns>Trạng thái hợp lệ</returns>
-            <response code="200">Kiểm tra thành công</response>
         </member>
         <member name="M:OishipanAPI.Controllers.VouchersController.GetAllVouchers">
             <summary>
-            Lấy danh sách tất cả voucher (Chỉ Admin)
+            Lấy danh sách tất cả voucher (Admin only)
             </summary>
-            <returns>Danh sách voucher</returns>
-            <response code="200">Lấy danh sách thành công</response>
-            <response code="401">Không được phép</response>
+        </member>
+        <member name="M:OishipanAPI.Controllers.VouchersController.GetVoucherById(System.Int32)">
+            <summary>
+            Lấy chi tiết voucher theo ID (Admin only)
+            </summary>
         </member>
         <member name="M:OishipanAPI.Controllers.VouchersController.CreateVoucher(OishipanAPI.DTOs.CreateVoucherDto)">
             <summary>
-            Tạo voucher mới (Chỉ Admin)
+            Tạo voucher mới (Admin only)
             </summary>
-            <param name="dto">Thông tin voucher</param>
-            <returns>Voucher vừa tạo</returns>
-            <response code="201">Tạo thành công</response>
-            <response code="400">Dữ liệu không hợp lệ</response>
-            <response code="401">Không được phép</response>
+        </member>
+        <member name="M:OishipanAPI.Controllers.VouchersController.UpdateVoucher(System.Int32,OishipanAPI.DTOs.UpdateVoucherDto)">
+            <summary>
+            Cập nhật voucher (Admin only)
+            </summary>
         </member>
         <member name="M:OishipanAPI.Controllers.VouchersController.DeleteVoucher(System.Int32)">
             <summary>
-            Xóa voucher (Chỉ Admin)
+            Xóa voucher (Admin only)
             </summary>
-            <param name="id">ID voucher</param>
-            <returns>Thông báo xóa thành công</returns>
-            <response code="200">Xóa thành công</response>
-            <response code="404">Voucher không tồn tại</response>
-            <response code="401">Không được phép</response>
+        </member>
+        <member name="T:OishipanAPI.DTOs.VoucherDto">
+            <summary>
+            DTO cho Voucher - Dữ liệu trả về khi GET
+            </summary>
+        </member>
+        <member name="T:OishipanAPI.DTOs.CreateVoucherDto">
+            <summary>
+            DTO cho tạo Voucher mới
+            </summary>
+        </member>
+        <member name="T:OishipanAPI.DTOs.UpdateVoucherDto">
+            <summary>
+            DTO cho cập nhật Voucher
+            </summary>
         </member>
         <member name="T:OishipanAPI.Migrations.InitialCreate">
             <inheritdoc />
@@ -387,6 +413,18 @@
             <inheritdoc />
         </member>
         <member name="M:OishipanAPI.Migrations.UpdateAccountRoleEnum.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:OishipanAPI.Migrations.AddImageFieldToAccount">
+            <inheritdoc />
+        </member>
+        <member name="M:OishipanAPI.Migrations.AddImageFieldToAccount.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:OishipanAPI.Migrations.AddImageFieldToAccount.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:OishipanAPI.Migrations.AddImageFieldToAccount.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <inheritdoc />
         </member>
         <member name="T:Oishipan.Models.Role">

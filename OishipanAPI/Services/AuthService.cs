@@ -9,11 +9,13 @@ namespace OishipanAPI.Services
     {
         private readonly OishipanContext _context;
         private readonly JwtTokenGenerator _jwtGenerator;
+        private readonly ICloudinaryService _cloudinaryService;
 
-        public AuthService(OishipanContext context, JwtTokenGenerator jwtGenerator)
+        public AuthService(OishipanContext context, JwtTokenGenerator jwtGenerator, ICloudinaryService cloudinaryService = null)
         {
             _context = context;
             _jwtGenerator = jwtGenerator;
+            _cloudinaryService = cloudinaryService;
         }
 
         public async Task<LoginResponse> LoginAsync(LoginRequest request)
@@ -181,6 +183,35 @@ namespace OishipanAPI.Services
 
             await _context.SaveChangesAsync();
             return true;
+        }
+
+        public async Task<bool> UploadProfileImageAsync(int userId, IFormFile file)
+        {
+            var user = await _context.Accounts.FindAsync(userId);
+
+            if (user == null)
+                return false;
+
+            if (_cloudinaryService == null)
+                throw new InvalidOperationException("Cloudinary service not configured");
+
+            try
+            {
+                var imageUrl = await _cloudinaryService.UploadImageAsync(file, "oishipan/profiles");
+
+                if (imageUrl == null)
+                    throw new Exception("Failed to upload image to Cloudinary");
+
+                user.Image = imageUrl;
+                _context.Accounts.Update(user);
+                await _context.SaveChangesAsync();
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error uploading profile image: {ex.Message}", ex);
+            }
         }
     }
 }

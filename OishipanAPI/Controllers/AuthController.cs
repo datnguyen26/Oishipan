@@ -113,5 +113,36 @@ namespace OishipanAPI.Controllers
 
             return Ok(new { message = "Profile updated successfully" });
         }
+
+        /// <summary>
+        /// Tải lên ảnh hồ sơ người dùng
+        /// </summary>
+        /// <param name="userId">ID của người dùng</param>
+        /// <returns>URL của ảnh</returns>
+        /// <response code="200">Tải lên thành công</response>
+        /// <response code="400">File không hợp lệ</response>
+        /// <response code="404">Người dùng không tồn tại</response>
+        [HttpPost("upload-profile-image/{userId}")]
+        [ProducesResponseType(typeof(object), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(object), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(object), StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> UploadProfileImage(int userId, IFormFile file)
+        {
+            if (file == null || file.Length == 0)
+                return BadRequest(new { message = "File không hợp lệ" });
+
+            try
+            {
+                var success = await _authService.UploadProfileImageAsync(userId, file);
+                if (!success)
+                    return NotFound(new { message = "Người dùng không tồn tại" });
+
+                return Ok(new { message = "Ảnh hồ sơ được tải lên thành công" });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = "Lỗi tải lên ảnh: " + ex.Message });
+            }
+        }
     }
 }

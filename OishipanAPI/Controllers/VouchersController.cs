@@ -21,14 +21,10 @@ namespace OishipanAPI.Controllers
         }
 
         /// <summary>
-        /// Lấy voucher theo mã
+        /// Lấy voucher theo mã (Public)
         /// </summary>
-        /// <param name="code">Mã voucher</param>
-        /// <returns>Thông tin voucher</returns>
-        /// <response code="200">Lấy thông tin thành công</response>
-        /// <response code="404">Voucher không tồn tại</response>
         [HttpGet("{code}")]
-        [ProducesResponseType(typeof(object), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(VoucherDto), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(object), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetVoucherByCode(string code)
         {
@@ -41,11 +37,8 @@ namespace OishipanAPI.Controllers
         }
 
         /// <summary>
-        /// Kiểm tra tính hợp lệ của voucher
+        /// Kiểm tra tính hợp lệ của voucher (Public)
         /// </summary>
-        /// <param name="code">Mã voucher</param>
-        /// <returns>Trạng thái hợp lệ</returns>
-        /// <response code="200">Kiểm tra thành công</response>
         [HttpGet("{code}/validate")]
         [ProducesResponseType(typeof(object), StatusCodes.Status200OK)]
         public async Task<IActionResult> ValidateVoucher(string code)
@@ -56,14 +49,11 @@ namespace OishipanAPI.Controllers
         }
 
         /// <summary>
-        /// Lấy danh sách tất cả voucher (Chỉ Admin)
+        /// Lấy danh sách tất cả voucher (Admin only)
         /// </summary>
-        /// <returns>Danh sách voucher</returns>
-        /// <response code="200">Lấy danh sách thành công</response>
-        /// <response code="401">Không được phép</response>
         [Authorize(Roles = "Admin")]
         [HttpGet]
-        [ProducesResponseType(typeof(IEnumerable<object>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(List<VoucherDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(object), StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> GetAllVouchers()
         {
@@ -72,39 +62,77 @@ namespace OishipanAPI.Controllers
         }
 
         /// <summary>
-        /// Tạo voucher mới (Chỉ Admin)
+        /// Lấy chi tiết voucher theo ID (Admin only)
         /// </summary>
-        /// <param name="dto">Thông tin voucher</param>
-        /// <returns>Voucher vừa tạo</returns>
-        /// <response code="201">Tạo thành công</response>
-        /// <response code="400">Dữ liệu không hợp lệ</response>
-        /// <response code="401">Không được phép</response>
+        [Authorize(Roles = "Admin")]
+        [HttpGet("id/{id}")]
+        [ProducesResponseType(typeof(VoucherDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(object), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(object), StatusCodes.Status401Unauthorized)]
+        public async Task<IActionResult> GetVoucherById(int id)
+        {
+            var voucher = await _voucherService.GetVoucherByIdAsync(id);
+
+            if (voucher == null)
+                return NotFound(new { message = "Voucher not found" });
+
+            return Ok(voucher);
+        }
+
+        /// <summary>
+        /// Tạo voucher mới (Admin only)
+        /// </summary>
         [Authorize(Roles = "Admin")]
         [HttpPost]
-        [ProducesResponseType(typeof(object), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(VoucherDto), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(object), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(object), StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> CreateVoucher([FromBody] CreateVoucherDto dto)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+            try
+            {
+                if (!ModelState.IsValid)
+                    return BadRequest(ModelState);
 
-            var voucher = await _voucherService.CreateVoucherAsync(dto);
+                var voucher = await _voucherService.CreateVoucherAsync(dto);
 
-            if (voucher == null)
-                return BadRequest(new { message = "Failed to create voucher" });
-
-            return CreatedAtAction(nameof(GetVoucherByCode), new { code = voucher.Code }, voucher);
+                return CreatedAtAction(nameof(GetVoucherById), new { id = voucher.VoucherId }, voucher);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
         }
 
         /// <summary>
-        /// Xóa voucher (Chỉ Admin)
+        /// Cập nhật voucher (Admin only)
         /// </summary>
-        /// <param name="id">ID voucher</param>
-        /// <returns>Thông báo xóa thành công</returns>
-        /// <response code="200">Xóa thành công</response>
-        /// <response code="404">Voucher không tồn tại</response>
-        /// <response code="401">Không được phép</response>
+        [Authorize(Roles = "Admin")]
+        [HttpPut("{id}")]
+        [ProducesResponseType(typeof(VoucherDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(object), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(object), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(object), StatusCodes.Status401Unauthorized)]
+        public async Task<IActionResult> UpdateVoucher(int id, [FromBody] UpdateVoucherDto dto)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                    return BadRequest(ModelState);
+
+                var voucher = await _voucherService.UpdateVoucherAsync(id, dto);
+
+                return Ok(voucher);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return NotFound(new { message = ex.Message });
+            }
+        }
+
+        /// <summary>
+        /// Xóa voucher (Admin only)
+        /// </summary>
         [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         [ProducesResponseType(typeof(object), StatusCodes.Status200OK)]

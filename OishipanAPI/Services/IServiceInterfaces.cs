@@ -8,6 +8,7 @@ namespace OishipanAPI.Services
         Task<RegisterResponse> RegisterAsync(RegisterRequest request);
         Task<UserDto> GetUserByIdAsync(int userId);
         Task<bool> UpdateUserAsync(int userId, string fullName, string phoneNumber, string address);
+        Task<bool> UploadProfileImageAsync(int userId, IFormFile file);
     }
 
     public interface IProductService
@@ -41,8 +42,10 @@ namespace OishipanAPI.Services
     public interface IVoucherService
     {
         Task<VoucherDto> GetVoucherByCodeAsync(string code);
+        Task<VoucherDto> GetVoucherByIdAsync(int id);
         Task<List<VoucherDto>> GetAllVouchersAsync();
         Task<VoucherDto> CreateVoucherAsync(CreateVoucherDto dto);
+        Task<VoucherDto> UpdateVoucherAsync(int id, UpdateVoucherDto dto);
         Task<bool> DeleteVoucherAsync(int voucherId);
         Task<bool> IsVoucherValidAsync(string code);
     }

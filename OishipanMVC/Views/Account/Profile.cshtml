@@ -30,7 +30,7 @@
 
                     @if (Model != null)
                     {
-                        <form method="post" action="/cap-nhat-ho-so">
+                        <form method="post" action="/cap-nhat-ho-so" enctype="multipart/form-data">
                             <div class="mb-4">
                                 <label for="userId" class="form-label fw-semibold">ID Tài khoản</label>
                                 <input type="text" class="form-control rounded-4" id="userId" name="userId" value="@Model?.GetProperty("userId").GetInt32()" readonly>
@@ -39,6 +39,15 @@
                             <div class="mb-4">
                                 <label for="email" class="form-label fw-semibold">Email</label>
                                 <input type="email" class="form-control rounded-4" id="email" name="email" value="@Model?.GetProperty("email").GetString()" readonly>
+                            </div>
+
+                            <div class="mb-4">
+                                <label for="profileImage" class="form-label fw-semibold">Ảnh đại diện</label>
+                                <div style="margin-bottom: 12px;">
+                                    <img id="imagePreview" src="https://ui-avatars.com/api/?name=@System.Net.WebUtility.UrlEncode(Model?.GetProperty("fullName").GetString())&background=7c3aed&color=fff&size=128" alt="Avatar" style="width: 100px; height: 100px; border-radius: 8px; object-fit: cover;" />
+                                </div>
+                                <input type="file" class="form-control rounded-4" id="profileImage" name="profileImage" accept="image/*" onchange="previewProfileImage(event)">
+                                <small class="text-muted">Chọn ảnh để cập nhật ảnh đại diện</small>
                             </div>
 
                             <div class="mb-4">
@@ -85,6 +94,17 @@
 </div>
 
 <script>
+    function previewProfileImage(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('imagePreview').src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+
     document.getElementById('fullName').addEventListener('blur', function() {
         const fullNameError = document.getElementById('fullNameError');
         if (this.value.trim().length < 3) {

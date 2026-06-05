@@ -152,12 +152,23 @@ namespace OishipanMVC.Areas.Admin.Controllers
         {
             try
             {
-                await _apiClient.DeleteAsync($"/api/users/{id}");
+                var success = await _apiClient.DeleteAsync($"/api/users/{id}");
+                if (!success)
+                {
+                    TempData["Error"] = "Không thể xóa người dùng này.";
+                    return RedirectToAction("Index");
+                }
+                TempData["Success"] = "Xóa người dùng thành công";
+                return RedirectToAction("Index");
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                TempData["Error"] = "Bạn không có quyền xóa người dùng này.";
                 return RedirectToAction("Index");
             }
             catch (Exception ex)
             {
-                ViewBag.Error = "Lỗi: " + ex.Message;
+                TempData["Error"] = "Lỗi khi xóa người dùng: " + ex.Message;
                 return RedirectToAction("Index");
             }
         }

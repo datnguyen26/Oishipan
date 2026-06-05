@@ -19,9 +19,17 @@
     }
 
     <div class="card admin-panel-card shadow-sm rounded-4 p-4">
-        <form method="post" action="/admin/users/create">
+        <form method="post" action="/admin/users/create" enctype="multipart/form-data">
             <div class="row g-4">
                 <div class="col-md-6">
+                    <div class="mb-3">
+                        <label class="form-label">Ảnh đại diện</label>
+                        <div style="margin-bottom: 12px;">
+                            <img id="userImagePreview" src="https://ui-avatars.com/api/?name=User&background=7c3aed&color=fff&size=128" alt="Preview" style="width: 100px; height: 100px; border-radius: 8px; object-fit: cover;" />
+                        </div>
+                        <input type="file" class="form-control form-control-dark" name="userImage" accept="image/*" onchange="previewUserImage(event)">
+                        <small class="text-muted">Chọn ảnh để xem trước</small>
+                    </div>
                     <div class="mb-3">
                         <label class="form-label">Họ tên</label>
                         <input type="text" name="fullName" class="form-control form-control-dark" placeholder="Nhập họ tên" required />
@@ -64,3 +72,16 @@
         </form>
     </div>
 </div>
+
+<script>
+    function previewUserImage(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('userImagePreview').src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+</script>

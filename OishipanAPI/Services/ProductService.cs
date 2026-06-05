@@ -149,13 +149,32 @@ namespace OishipanAPI.Services
 
         public async Task<ProductDto> CreateProductAsync(CreateProductDto dto)
         {
-            if (dto == null || string.IsNullOrWhiteSpace(dto.Name) || dto.Price <= 0 || dto.Quantity <= 0 || dto.CategoryId <= 0 || dto.BrandId <= 0)
+            // Validate required fields
+            if (dto == null)
                 return null;
 
-            var categoryExists = await _context.Categories.AnyAsync(c => c.CategoryId == dto.CategoryId);
-            var brandExists = await _context.Brands.AnyAsync(b => b.BrandId == dto.BrandId);
+            if (string.IsNullOrWhiteSpace(dto.Name))
+                return null;
 
-            if (!categoryExists || !brandExists)
+            if (dto.Price <= 0)
+                return null;
+
+            if (dto.Quantity < 0)
+                return null;
+
+            if (dto.CategoryId <= 0)
+                return null;
+
+            if (dto.BrandId <= 0)
+                return null;
+
+            // Verify that Category and Brand exist
+            var categoryExists = await _context.Categories.AnyAsync(c => c.CategoryId == dto.CategoryId);
+            if (!categoryExists)
+                return null;
+
+            var brandExists = await _context.Brands.AnyAsync(b => b.BrandId == dto.BrandId);
+            if (!brandExists)
                 return null;
 
             var product = new Product
@@ -165,8 +184,9 @@ namespace OishipanAPI.Services
                 Quantity = dto.Quantity,
                 CategoryId = dto.CategoryId,
                 BrandId = dto.BrandId,
-                Description = dto.Description,
-                VariantsJson = dto.VariantsJson
+                Description = string.IsNullOrWhiteSpace(dto.Description) ? string.Empty : dto.Description.Trim(),
+                VariantsJson = string.IsNullOrWhiteSpace(dto.VariantsJson) ? string.Empty : dto.VariantsJson,
+                Image = string.Empty
             };
 
             _context.Products.Add(product);
@@ -175,8 +195,16 @@ namespace OishipanAPI.Services
             {
                 await _context.SaveChangesAsync();
             }
-            catch (DbUpdateException)
+            catch (DbUpdateException ex)
             {
+                // Log the exception details for debugging
+                System.Diagnostics.Debug.WriteLine($"DbUpdateException: {ex.InnerException?.Message}");
+                return null;
+            }
+            catch (Exception ex)
+            {
+                // Log any other exception
+                System.Diagnostics.Debug.WriteLine($"Exception: {ex.Message}");
                 return null;
             }
 
@@ -190,15 +218,52 @@ namespace OishipanAPI.Services
             if (product == null)
                 return null;
 
-            product.Name = dto.Name ?? product.Name;
-            product.Price = dto.Price > 0 ? dto.Price : product.Price;
-            product.Quantity = dto.Quantity > 0 ? dto.Quantity : product.Quantity;
-            product.CategoryId = dto.CategoryId > 0 ? dto.CategoryId : product.CategoryId;
-            product.BrandId = dto.BrandId > 0 ? dto.BrandId : product.BrandId;
-            product.Description = dto.Description ?? product.Description;
-            product.VariantsJson = dto.VariantsJson ?? product.VariantsJson;
+            // Update only non-null/non-zero fields
+            if (!string.IsNullOrWhiteSpace(dto.Name))
+                product.Name = dto.Name.Trim();
 
-            await _context.SaveChangesAsync();
+            if (dto.Price > 0)
+                product.Price = dto.Price;
+
+            if (dto.Quantity >= 0)
+                product.Quantity = dto.Quantity;
+
+            if (dto.CategoryId > 0)
+            {
+                var categoryExists = await _context.Categories.AnyAsync(c => c.CategoryId == dto.CategoryId);
+                if (!categoryExists)
+                    return null;
+                product.CategoryId = dto.CategoryId;
+            }
+
+            if (dto.BrandId > 0)
+            {
+                var brandExists = await _context.Brands.AnyAsync(b => b.BrandId == dto.BrandId);
+                if (!brandExists)
+                    return null;
+                product.BrandId = dto.BrandId;
+            }
+
+            if (!string.IsNullOrWhiteSpace(dto.Description))
+                product.Description = dto.Description.Trim();
+
+            if (!string.IsNullOrWhiteSpace(dto.VariantsJson))
+                product.VariantsJson = dto.VariantsJson;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateException ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"DbUpdateException: {ex.InnerException?.Message}");
+                return null;
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Exception: {ex.Message}");
+                return null;
+            }
 
             return await GetProductByIdAsync(product.ProductId);
         }

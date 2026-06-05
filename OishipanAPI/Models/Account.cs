@@ -29,6 +29,8 @@ namespace Oishipan.Models
 
         public string? Address { get; set; }
 
+        public string? Image { get; set; }
+
         public bool Status { get; set; } = true;
 
         public virtual ICollection<Order> Orders { get; set; } = new List<Order>();

@@ -126,9 +126,15 @@ namespace OishipanMVC.Areas.Admin.Controllers
 
                 return RedirectToAction("Index");
             }
+            catch (UnauthorizedAccessException ex)
+            {
+                ViewBag.Error = "Bạn không có quyền tạo sản phẩm. Vui lòng đăng nhập với tài khoản Admin hoặc Staff.";
+                await LoadCategoryBrandLists();
+                return View(model);
+            }
             catch (Exception ex)
             {
-                ViewBag.Error = "Lỗi: " + ex.Message;
+                ViewBag.Error = "Lỗi khi lưu sản phẩm: " + ex.Message;
                 await LoadCategoryBrandLists();
             }
 
@@ -210,9 +216,15 @@ namespace OishipanMVC.Areas.Admin.Controllers
 
                 return RedirectToAction("Index");
             }
+            catch (UnauthorizedAccessException ex)
+            {
+                ViewBag.Error = "Bạn không có quyền cập nhật sản phẩm. Vui lòng đăng nhập với tài khoản Admin hoặc Staff.";
+                await LoadCategoryBrandLists();
+                return View();
+            }
             catch (Exception ex)
             {
-                ViewBag.Error = "Lỗi: " + ex.Message;
+                ViewBag.Error = "Lỗi khi cập nhật sản phẩm: " + ex.Message;
                 await LoadCategoryBrandLists();
             }
 
@@ -227,9 +239,14 @@ namespace OishipanMVC.Areas.Admin.Controllers
                 await _apiClient.DeleteAsync($"/api/products/{id}");
                 return RedirectToAction("Index");
             }
+            catch (UnauthorizedAccessException ex)
+            {
+                TempData["Error"] = "Bạn không có quyền xóa sản phẩm.";
+                return RedirectToAction("Index");
+            }
             catch (Exception ex)
             {
-                ViewBag.Error = "Lỗi: " + ex.Message;
+                TempData["Error"] = "Lỗi khi xóa sản phẩm: " + ex.Message;
                 return RedirectToAction("Index");
             }
         }

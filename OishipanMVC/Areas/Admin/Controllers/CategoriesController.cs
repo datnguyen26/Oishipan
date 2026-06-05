@@ -124,12 +124,18 @@ namespace OishipanMVC.Areas.Admin.Controllers
         {
             try
             {
-                await _apiClient.DeleteAsync($"/api/categories/{id}");
+                var success = await _apiClient.DeleteAsync($"/api/categories/{id}");
+                if (!success)
+                {
+                    TempData["Error"] = "Không thể xóa danh mục này. Danh mục có chứa sản phẩm.";
+                    return RedirectToAction("Index");
+                }
+                TempData["Success"] = "Xóa danh mục thành công";
                 return RedirectToAction("Index");
             }
             catch (Exception ex)
             {
-                ViewBag.Error = "Lỗi khi xóa danh mục: " + ex.Message;
+                TempData["Error"] = "Lỗi khi xóa danh mục: " + ex.Message;
                 return RedirectToAction("Index");
             }
         }
