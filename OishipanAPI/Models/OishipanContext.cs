@@ -23,6 +23,14 @@ namespace Oishipan.Models
             modelBuilder.Entity<Account>()
                 .HasIndex(a => a.PhoneNumber).IsUnique();
 
+            // Cấu hình Role enum lưu dưới dạng chuỗi và map tới cột Role
+            modelBuilder.Entity<Account>()
+                .Property(a => a.UserRole)
+                .HasConversion<string>()
+                .HasMaxLength(20)
+                .HasColumnName("Role")
+                .IsRequired();
+
             // Cấu hình Unique cho Voucher Code
             modelBuilder.Entity<Voucher>()
                 .HasIndex(v => v.Code).IsUnique();

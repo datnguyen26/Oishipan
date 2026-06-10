@@ -13,31 +13,46 @@
         <a href="/admin" class="btn btn-outline-secondary rounded-pill">Quay lại Dashboard</a>
     </div>
 
-    <div class="card shadow-sm rounded-4 p-4">
-        <div class="table-responsive">
-            <table class="table align-middle">
-                <thead class="table-light">
-                    <tr>
-                        <th>Mã đơn</th>
-                        <th>Khách hàng</th>
-                        <th>Giá trị</th>
-                        <th>Trạng thái</th>
-                        <th>Ngày đặt</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var order in Model)
-                    {
+    <div class="card admin-panel-card shadow-sm rounded-4 p-4">
+        @if (!string.IsNullOrEmpty(ViewBag.Error))
+        {
+            <div class="alert alert-danger">@ViewBag.Error</div>
+        }
+        @if (!Model.Any())
+        {
+            <div class="text-center py-5 text-muted">
+                <i class="bi bi-inbox" style="font-size: 48px; opacity: 0.4;"></i>
+                <h5 class="mt-3">Không tìm thấy đơn hàng</h5>
+                <p class="mb-0">Dữ liệu đơn hàng sẽ hiển thị khi kết nối đến cơ sở dữ liệu thành công.</p>
+            </div>
+        }
+        else
+        {
+            <div class="table-responsive">
+                <table class="table align-middle table-dark table-admin">
+                    <thead>
                         <tr>
-                            <td>@order.OrderId</td>
-                            <td>@order.CustomerName</td>
-                            <td>@order.TotalAmount.ToString("N0")₫</td>
-                            <td><span class="badge bg-info text-dark">@order.Status</span></td>
-                            <td>@order.CreatedAt.ToString("dd/MM/yyyy HH:mm")</td>
+                            <th>Mã đơn</th>
+                            <th>Khách hàng</th>
+                            <th>Giá trị</th>
+                            <th>Trạng thái</th>
+                            <th>Ngày đặt</th>
                         </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
+                    </thead>
+                    <tbody>
+                        @foreach (var order in Model)
+                        {
+                            <tr>
+                                <td>@order.OrderId</td>
+                                <td>@order.CustomerName</td>
+                                <td>@order.TotalAmount.ToString("N0")₫</td>
+                                <td><span class="badge badge-status badge-@order.Status.ToLower().Replace(" ", "-")">@order.Status</span></td>
+                                <td>@order.CreatedAt.ToString("dd/MM/yyyy HH:mm")</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
     </div>
 </div>

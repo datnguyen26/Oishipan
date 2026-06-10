@@ -1,0 +1,323 @@
+/* Admin area styles */
+:root {
+    color-scheme: dark;
+}
+
+body {
+    background: radial-gradient(circle at top, #0f172a 0%, #08101f 45%, #02040a 100%);
+    color: #e2e8f0;
+}
+
+.admin-sidebar {
+    width: 280px;
+    min-height: 100vh;
+    background: linear-gradient(180deg, #060b17 0%, #081025 100%);
+    border-right: 1px solid rgba(148, 163, 184, 0.12);
+}
+
+.admin-sidebar a {
+    color: #cbd5e1;
+}
+
+.admin-sidebar a:hover,
+.admin-sidebar a.active {
+    color: #ffffff;
+    background: rgba(56, 189, 248, 0.15);
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.06);
+}
+
+.admin-sidebar h4 {
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: #f8fafc;
+}
+
+.admin-topbar {
+    background: rgba(12, 18, 32, 0.95);
+    color: #f8fafc;
+    border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+    min-height: 96px;
+}
+
+.admin-topbar .btn {
+    border-color: rgba(148, 163, 184, 0.16);
+}
+
+.admin-topbar .btn:hover {
+    background: rgba(56, 189, 248, 0.14);
+    color: #ffffff;
+}
+
+.admin-content {
+    padding: 2rem 2rem 3rem;
+}
+
+.metric-card,
+.admin-panel-card {
+    background: rgba(12, 18, 32, 0.95);
+    border: 1px solid rgba(148, 163, 184, 0.08);
+    box-shadow: 0 28px 80px rgba(7, 14, 33, 0.25);
+    border-radius: 1.75rem;
+}
+
+.metric-card {
+    padding: 1.75rem;
+    min-height: 170px;
+}
+
+.metric-label {
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    font-size: 0.82rem;
+    color: #94a3b8;
+    margin-bottom: 0.85rem;
+}
+
+.metric-value {
+    font-size: 2.6rem;
+    font-weight: 700;
+    line-height: 1;
+    margin-bottom: 0.5rem;
+    color: #ffffff;
+}
+
+.metric-description {
+    color: #94a3b8;
+    margin-bottom: 0;
+}
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1.5rem;
+}
+
+.admin-panel-card .table-admin {
+    border-collapse: separate;
+    border-spacing: 0 0.75rem;
+}
+
+.table-admin thead tr {
+    border-bottom: none;
+}
+
+.table-admin thead th {
+    color: #cbd5e1;
+    border: none;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+}
+
+.table-admin tbody tr {
+    background: rgba(15, 23, 42, 0.9);
+    border-radius: 1rem;
+    transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.table-admin tbody tr:hover {
+    transform: translateY(-2px);
+    background: rgba(30, 41, 59, 0.95);
+}
+
+.table-admin tbody td {
+    border: none;
+    vertical-align: middle;
+        color: #f8fafc;
+    }
+
+    .text-muted {
+        color: #cbd5e1 !important;
+    }
+
+    .badge-outline {
+        background: rgba(56, 189, 248, 0.16);
+        color: #dbeafe;
+        border: 1px solid rgba(56, 189, 248, 0.32);
+    }
+
+    .admin-panel-card .alert {
+        color: #e2e8f0;
+        background: rgba(15, 23, 42, 0.9);
+        border-color: rgba(148, 163, 184, 0.12);
+    overflow: hidden;
+    border-radius: 1.25rem;
+}
+
+.badge-status {
+    padding: 0.65rem 0.95rem;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    border-radius: 999px;
+    font-weight: 700;
+}
+
+.badge-status.badge-đang-xử-lý,
+.badge-status.badge-pending,
+.badge-status.badge-chờ-xử-lý {
+    background: #facc15;
+    color: #0f172a;
+}
+
+.badge-status.badge-đã-giao,
+.badge-status.badge-success,
+.badge-status.badge-completed {
+    background: #22c55e;
+    color: #02160c;
+}
+
+.badge-status.badge-chờ-thanh-toán,
+.badge-status.badge-warning {
+    background: #0ea5e9;
+    color: #ecfeff;
+}
+
+.badge-status.badge-huỷ,
+.badge-status.badge-cancelled,
+.badge-status.badge-đã-hủy {
+    background: #f87171;
+    color: #7f1d1d;
+}
+
+.admin-product-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.5rem;
+}
+
+.admin-product-card {
+    overflow: hidden;
+    background: linear-gradient(180deg, rgba(15, 23, 42, 0.95) 0%, rgba(15, 23, 42, 0.85) 100%);
+    border: 1px solid rgba(148, 163, 184, 0.08);
+}
+
+.admin-product-card-body {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+}
+
+.admin-product-image {
+    min-height: 240px;
+    background-size: cover;
+    background-position: center;
+}
+
+.admin-product-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.product-price {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #a5f3fc;
+}
+
+.badge-outline {
+    background: rgba(56, 189, 248, 0.12);
+    color: #bae6fd;
+    border: 1px solid rgba(56, 189, 248, 0.24);
+}
+
+.product-description {
+    color: #94a3b8;
+    min-height: 3rem;
+}
+
+.btn-outline-light {
+    color: #e2e8f0;
+    border-color: rgba(226, 232, 240, 0.24);
+}
+
+.btn-outline-light:hover {
+        background: rgba(226, 232, 240, 0.12);
+        border-color: rgba(226, 232, 240, 0.4);
+    }
+
+    .btn-outline-secondary {
+        color: #e2e8f0;
+        border-color: rgba(148, 163, 184, 0.24);
+    }
+
+    .btn-outline-secondary:hover {
+        background: rgba(148, 163, 184, 0.12);
+        color: #ffffff;
+    }
+
+    .form-control-dark,
+    .form-select.form-control-dark {
+        background: rgba(15, 23, 42, 0.92);
+        border: 1px solid rgba(148, 163, 184, 0.22);
+        color: #f8fafc;
+    }
+
+    /* Ensure labels and file input text are readable on dark admin panels */
+    .admin-panel-card .form-label {
+        color: #f8fafc;
+    }
+
+    /* Some browsers render file input captions differently; force light color */
+    input[type="file"].form-control-dark,
+    input[type="file"].form-control {
+        color: #f8fafc;
+        background: rgba(15, 23, 42, 0.92);
+        border: 1px solid rgba(148, 163, 184, 0.22);
+    }
+
+    /* Make sure the file select button is visible on dark backgrounds */
+    input[type="file"]::file-selector-button {
+        background: rgba(255,255,255,0.06);
+        color: #ffffff;
+        border: 1px solid rgba(255,255,255,0.06);
+        padding: 0.4rem 0.8rem;
+        border-radius: 0.375rem;
+    }
+
+    .form-control-dark::placeholder,
+    .form-select.form-control-dark option {
+        color: rgba(226, 232, 240, 0.65);
+    }
+
+    .form-control-dark:focus,
+    .form-select.form-control-dark:focus {
+        box-shadow: 0 0 0 0.2rem rgba(56, 189, 248, 0.18);
+        background: rgba(15, 23, 42, 1);
+        color: #ffffff;
+    }
+
+    .admin-edit-image-preview {
+        width: 100%;
+        min-height: 220px;
+        background-size: cover;
+        background-position: center;
+        border-radius: 1rem;
+        border: 1px solid rgba(148, 163, 184, 0.16);
+    }
+
+    .admin-product-card-body {
+        grid-template-columns: 1fr;
+    }
+
+@media (max-width: 768px) {
+    .admin-sidebar {
+        width: 100%;
+        position: initial;
+    }
+
+    .admin-topbar {
+        min-height: auto;
+    }
+
+    .admin-content {
+        padding: 1.25rem;
+    }
+
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .admin-product-grid {
+        grid-template-columns: 1fr;
+    }
+}

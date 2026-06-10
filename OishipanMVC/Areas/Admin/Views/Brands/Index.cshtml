@@ -1,0 +1,52 @@
+@model IEnumerable<OishipanMVC.Models.BrandViewModel>
+
+@{
+    ViewData["Title"] = "Quản lý thương hiệu";
+}
+
+<div class="container-fluid">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h4 class="fw-semibold">Thương hiệu</h4>
+            <p class="text-muted mb-0">Quản lý thương hiệu (mô tả) để gán cho sản phẩm.</p>
+        </div>
+        <a href="/admin/brands/create" class="btn btn-success rounded-pill px-4">Thêm thương hiệu mới</a>
+    </div>
+
+    @if (!string.IsNullOrEmpty(ViewBag.Error))
+    {
+        <div class="alert alert-danger">@ViewBag.Error</div>
+    }
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-secondary">Chưa có thương hiệu nào. Hãy tạo thương hiệu trước khi thêm sản phẩm.</div>
+    }
+    else
+    {
+        <div class="row g-4 admin-list-grid">
+            @foreach (var brand in Model)
+            {
+                var initials = !string.IsNullOrWhiteSpace(brand.BrandName) ? brand.BrandName.Substring(0, 1).ToUpper() : "B";
+                <div class="col-12 col-md-6 col-xl-4">
+                    <div class="card admin-list-card shadow-sm">
+                        <div class="d-flex align-items-center gap-3 mb-3">
+                            <div class="admin-list-avatar">@initials</div>
+                            <div>
+                                <h5 class="mb-1">@brand.BrandName</h5>
+                                <p class="text-muted small mb-0">Mã: @brand.BrandId</p>
+                            </div>
+                        </div>
+                        <p class="text-muted mb-0">@(!string.IsNullOrWhiteSpace(brand.Description) ? brand.Description : "Chưa có mô tả thương hiệu.")</p>
+                        <div class="d-flex justify-content-end mt-3">
+                            <a href="/admin/brands/edit/@brand.BrandId" class="btn btn-sm btn-outline-light me-2">Sửa</a>
+                            <form method="post" action="/admin/brands/delete/@brand.BrandId" onsubmit="return confirm('Bạn có chắc chắn muốn xóa thương hiệu này?');">
+                                <button type="submit" class="btn btn-sm btn-danger">Xóa</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>

@@ -1,0 +1,274 @@
+﻿using Microsoft.EntityFrameworkCore;
+using System.Text.Json;
+using OishipanAPI.Services;
+using CloudinaryDotNet;
+using Oishipan.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using Microsoft.OpenApi.Models;
+using System.IO;
+using System.Reflection;
+using OishipanAPI.Utilities;
+
+var builder = WebApplication.CreateBuilder(args);
+
+// Add services to the container
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+    });
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(options =>
+{
+    // Basic API info
+    options.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "Oishipan API",
+        Version = "v1",
+        Description = "Oishipan API - Swagger documentation"
+    });
+
+    // JWT Bearer token support in Swagger
+    var bearerScheme = new OpenApiSecurityScheme
+    {
+        Name = "Authorization",
+        Type = SecuritySchemeType.Http,
+        Scheme = "bearer",
+        BearerFormat = "JWT",
+        In = ParameterLocation.Header,
+        Description = "Enter 'Bearer {token}'"
+    };
+
+    options.AddSecurityDefinition("Bearer", bearerScheme);
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        [bearerScheme] = new string[] { }
+    });
+
+    // Include XML comments if available
+    try
+    {
+        var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+        var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+        if (File.Exists(xmlPath)) options.IncludeXmlComments(xmlPath);
+    }
+    catch
+    {
+        // ignore missing xml
+    }
+});
+
+// Database configuration
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") 
+    ?? throw new InvalidOperationException("DefaultConnection is not configured in appsettings.json");
+
+if (string.IsNullOrWhiteSpace(connectionString))
+{
+    throw new InvalidOperationException("DefaultConnection cannot be empty");
+}
+
+builder.Services.AddDbContext<OishipanContext>(options =>
+    options.UseSqlServer(connectionString));
+
+
+
+// Cloudinary configuration
+var cloudinarySettings = builder.Configuration.GetSection("Cloudinary");
+var cloudName = cloudinarySettings["CloudName"] ?? throw new InvalidOperationException("Cloudinary CloudName is not configured");
+var apiKey = cloudinarySettings["ApiKey"] ?? throw new InvalidOperationException("Cloudinary ApiKey is not configured");
+var apiSecret = cloudinarySettings["ApiSecret"] ?? throw new InvalidOperationException("Cloudinary ApiSecret is not configured");
+
+var cloudinary = new Cloudinary(new CloudinaryDotNet.Account(
+    cloudName,
+    apiKey,
+    apiSecret
+));
+builder.Services.AddSingleton(cloudinary);
+
+// Register services
+builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<IOrderService, OrderService>();
+builder.Services.AddScoped<ICloudinaryService, CloudinaryService>();
+builder.Services.AddScoped<IVoucherService, VoucherService>();
+
+// Configure JWT authentication
+var jwtSettings = builder.Configuration.GetSection("Jwt");
+var secretKey = jwtSettings["SecretKey"];
+if (string.IsNullOrWhiteSpace(secretKey))
+{
+    throw new InvalidOperationException("JWT SecretKey is not configured in appsettings.json");
+}
+var keyBytes = Encoding.UTF8.GetBytes(secretKey);
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+    .AddJwtBearer(options =>
+    {
+        options.RequireHttpsMetadata = false;
+        options.SaveToken = true;
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidIssuer = jwtSettings["Issuer"],
+            ValidateAudience = true,
+            ValidAudience = jwtSettings["Audience"],
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(keyBytes),
+            ValidateLifetime = true,
+            ClockSkew = TimeSpan.Zero
+        };
+    });
+
+// Register JWT token generator
+builder.Services.AddSingleton<JwtTokenGenerator>();
+
+
+
+// CORS configuration
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll",
+        builder => builder
+            .AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader());
+});
+
+var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<OishipanContext>();
+    try
+    {
+        // Check if database can connect
+        if (context.Database.CanConnect())
+        {
+            Console.WriteLine("✓ Database connection successful");
+
+            // Get pending migrations
+            var pendingMigrations = context.Database.GetPendingMigrations().ToList();
+
+            if (pendingMigrations.Count > 0)
+            {
+                Console.WriteLine($"Applying {pendingMigrations.Count} pending migration(s)...");
+                context.Database.Migrate();
+                Console.WriteLine("✓ Migrations applied successfully");
+            }
+            else
+            {
+                Console.WriteLine("✓ No pending migrations");
+            }
+        }
+        else
+        {
+            Console.WriteLine("Database connection failed, attempting to create...");
+            context.Database.EnsureCreated();
+            Console.WriteLine("✓ Database created");
+        }
+    }
+    catch (InvalidOperationException ex) when (ex.Message.Contains("already an object named"))
+    {
+        // Migration conflict: table already exists, skip migration
+        Console.WriteLine($"⚠ Migration skipped: {ex.Message}");
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"✗ Database error: {ex.Message}");
+        try
+        {
+            context.Database.EnsureCreated();
+            Console.WriteLine("✓ Database created via EnsureCreated");
+        }
+        catch (Exception ex2)
+        {
+            Console.WriteLine($"✗ Failed to create database: {ex2.Message}");
+            throw;
+        }
+    }
+
+    // Seed admin account if doesn't exist
+    try
+    {
+        if (!context.Accounts.Any(a => a.Role == "Admin"))
+        {
+            context.Accounts.Add(new Oishipan.Models.Account
+            {
+                FullName = "Oishipan Admin",
+                Email = "admin@oishipan.com",
+                PhoneNumber = "0123456789",
+                Password = PasswordHelper.HashPassword("Admin@123"),
+                Role = "Admin",
+                Address = "Văn phòng Oishipan",
+                Status = true
+            });
+            context.SaveChanges();
+            Console.WriteLine("✓ Admin account created");
+        }
+        else
+        {
+            Console.WriteLine("✓ Admin account already exists");
+        }
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"✗ Error seeding admin: {ex.Message}");
+    }
+}
+
+// THÊM DÒNG NÀY VÀO ĐÂY (Phải nằm trên các app.Use khác)
+app.UseMiddleware<OishipanAPI.Middlewares.ExceptionMiddleware>();
+
+// Configure the HTTP request pipeline
+// Enable Swagger JSON in all environments
+app.UseSwagger();
+
+// Enable Swagger UI in all environments (can be restricted to Development for production security)
+app.UseSwaggerUI(c =>
+{
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Oishipan API v1.0");
+    c.RoutePrefix = "swagger";
+    c.DocumentTitle = "Oishipan API Documentation";
+    c.DefaultModelsExpandDepth(2);
+    c.DisplayOperationId();
+});
+
+// Disable HTTPS redirection in development
+if (!app.Environment.IsDevelopment())
+{
+    app.UseHttpsRedirection();
+}
+
+app.UseCors("AllowAll");
+
+app.UseAuthentication();
+app.UseAuthorization();
+
+// Add a root endpoint
+app.MapGet("/", () => Results.Json(new { message = "Oishipan API is running!", docs = "/swagger" }));
+
+// Health check endpoint
+app.MapGet("/health", () => Results.Ok(new { status = "healthy" }));
+
+app.MapControllers();
+
+try
+{
+    app.Run();
+}
+catch (Exception ex)
+{
+    Console.WriteLine($"Fatal error: {ex.Message}");
+    Console.WriteLine($"Stack trace: {ex.StackTrace}");
+    if (ex.InnerException != null)
+    {
+        Console.WriteLine($"Inner exception: {ex.InnerException.Message}");
+    }
+    Environment.Exit(1);
+}

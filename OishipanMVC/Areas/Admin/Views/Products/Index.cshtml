@@ -5,12 +5,15 @@
 }
 
 <div class="container-fluid">
-    <div class="d-flex justify-content-between align-items-center mb-4">
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4 gap-3">
         <div>
             <h4 class="fw-semibold">Danh sách sản phẩm</h4>
-            <p class="text-muted mb-0">Quản lý sản phẩm hiện có và đánh giá trạng thái.</p>
+            <p class="text-muted mb-0">Quản lý sản phẩm hiện có và thêm mới nhanh chóng.</p>
         </div>
-        <a href="/admin" class="btn btn-outline-secondary rounded-pill">Quay lại Dashboard</a>
+        <div class="d-flex gap-2 flex-wrap">
+            <a href="/admin/products/create" class="btn btn-success rounded-pill px-4">Thêm sản phẩm mới</a>
+            <a href="/admin" class="btn btn-outline-secondary rounded-pill">Quay lại Dashboard</a>
+        </div>
     </div>
 
     @if (!string.IsNullOrEmpty(ViewBag.Error))
@@ -24,26 +27,31 @@
     }
     else
     {
-        <div class="row g-4">
+        <div class="row g-4 admin-product-grid">
             @foreach (var product in Model)
             {
                 <div class="col-12 col-lg-6">
-                    <div class="card shadow-sm rounded-4 overflow-hidden">
-                        <div class="row g-0">
-                            <div class="col-sm-4">
-                                <img src="@product.ImageUrl" class="img-fluid h-100 object-fit-cover" alt="@product.Name" />
-                            </div>
-                            <div class="col-sm-8">
-                                <div class="card-body">
-                                    <h5 class="card-title">@product.Name</h5>
-                                    <p class="text-muted mb-2">@product.CategoryName - @product.BrandName</p>
-                                    <p class="text-success fw-bold mb-2">@product.Price.ToString("N0")₫</p>
-                                    <p class="text-muted small">@product.Description</p>
-                                    <div class="d-flex justify-content-between align-items-center mt-3">
-                                        <span class="badge bg-success">Còn @product.Quantity</span>
-                                        <button class="btn btn-outline-primary btn-sm rounded-pill">Chỉnh sửa</button>
+                    <div class="card admin-product-card shadow-sm rounded-4 overflow-hidden">
+                        <div class="admin-product-card-body">
+                            <div class="admin-product-image" style="background-image: url('@product.ImageUrl');"></div>
+                            <div class="admin-product-info p-4">
+                                <div class="d-flex justify-content-between align-items-start mb-3">
+                                    <div>
+                                        <h5 class="card-title mb-1">@product.Name</h5>
+                                        <p class="text-muted small mb-0">@product.CategoryName • @product.BrandName</p>
+                                    </div>
+                                    <span class="badge badge-pill badge-outline">Còn @product.Quantity</span>
+                                </div>
+                                <div class="d-flex align-items-center justify-content-between gap-2 mb-3 flex-wrap">
+                                    <div class="product-price">@product.Price.ToString("N0")₫</div>
+                                    <div class="d-flex gap-2">
+                                        <a href="/admin/products/edit/@product.ProductId" class="btn btn-sm btn-primary rounded-pill">Chỉnh sửa</a>
+                                        <form class="delete-product-form" asp-action="Delete" asp-route-id="@product.ProductId" method="post">
+                                            <button type="submit" class="btn btn-sm btn-danger rounded-pill">Xóa</button>
+                                        </form>
                                     </div>
                                 </div>
+                                <p class="text-muted small product-description">@product.Description</p>
                             </div>
                         </div>
                     </div>
@@ -52,3 +60,15 @@
         </div>
     }
 </div>
+
+@section Scripts {
+    <script>
+        document.querySelectorAll('.delete-product-form').forEach(function(form) {
+            form.addEventListener('submit', function(event) {
+                if (!confirm('Bạn có chắc chắn muốn xóa sản phẩm này?')) {
+                    event.preventDefault();
+                }
+            });
+        });
+    </script>
+}

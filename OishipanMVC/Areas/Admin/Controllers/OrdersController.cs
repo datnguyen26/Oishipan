@@ -1,5 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using OishipanMVC.Areas.Admin.Models;
+using OishipanMVC.Services;
+using System.Linq;
 
 namespace OishipanMVC.Areas.Admin.Controllers
 {
@@ -7,15 +10,36 @@ namespace OishipanMVC.Areas.Admin.Controllers
     [Route("admin/orders")]
     public class OrdersController : Controller
     {
-        [HttpGet("")]
-        public IActionResult Index()
+        private readonly IApiClient _apiClient;
+
+        public OrdersController(IApiClient apiClient)
         {
-            var orders = new List<AdminOrderViewModel>
+            _apiClient = apiClient;
+        }
+
+        [HttpGet("")]
+        public async Task<IActionResult> Index()
+        {
+            var orders = new List<AdminOrderViewModel>();
+            try
             {
-                new AdminOrderViewModel { OrderId = 1023, CustomerName = "Nguyễn Văn A", TotalAmount = 850000, Status = "Đang xử lý", CreatedAt = DateTime.Now.AddDays(-1) },
-                new AdminOrderViewModel { OrderId = 1024, CustomerName = "Trần Thị B", TotalAmount = 950000, Status = "Đã giao", CreatedAt = DateTime.Now.AddDays(-2) },
-                new AdminOrderViewModel { OrderId = 1025, CustomerName = "Lê Văn C", TotalAmount = 780000, Status = "Chờ thanh toán", CreatedAt = DateTime.Now.AddHours(-5) },
-            };
+                var apiOrders = await _apiClient.GetAsync<List<AdminOrderDto>>("/api/orders");
+                if (apiOrders != null)
+                {
+                    orders = apiOrders.Select(o => new AdminOrderViewModel
+                    {
+                        OrderId = o.OrderId,
+                        CustomerName = $"Khách #{o.UserId}",
+                        TotalAmount = o.TotalAmount,
+                        Status = string.IsNullOrEmpty(o.Status) ? "Chờ xử lý" : o.Status,
+                        CreatedAt = o.OrderDate
+                    }).OrderByDescending(o => o.CreatedAt).ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Error = "Không thể tải đơn hàng từ cơ sở dữ liệu: " + ex.Message;
+            }
 
             return View(orders);
         }

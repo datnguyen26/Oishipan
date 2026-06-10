@@ -1,0 +1,441 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>OishipanAPI</name>
+    </assembly>
+    <members>
+        <member name="T:OishipanAPI.Controllers.AuthController">
+            <summary>
+            API cho quản lý xác thực người dùng (login, register, profile)
+            </summary>
+        </member>
+        <member name="M:OishipanAPI.Controllers.AuthController.Login(OishipanAPI.DTOs.LoginRequest)">
+            <summary>
+            Đăng nhập người dùng
+            </summary>
+            <param name="request">Thông tin đăng nhập (email, password)</param>
+            <returns>JWT token nếu thành công</returns>
+            <response code="200">Đăng nhập thành công</response>
+            <response code="401">Email hoặc mật khẩu không chính xác</response>
+            <response code="400">Dữ liệu không hợp lệ</response>
+        </member>
+        <member name="M:OishipanAPI.Controllers.AuthController.Register(OishipanAPI.DTOs.RegisterRequest)">
+            <summary>
+            Đăng ký tài khoản mới
+            </summary>
+            <param name="request">Thông tin đăng ký (email, password, fullName, phoneNumber)</param>
+            <returns>Thông báo đăng ký thành công</returns>
+            <response code="200">Đăng ký thành công</response>
+            <response code="400">Email đã tồn tại hoặc dữ liệu không hợp lệ</response>
+        </member>
+        <member name="M:OishipanAPI.Controllers.AuthController.GetProfile(System.Int32)">
+            <summary>
+            Lấy thông tin hồ sơ người dùng
+            </summary>
+            <param name="userId">ID của người dùng</param>
+            <returns>Thông tin hồ sơ người dùng</returns>
+            <response code="200">Lấy thông tin thành công</response>
+            <response code="404">Người dùng không tồn tại</response>
+        </member>
+        <member name="M:OishipanAPI.Controllers.AuthController.UpdateProfile(System.Int32,OishipanAPI.DTOs.UserDto)">
+            <summary>
+            Cập nhật thông tin hồ sơ người dùng
+            </summary>
+            <param name="userId">ID của người dùng</param>
+            <param name="request">Thông tin cần cập nhật</param>
+            <returns>Thông báo cập nhật thành công</returns>
+            <response code="200">Cập nhật thành công</response>
+            <response code="404">Người dùng không tồn tại</response>
+        </member>
+        <member name="M:OishipanAPI.Controllers.AuthController.UploadProfileImage(System.Int32,Microsoft.AspNetCore.Http.IFormFile)">
+            <summary>
+            Tải lên ảnh hồ sơ người dùng
+            </summary>
+            <param name="userId">ID của người dùng</param>
+            <returns>URL của ảnh</returns>
+            <response code="200">Tải lên thành công</response>
+            <response code="400">File không hợp lệ</response>
+            <response code="404">Người dùng không tồn tại</response>
+        </member>
+        <member name="T:OishipanAPI.Controllers.OrdersController">
+            <summary>
+            API cho quản lý đơn hàng
+            </summary>
+        </member>
+        <member name="M:OishipanAPI.Controllers.OrdersController.CreateOrder(OishipanAPI.DTOs.CreateOrderDto)">
+            <summary>
+            Tạo đơn hàng mới
+            </summary>
+            <param name="dto">Thông tin đơn hàng</param>
+            <returns>Đơn hàng vừa tạo</returns>
+            <response code="201">Tạo thành công</response>
+            <response code="400">Dữ liệu không hợp lệ</response>
+        </member>
+        <member name="M:OishipanAPI.Controllers.OrdersController.GetOrderById(System.Int32)">
+            <summary>
+            Lấy chi tiết đơn hàng theo ID
+            </summary>
+            <param name="id">ID đơn hàng</param>
+            <returns>Thông tin chi tiết đơn hàng</returns>
+            <response code="200">Lấy thông tin thành công</response>
+            <response code="404">Đơn hàng không tồn tại</response>
+        </member>
+        <member name="M:OishipanAPI.Controllers.OrdersController.GetMyOrders(System.Int32)">
+            <summary>
+            Lấy danh sách đơn hàng của người dùng
+            </summary>
+            <param name="userId">ID người dùng</param>
+            <returns>Danh sách đơn hàng</returns>
+            <response code="200">Lấy danh sách thành công</response>
+        </member>
+        <member name="M:OishipanAPI.Controllers.OrdersController.GetAllOrders">
+            <summary>
+            Lấy danh sách tất cả đơn hàng
+            </summary>
+            <returns>Danh sách đơn hàng</returns>
+            <response code="200">Lấy danh sách thành công</response>
+        </member>
+        <member name="M:OishipanAPI.Controllers.OrdersController.UpdateOrderStatus(System.Int32,OishipanAPI.DTOs.UpdateOrderStatusDto)">
+            <summary>
+            Cập nhật trạng thái đơn hàng
+            </summary>
+            <param name="id">ID đơn hàng</param>
+            <param name="dto">Thông tin cập nhật trạng thái</param>
+            <returns>Thông báo cập nhật thành công</returns>
+            <response code="200">Cập nhật thành công</response>
+            <response code="404">Đơn hàng không tồn tại</response>
+        </member>
+        <member name="M:OishipanAPI.Controllers.OrdersController.CancelOrder(System.Int32)">
+            <summary>
+            Hủy đơn hàng
+            </summary>
+            <param name="id">ID đơn hàng</param>
+            <returns>Thông báo hủy thành công</returns>
+            <response code="200">Hủy thành công</response>
+            <response code="400">Không thể hủy đơn hàng này</response>
+        </member>
+        <member name="T:OishipanAPI.Controllers.ProductsController">
+            <summary>
+            API cho quản lý sản phẩm bánh
+            </summary>
+        </member>
+        <member name="M:OishipanAPI.Controllers.ProductsController.GetAllProducts">
+            <summary>
+            Lấy danh sách tất cả sản phẩm
+            </summary>
+            <returns>Danh sách sản phẩm</returns>
+            <response code="200">Lấy danh sách thành công</response>
+        </member>
+        <member name="M:OishipanAPI.Controllers.ProductsController.GetProductById(System.Int32)">
+            <summary>
+            Lấy chi tiết sản phẩm theo ID
+            </summary>
+            <param name="id">ID sản phẩm</param>
+            <returns>Thông tin chi tiết sản phẩm</returns>
+            <response code="200">Lấy thông tin thành công</response>
+            <response code="404">Sản phẩm không tồn tại</response>
+        </member>
+        <member name="M:OishipanAPI.Controllers.ProductsController.GetProductsByCategory(System.Int32)">
+            <summary>
+            Lấy sản phẩm theo danh mục
+            </summary>
+            <param name="categoryId">ID danh mục</param>
+            <returns>Danh sách sản phẩm trong danh mục</returns>
+            <response code="200">Lấy danh sách thành công</response>
+        </member>
+        <member name="M:OishipanAPI.Controllers.ProductsController.GetProductsByBrand(System.Int32)">
+            <summary>
+            Lấy sản phẩm theo thương hiệu
+            </summary>
+            <param name="brandId">ID thương hiệu</param>
+            <returns>Danh sách sản phẩm của thương hiệu</returns>
+            <response code="200">Lấy danh sách thành công</response>
+        </member>
+        <member name="M:OishipanAPI.Controllers.ProductsController.CreateProduct(OishipanAPI.DTOs.CreateProductDto)">
+            <summary>
+            Tạo sản phẩm mới (Chỉ Admin/Staff)
+            </summary>
+            <param name="dto">Thông tin sản phẩm mới</param>
+            <returns>Sản phẩm vừa tạo</returns>
+            <response code="201">Tạo thành công</response>
+            <response code="400">Dữ liệu không hợp lệ</response>
+            <response code="401">Không được phép</response>
+        </member>
+        <member name="M:OishipanAPI.Controllers.ProductsController.UpdateProduct(System.Int32,OishipanAPI.DTOs.UpdateProductDto)">
+            <summary>
+            Cập nhật sản phẩm (Chỉ Admin/Staff)
+            </summary>
+            <param name="id">ID sản phẩm</param>
+            <param name="dto">Thông tin cập nhật</param>
+            <returns>Sản phẩm đã cập nhật</returns>
+            <response code="200">Cập nhật thành công</response>
+            <response code="400">Dữ liệu không hợp lệ</response>
+            <response code="404">Sản phẩm không tồn tại</response>
+        </member>
+        <member name="M:OishipanAPI.Controllers.ProductsController.DeleteProduct(System.Int32)">
+            <summary>
+            Xóa sản phẩm (Chỉ Admin/Staff)
+            </summary>
+            <param name="id">ID sản phẩm</param>
+            <returns>Thông báo xóa thành công</returns>
+            <response code="204">Xóa thành công</response>
+            <response code="404">Sản phẩm không tồn tại</response>
+            <response code="401">Không được phép</response>
+        </member>
+        <member name="M:OishipanAPI.Controllers.ProductsController.UploadProductImage(System.Int32,Microsoft.AspNetCore.Http.IFormFile)">
+            <summary>
+            Tải lên ảnh sản phẩm (Chỉ Admin/Staff)
+            </summary>
+            <param name="id">ID sản phẩm</param>
+            <param name="file">File ảnh</param>
+            <returns>URL ảnh vừa tải lên</returns>
+            <response code="200">Tải lên thành công</response>
+            <response code="400">File không hợp lệ</response>
+            <response code="404">Sản phẩm không tồn tại</response>
+            <response code="401">Không được phép</response>
+        </member>
+        <member name="T:OishipanAPI.Controllers.UploadController">
+            <summary>
+            API cho tải lên ảnh lên Cloudinary
+            </summary>
+        </member>
+        <member name="M:OishipanAPI.Controllers.UploadController.Upload(Microsoft.AspNetCore.Http.IFormFile)">
+            <summary>
+            Tải lên ảnh lên Cloudinary
+            </summary>
+            <param name="file">File ảnh cần tải lên</param>
+            <returns>URL của ảnh vừa tải lên</returns>
+            <response code="200">Tải lên thành công</response>
+            <response code="400">File không hợp lệ</response>
+        </member>
+        <member name="T:OishipanAPI.Controllers.UsersController">
+            <summary>
+            API cho quản lý người dùng (Admin/Staff)
+            </summary>
+        </member>
+        <member name="M:OishipanAPI.Controllers.UsersController.SearchUsers(System.String)">
+            <summary>
+            Tìm kiếm người dùng theo tên hoặc email
+            </summary>
+            <param name="searchTerm">Từ khóa tìm kiếm</param>
+            <returns>Danh sách người dùng khớp</returns>
+            <response code="200">Thành công</response>
+            <response code="400">Từ khóa tìm kiếm không hợp lệ</response>
+            <response code="401">Không được phép</response>
+        </member>
+        <member name="M:OishipanAPI.Controllers.UsersController.GetAllUsers(System.String,System.Nullable{System.Boolean},System.String,System.Int32,System.Int32)">
+            <summary>
+            Lấy danh sách tất cả người dùng (có phân trang, lọc, tìm kiếm)
+            </summary>
+            <param name="role">Lọc theo role (Admin, Staff, User)</param>
+            <param name="status">Lọc theo trạng thái (true=active, false=inactive)</param>
+            <param name="page">Trang hiện tại (mặc định 1)</param>
+            <param name="pageSize">Số bản ghi mỗi trang (mặc định 20)</param>
+            <param name="search">Tìm kiếm theo tên/email/số điện thoại</param>
+            <returns>Danh sách người dùng</returns>
+            <response code="200">Thành công</response>
+            <response code="401">Không được phép (chỉ Admin/Staff)</response>
+        </member>
+        <member name="M:OishipanAPI.Controllers.UsersController.GetUserById(System.Int32)">
+            <summary>
+            Lấy thông tin chi tiết một người dùng
+            </summary>
+            <param name="id">ID của người dùng</param>
+            <returns>Thông tin người dùng</returns>
+            <response code="200">Thành công</response>
+            <response code="404">Không tìm thấy người dùng</response>
+            <response code="401">Không được phép</response>
+        </member>
+        <member name="M:OishipanAPI.Controllers.UsersController.CreateUser(OishipanAPI.DTOs.CreateUserRequest)">
+            <summary>
+            Tạo người dùng mới (chỉ Admin)
+            </summary>
+            <param name="request">Thông tin người dùng mới</param>
+            <returns>Thông tin người dùng đã tạo</returns>
+            <response code="201">Tạo thành công</response>
+            <response code="400">Dữ liệu không hợp lệ hoặc email đã tồn tại</response>
+            <response code="401">Không được phép (chỉ Admin)</response>
+        </member>
+        <member name="M:OishipanAPI.Controllers.UsersController.UpdateUser(System.Int32,OishipanAPI.DTOs.UpdateUserRequest)">
+            <summary>
+            Cập nhật thông tin người dùng
+            </summary>
+            <param name="id">ID của người dùng</param>
+            <param name="request">Thông tin cập nhật</param>
+            <returns>Thông tin người dùng đã cập nhật</returns>
+            <response code="200">Cập nhật thành công</response>
+            <response code="404">Không tìm thấy người dùng</response>
+            <response code="400">Dữ liệu không hợp lệ</response>
+            <response code="401">Không được phép hoặc quyền không đủ</response>
+            <response code="403">Staff không thể thay đổi role</response>
+        </member>
+        <member name="M:OishipanAPI.Controllers.UsersController.ChangePassword(System.Int32,OishipanAPI.DTOs.ChangePasswordRequest)">
+            <summary>
+            Thay đổi mật khẩu người dùng (chỉ Admin)
+            </summary>
+            <param name="id">ID của người dùng</param>
+            <param name="request">Mật khẩu mới</param>
+            <returns>Thông báo kết quả</returns>
+            <response code="200">Đổi mật khẩu thành công</response>
+            <response code="404">Không tìm thấy người dùng</response>
+            <response code="400">Dữ liệu không hợp lệ</response>
+            <response code="401">Không được phép</response>
+        </member>
+        <member name="M:OishipanAPI.Controllers.UsersController.ToggleUserStatus(System.Int32)">
+            <summary>
+            Khóa/Mở khóa người dùng (chỉ Admin)
+            </summary>
+            <param name="id">ID của người dùng</param>
+            <returns>Trạng thái mới của người dùng</returns>
+            <response code="200">Thành công</response>
+            <response code="404">Không tìm thấy người dùng</response>
+            <response code="401">Không được phép</response>
+        </member>
+        <member name="M:OishipanAPI.Controllers.UsersController.DeleteUser(System.Int32)">
+            <summary>
+            Xóa người dùng (chỉ Admin)
+            </summary>
+            <param name="id">ID của người dùng</param>
+            <returns>Thông báo kết quả</returns>
+            <response code="204">Xóa thành công</response>
+            <response code="404">Không tìm thấy người dùng</response>
+            <response code="401">Không được phép</response>
+        </member>
+        <member name="M:OishipanAPI.Controllers.UsersController.UploadUserImage(System.Int32,Microsoft.AspNetCore.Http.IFormFile)">
+            <summary>
+            Tải lên ảnh đại diện người dùng (chỉ Admin)
+            </summary>
+            <param name="id">ID của người dùng</param>
+            <param name="file">File ảnh</param>
+            <returns>Thông báo kết quả</returns>
+            <response code="200">Tải lên thành công</response>
+            <response code="400">File không hợp lệ</response>
+            <response code="404">Không tìm thấy người dùng</response>
+        </member>
+        <member name="T:OishipanAPI.Controllers.VouchersController">
+            <summary>
+            API cho quản lý mã khuyến mại (voucher)
+            </summary>
+        </member>
+        <member name="M:OishipanAPI.Controllers.VouchersController.GetVoucherByCode(System.String)">
+            <summary>
+            Lấy voucher theo mã (Public)
+            </summary>
+        </member>
+        <member name="M:OishipanAPI.Controllers.VouchersController.ValidateVoucher(System.String)">
+            <summary>
+            Kiểm tra tính hợp lệ của voucher (Public)
+            </summary>
+        </member>
+        <member name="M:OishipanAPI.Controllers.VouchersController.GetAllVouchers">
+            <summary>
+            Lấy danh sách tất cả voucher (Admin only)
+            </summary>
+        </member>
+        <member name="M:OishipanAPI.Controllers.VouchersController.GetVoucherById(System.Int32)">
+            <summary>
+            Lấy chi tiết voucher theo ID (Admin only)
+            </summary>
+        </member>
+        <member name="M:OishipanAPI.Controllers.VouchersController.CreateVoucher(OishipanAPI.DTOs.CreateVoucherDto)">
+            <summary>
+            Tạo voucher mới (Admin only)
+            </summary>
+        </member>
+        <member name="M:OishipanAPI.Controllers.VouchersController.UpdateVoucher(System.Int32,OishipanAPI.DTOs.UpdateVoucherDto)">
+            <summary>
+            Cập nhật voucher (Admin only)
+            </summary>
+        </member>
+        <member name="M:OishipanAPI.Controllers.VouchersController.DeleteVoucher(System.Int32)">
+            <summary>
+            Xóa voucher (Admin only)
+            </summary>
+        </member>
+        <member name="T:OishipanAPI.DTOs.VoucherDto">
+            <summary>
+            DTO cho Voucher - Dữ liệu trả về khi GET
+            </summary>
+        </member>
+        <member name="T:OishipanAPI.DTOs.CreateVoucherDto">
+            <summary>
+            DTO cho tạo Voucher mới
+            </summary>
+        </member>
+        <member name="T:OishipanAPI.DTOs.UpdateVoucherDto">
+            <summary>
+            DTO cho cập nhật Voucher
+            </summary>
+        </member>
+        <member name="T:OishipanAPI.Migrations.InitialCreate">
+            <inheritdoc />
+        </member>
+        <member name="M:OishipanAPI.Migrations.InitialCreate.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:OishipanAPI.Migrations.InitialCreate.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:OishipanAPI.Migrations.InitialCreate.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:OishipanAPI.Migrations.AddNoteToOrderDetail">
+            <inheritdoc />
+        </member>
+        <member name="M:OishipanAPI.Migrations.AddNoteToOrderDetail.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:OishipanAPI.Migrations.AddNoteToOrderDetail.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:OishipanAPI.Migrations.AddNoteToOrderDetail.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:OishipanAPI.Migrations.AddProductVariants">
+            <inheritdoc />
+        </member>
+        <member name="M:OishipanAPI.Migrations.AddProductVariants.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:OishipanAPI.Migrations.AddProductVariants.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:OishipanAPI.Migrations.AddProductVariants.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:OishipanAPI.Migrations.UpdateAccountRoleEnum">
+            <inheritdoc />
+        </member>
+        <member name="M:OishipanAPI.Migrations.UpdateAccountRoleEnum.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:OishipanAPI.Migrations.UpdateAccountRoleEnum.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:OishipanAPI.Migrations.UpdateAccountRoleEnum.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:OishipanAPI.Migrations.AddImageFieldToAccount">
+            <inheritdoc />
+        </member>
+        <member name="M:OishipanAPI.Migrations.AddImageFieldToAccount.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:OishipanAPI.Migrations.AddImageFieldToAccount.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:OishipanAPI.Migrations.AddImageFieldToAccount.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:Oishipan.Models.Role">
+            <summary>
+            Enum định nghĩa các vai trò người dùng trong hệ thống
+            </summary>
+        </member>
+        <member name="T:Program">
+            <summary>
+            Auto-generated public partial Program class for top-level statement apps.
+            </summary>
+        </member>
+    </members>
+</doc>

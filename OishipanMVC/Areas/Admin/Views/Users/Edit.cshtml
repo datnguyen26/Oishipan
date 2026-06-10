@@ -1,0 +1,103 @@
+@model OishipanMVC.Models.UserViewModel
+
+@{
+    ViewData["Title"] = "Chỉnh sửa người dùng";
+}
+
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h4 class="fw-semibold">Chỉnh sửa người dùng</h4>
+            <p class="text-muted mb-0">Cập nhật thông tin người dùng trong hệ thống.</p>
+        </div>
+        <a href="/admin/users" class="btn btn-outline-light rounded-pill">Quay lại danh sách</a>
+    </div>
+
+    @if (!string.IsNullOrEmpty(ViewBag.Error))
+    {
+        <div class="alert alert-danger">@ViewBag.Error</div>
+    }
+
+    <div class="card admin-panel-card shadow-sm rounded-4 p-4">
+        <form method="post" action="/admin/users/edit/@Model.UserId" enctype="multipart/form-data">
+            <div class="row g-4">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label class="form-label">Ảnh đại diện</label>
+                        <div style="margin-bottom: 12px;">
+                            <img id="userImagePreview" src="https://ui-avatars.com/api/?name=@System.Net.WebUtility.UrlEncode(Model.FullName)&background=7c3aed&color=fff&size=128" alt="Preview" style="width: 100px; height: 100px; border-radius: 8px; object-fit: cover;" />
+                        </div>
+                        <input type="file" class="form-control form-control-dark" name="userImage" accept="image/*" onchange="previewUserImage(event)">
+                        <small class="text-muted">Chọn ảnh để xem trước</small>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Họ tên</label>
+                        <input type="text" name="fullName" class="form-control form-control-dark" value="@Model.FullName" required />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Email</label>
+                        <input type="email" name="email" class="form-control form-control-dark" value="@Model.Email" required />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Số điện thoại</label>
+                        <input type="tel" name="phoneNumber" class="form-control form-control-dark" value="@Model.PhoneNumber" />
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label class="form-label">Địa chỉ</label>
+                        <input type="text" name="address" class="form-control form-control-dark" placeholder="Nhập địa chỉ" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Vai trò</label>
+                        <select name="role" class="form-select form-control-dark">
+                            <option value="User" selected="@(Model.Role == "User" ? "selected" : "")">Người dùng</option>
+                            <option value="Staff" selected="@(Model.Role == "Staff" ? "selected" : "")">Nhân viên</option>
+                            <option value="Admin" selected="@(Model.Role == "Admin" ? "selected" : "")">Quản trị viên</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Trạng thái</label>
+                        <div>
+                            @if (Model.Status)
+                            {
+                                <span class="badge badge-success">Hoạt động</span>
+                            }
+                            else
+                            {
+                                <span class="badge badge-danger">Bị khóa</span>
+                            }
+                        </div>
+                        <form method="post" action="/admin/users/toggle-status/@Model.UserId" style="display:inline;">
+                            <button type="submit" class="btn btn-sm btn-outline-light mt-2">
+                                @(Model.Status ? "Khóa tài khoản" : "Kích hoạt tài khoản")
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-4">
+                <button type="submit" class="btn btn-success rounded-pill px-4">Lưu thay đổi</button>
+                <a href="/admin/users" class="btn btn-outline-light rounded-pill px-4 ms-2">Hủy</a>
+                <form method="post" action="/admin/users/delete/@Model.UserId" style="display:inline;" onsubmit="return confirm('Bạn có chắc chắn muốn xóa người dùng này?');">
+                    <button type="submit" class="btn btn-danger rounded-pill px-4 ms-2">Xóa người dùng</button>
+                </form>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    function previewUserImage(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('userImagePreview').src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+</script>

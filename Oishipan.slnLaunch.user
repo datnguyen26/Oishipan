@@ -1,0 +1,15 @@
+[
+  {
+    "Name": "New Profile",
+    "Projects": [
+      {
+        "Path": "OishipanAPI\\OishipanAPI.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "OishipanMVC\\OishipanMVC.csproj",
+        "Action": "Start"
+      }
+    ]
+  }
+]

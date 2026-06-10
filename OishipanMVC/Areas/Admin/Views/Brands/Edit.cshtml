@@ -1,0 +1,45 @@
+@model OishipanMVC.Models.BrandViewModel
+
+@{
+    ViewData["Title"] = "Chỉnh sửa thương hiệu";
+}
+
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h4 class="fw-semibold">Chỉnh sửa thương hiệu</h4>
+            <p class="text-muted mb-0">Cập nhật thông tin thương hiệu.</p>
+        </div>
+        <a href="/admin/brands" class="btn btn-outline-light rounded-pill">Quay lại danh sách</a>
+    </div>
+
+    @if (!string.IsNullOrEmpty(ViewBag.Error))
+    {
+        <div class="alert alert-danger">@ViewBag.Error</div>
+    }
+
+    <div class="card admin-panel-card shadow-sm rounded-4 p-4">
+        <form method="post" action="/admin/brands/edit/@Model.BrandId">
+            <div class="row g-4">
+                <div class="col-md-8">
+                    <div class="mb-3">
+                        <label class="form-label">Tên thương hiệu</label>
+                        <input type="text" name="brandName" class="form-control form-control-dark" value="@Model.BrandName" required />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Mô tả</label>
+                        <textarea name="description" class="form-control form-control-dark" rows="6">@Model.Description</textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-4">
+                <button type="submit" class="btn btn-success rounded-pill px-4">Lưu thay đổi</button>
+                <a href="/admin/brands" class="btn btn-outline-light rounded-pill px-4 ms-2">Hủy</a>
+                <form method="post" action="/admin/brands/delete/@Model.BrandId" style="display:inline;" onsubmit="return confirm('Bạn có chắc chắn muốn xóa thương hiệu này?');">
+                    <button type="submit" class="btn btn-danger rounded-pill px-4 ms-2">Xóa thương hiệu</button>
+                </form>
+            </div>
+        </form>
+    </div>
+</div>

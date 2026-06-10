@@ -7,7 +7,10 @@ namespace OishipanMVC.Models
         public decimal Price { get; set; }
         public string Image { get; set; } = string.Empty;
         public int Quantity { get; set; }
+        public int CategoryId { get; set; }
+        public int BrandId { get; set; }
         public string Description { get; set; } = string.Empty;
+        public string? VariantsJson { get; set; }
         public CategoryViewModel? Category { get; set; }
         public BrandViewModel? Brand { get; set; }
 
@@ -27,6 +30,6 @@ namespace OishipanMVC.Models
     {
         public int BrandId { get; set; }
         public string BrandName { get; set; } = string.Empty;
-        public string Website { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
     }
 }

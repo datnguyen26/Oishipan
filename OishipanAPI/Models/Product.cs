@@ -28,5 +28,8 @@ namespace Oishipan.Models
         public virtual Brand? Brand { get; set; }
 
         public string? Description { get; set; }
+
+        [Column(TypeName = "nvarchar(max)")]
+        public string? VariantsJson { get; set; }
     }
 }
